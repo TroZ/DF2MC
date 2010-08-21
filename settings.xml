@@ -1,0 +1,923 @@
+<?xml version="1.0" ?>
+<settings>
+    <squaresize val="3"/>
+    <torchinsidepercent val="10" />
+    <torchdarkpercent val="20" />
+    <torchsubterraneanpercent val="30" />
+    <horizontalarea xmin="0" xmax="10" ymin="5" ymax="15" />
+    <verticalarea type="smart" levels="42" airtokeep="3">
+		valid types:
+			none - for all of level
+			top - uses the top 'levels' levels keeping only 'airtokeep' levels of air
+			smart - for smart dropping of levels, keeps 'airtokeep' levels of air and outputs 'levels' levels from 'interesting' levels in the area (levels that have floor, tall staircases are collapsed)
+    </verticalarea>
+</settings>
+<minecraftmaterials>
+	<!--  Minecraft Material ID to 'friendly' name - names must be unique, but each ID can have multiple names-->
+	<material val="0">air</material>
+	<material val="1">rock</material>
+	<material val="2">grass</material>
+	<material val="3">dirt</material>
+	<material val="4">stone</material>
+	<material val="4">cobblestone</material>
+	<material val="5">boards</material>
+	<material val="5">board</material>
+	<material val="5">wood</material>
+	<material val="6">shrub</material>
+	<material val="6">sapling</material>
+	<material val="7">bedrock</material>
+	<material val="7">adminium</material>
+	<material val="8">water</material>
+	<material val="9">still water</material>
+	<material val="10">lava</material>
+	<material val="11">still lava</material>
+	<material val="12">sand</material>
+	<material val="13">gravel</material>
+	<material val="14">gold ore</material>
+	<material val="15">iron ore</material>
+	<material val="16">coal ore</material>
+	<material val="17">log</material>
+	<material val="17">tree</material>
+	<material val="18">leaves</material>
+	<material val="18">leaf</material>
+	<material val="19">sponge</material>
+	<material val="20">glass</material>
+	<material val="35">cloth</material>
+	<material val="35">wool</material>
+	<material val="37">flower</material>
+	<material val="37">yflower</material>
+	<material val="37">yellow flower</material>
+	<material val="38">rose</material>
+	<material val="38">rflower</material>
+	<material val="38">red flower</material>
+	<material val="39">mushroom</material>
+	<material val="39">bmushroom</material>
+	<material val="39">brown mushroom</material>
+	<material val="40">red mushroom</material>
+	<material val="40">rmushroom</material>
+	<material val="41">gold</material>
+	<material val="41">gold block</material>
+	<material val="42">iron</material>
+	<material val="42">iron block</material>
+	<material val="43">double stair</material>
+	<material val="43">double step</material>
+	<material val="43">dstair</material>
+	<material val="43">dstep</material>
+	<material val="44">stair</material>
+	<material val="44">step</material>
+	<material val="44">half block</material>
+	<material val="44">halfblock</material>
+	<material val="45">brick</material>
+	<material val="45">bricks</material>
+	<material val="46">tnt</material>
+	<material val="47">bookshelf</material>
+	<material val="48">mossy stone</material>
+	<material val="48">moss stone</material>
+	<material val="48">mossstone</material>
+	<material val="48">mossystone</material>
+	<material val="48">mossy cobblestone</material>
+	<material val="49">obsidian</material>
+	<material val="50">torch</material>
+	<material val="51">fire</material>
+	<material val="52">inf water</material>
+	<material val="54">chest</material>
+	<material val="56">diamond ore</material>
+	<material val="57">diamond</material>
+	<material val="57">diamond block</material>
+	<material val="58">workbench</material>
+
+</minecraftmaterials>
+<minecraftmaterialsalpha>
+	<!--  Minecraft Material ID to 'friendly' name - names must be unique, but each ID can have multiple names-->
+	<material val="0">air</material>
+	<material val="1">rock</material>
+	<material val="2">grass</material>
+	<material val="3">dirt</material>
+	<material val="4">stone</material>
+	<material val="4">cobblestone</material>
+	<material val="5">boards</material>
+	<material val="5">board</material>
+	<material val="5">wood</material>
+	<material val="6">shrub</material>
+	<material val="6">sapling</material>
+	<material val="7">bedrock</material>
+	<material val="7">adminium</material>
+	<material val="8">water</material>
+	<material val="9">still water</material>
+	<material val="10">lava</material>
+	<material val="11">still lava</material>
+	<material val="12">sand</material>
+	<material val="13">gravel</material>
+	<material val="14">gold ore</material>
+	<material val="15">iron ore</material>
+	<material val="16">coal ore</material>
+	<material val="17">log</material>
+	<material val="17">tree</material>
+	<material val="18">leaves</material>
+	<material val="18">leaf</material>
+	<material val="19">sponge</material>
+	<material val="20">glass</material>
+	<material val="35">cloth</material>
+	<material val="35">wool</material>
+	<material val="37">flower</material>
+	<material val="37">yflower</material>
+	<material val="37">yellow flower</material>
+	<material val="38">rose</material>
+	<material val="38">rflower</material>
+	<material val="38">red flower</material>
+	<material val="39">mushroom</material>
+	<material val="39">bmushroom</material>
+	<material val="39">brown mushroom</material>
+	<material val="40">red mushroom</material>
+	<material val="40">rmushroom</material>
+	<material val="41">gold</material>
+	<material val="41">gold block</material>
+	<material val="42">iron</material>
+	<material val="42">iron block</material>
+	<material val="43">double stair</material>
+	<material val="43">double step</material>
+	<material val="43">dstair</material>
+	<material val="43">dstep</material>
+	<material val="44">stair</material>
+	<material val="44">step</material>
+	<material val="44">half block</material>
+	<material val="44">halfblock</material>
+	<material val="45">brick</material>
+	<material val="45">bricks</material>
+	<material val="46">tnt</material>
+	<material val="47">bookshelf</material>
+	<material val="48">mossy stone</material>
+	<material val="48">moss stone</material>
+	<material val="48">mossstone</material>
+	<material val="48">mossystone</material>
+	<material val="48">mossy cobblestone</material>
+	<material val="49">obsidian</material>
+	<material val="50">torch</material>
+	<material val="51">fire</material>
+	<material val="52">mob spawner</material>
+	<material val="52">spawner</material>
+	<material val="53">wood stairs</material>
+	<material val="54">chest</material>
+	<material val="55">redstone dust</material>
+	<material val="55">redstone wire</material>
+	<material val="55">wire</material>
+	<material val="56">diamond ore</material>
+	<material val="57">diamond</material>
+	<material val="57">diamond block</material>
+	<material val="58">workbench</material>
+	<material val="59">crop</material>
+	<material val="59">wheat</material>
+	<material val="60">soil</material>
+	<material val="60">farm</material>
+	<material val="61">furnace</material>
+	<material val="62">lit furnace</material>
+	<material val="63">sign</material>
+	<material val="64">wood door</material>
+	<material val="64">door</material>
+	<material val="65">ladder</material>
+	<material val="66">rails</material>
+	<material val="67">cobblestone stairs</material>
+	<material val="67">stone stairs</material>
+	<material val="68">sign top</material>
+	<material val="69">lever</material>
+	<material val="70">rock plate</material>
+	<material val="71">iron door</material>
+	<material val="72">wood plate</material>
+	<material val="73">redstone ore</material>
+	<material val="74">redstone ore2</material>
+	<material val="75">redstone torch off</material>
+	<material val="76">redstone torch on</material>
+	<material val="76">redstone torch</material>
+	<material val="77">button</material>
+	<material val="78">snow</material>
+	<material val="79">ice</material>
+	<material val="80">snow block</material>
+	<material val="81">cactus</material>
+	<material val="82">clay block</material>
+	<material val="82">clay</material>
+	<material val="83">reed block</material>
+	<material val="83">reeds</material>
+	<material val="84">record player</material>
+	<material val="84">jukebox</material>
+</minecraftmaterialsalpha>
+<objects>
+    <!--These are the objects we will convert from Dwarf Fortress and how we will represent them in Minecraft
+Each object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started)
+Each object also has a list of numbers, the same squaresize^3 in size, that represent state or data of the cooresponding material, used to control things like facing direction, etc.-->
+    <empty.air mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <floor.hfs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <floor.cyanglow mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,bedrock,bedrock;bedrock,still water,bedrock;bedrock,bedrock,bedrock" data="" />
+    <floor.grass2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <floor.grass mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <floor.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <floor.magma mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|lava,lava,lava;lava,lava,lava;lava,lava,lava" data="" />
+    <floor.featstone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <floor.vein mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <floor.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <floor.grassdry mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|grass,dirt,grass;dirt,grass,dirt;grass,dirt,grass" data="" />
+    <floor.grassdead mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,dirt,dirt;dirt,grass,dirt;dirt,dirt,dirt" data="" />
+    <!--<floor.ice mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|ice,ice,ice;ice,ice,ice;ice,ice,ice" data="" />-->
+    <floor.ice mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|water,water,water;water,water,water;water,water,water" data="" />
+    <floor.constructed mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <floor.constructed.bars mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <floor.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <floor.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <floor.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+
+    <wall.magma mat="lava,lava,lava;lava,lava,lava;lava,lava,lava|lava,lava,lava;lava,lava,lava;lava,lava,lava|lava,lava,lava;lava,lava,lava;lava,lava,lava" data="" />
+    <wall.stone mat="rock,rock,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <wall.soil mat="dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <!--<wall.vein mat="coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,iron ore,coal ore;iron ore,iron ore,iron ore;coal ore,iron ore,coal ore|gold ore,redstone ore,gold ore;redstone ore,diamond ore,redstone ore;gold ore,redstone ore,gold ore" data="" />-->
+    <wall.vein mat="coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,iron ore,coal ore;iron ore,iron ore,iron ore;coal ore,iron ore,coal ore|gold ore,iron ore,gold ore;iron ore,gold block,iron ore;gold ore,iron ore,gold ore" data="" />
+    <wall.featstone mat="bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <!--<wall.ice mat="ice,ice,ice;ice,ice,ice;ice,ice,ice|ice,ice,ice;ice,ice,ice;ice,ice,ice|ice,ice,ice;ice,ice,ice;ice,ice,ice" data="" />-->
+    <wall.ice mat="water,water,water;water,water,water;water,water,water|water,water,water;water,water,water;water,water,water|water,water,water;water,water,water;water,water,water" data="" />
+    <wall.constructed mat="stone,stone,stone;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <wall.constructed.bars mat="iron,iron,iron;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <wall.constructed.blocks mat="dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <wall.constructed.logs mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <wall.obsidian mat="obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+
+    <pillar.featstone mat="air,bedrock,air;bedrock,bedrock,bedrock;air,bedrock,air|air,bedrock,air;bedrock,bedrock,bedrock;air,bedrock,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <pillar.stone mat="air,rock,air;rock,rock,rock;air,rock,air|air,rock,air;rock,rock,rock;air,rock,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <pillar.constructed mat="air,stone,air;stone,stone,stone;air,stone,air|air,stone,air;stone,stone,stone;air,stone,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <pillar.constructed.bars mat="air,iron,air;iron,iron,iron;air,iron,air|air,iron,air;iron,iron,iron;air,iron,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <pillar.constructed.blocks mat="air,dstep,air;dstep,dstep,dstep;air,dstep,air|air,dstep,air;dstep,dstep,dstep;air,dstep,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <pillar.constructed.logs mat="air,wood,air;wood,wood,wood;air,wood,air|air,wood,air;wood,wood,wood;air,wood,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <pillar.vein mat="air,coal ore,air;coal ore,iron ore,coal ore;air,coal ore,air|air,coal ore,air;coal ore,iron ore,coal ore;air,coal ore,air|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <pillar.obsidian mat="air,obsidian,air;obsidian,obsidian,obsidian;air,obsidian,air|air,obsidian,air;obsidian,obsidian,obsidian;air,obsidian,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+
+
+    <forticication.featstone mat="bedrock,air,bedrock;air,air,air;bedrock,air,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <forticication.stone mat="rock,air,rock;air,air,air;rock,air,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <forticication.vein mat="coal ore,air,coal ore;air,air,air;coal ore,air,coal ore|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore|iron ore,iron ore,iron ore;iron ore,iron ore,iron ore;iron ore,iron ore,iron ore" data="" />
+    <forticication.constructed mat="stone,air,stone;air,air,air;stone,air,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <forticication.obsidian mat="obsidian,air,obsidian;air,air,air;obsidian,air,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <forticication.constructed.bars mat="iron,air,iron;air,air,air;iron,air,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <forticication.constructed.blocks mat="dstep,air,dstep;air,air,air;dstep,air,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <forticication.constructed.logs mat="wood,air,wood;air,air,air;wood,air,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+
+
+
+    <stairup0.featstone mat="air,bedrock,air;air,air,air;air,air,air|air,air,bedrock;air,air,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <stairup1.featstone mat="air,air,air;air,air,air;air,bedrock,air|air,air,air;air,air,air;bedrock,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <stairup2.featstone mat="air,bedrock,air;air,air,air;air,air,air|air,air,bedrock;air,air,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <stairup3.featstone mat="air,air,air;air,air,air;air,bedrock,air|air,air,air;air,air,air;bedrock,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <stairdown0.featstone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,bedrock,bedrock;air,bedrock,bedrock;air,air,bedrock" data="" />
+    <stairdown1.featstone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,air,air;bedrock,bedrock,air;bedrock,bedrock,bedrock" data="" />
+    <stairdown2.featstone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,bedrock,bedrock;air,bedrock,bedrock;air,air,bedrock" data="" />
+    <stairdown3.featstone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|bedrock,air,air;bedrock,bedrock,air;bedrock,bedrock,bedrock" data="" />
+    <stairupdown0.featstone mat="air,bedrock,air;air,air,air;air,air,air|air,air,bedrock;air,air,air;air,air,air|bedrock,bedrock,bedrock;air,bedrock,bedrock;air,air,bedrock" data="" />
+    <stairupdown1.featstone mat="air,air,air;air,air,air;air,bedrock,air|air,air,air;air,air,air;bedrock,air,air|bedrock,air,air;bedrock,bedrock,air;bedrock,bedrock,bedrock" data="" />
+    <stairupdown2.featstone mat="air,bedrock,air;air,air,air;air,air,air|air,air,bedrock;air,air,air;air,air,air|bedrock,bedrock,bedrock;air,bedrock,bedrock;air,air,bedrock" data="" />
+    <stairupdown3.featstone mat="air,air,air;air,air,air;air,bedrock,air|air,air,air;air,air,air;bedrock,air,air|bedrock,air,air;bedrock,bedrock,air;bedrock,bedrock,bedrock" data="" />
+
+    <stairup0.stone mat="air,rock,air;air,air,air;air,air,air|air,air,rock;air,air,air;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <stairup1.stone mat="air,air,air;air,air,air;air,rock,air|air,air,air;air,air,air;rock,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <stairup2.stone mat="air,rock,air;air,air,air;air,air,air|air,air,rock;air,air,air;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <stairup3.stone mat="air,air,air;air,air,air;air,rock,air|air,air,air;air,air,air;rock,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <stairdown0.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|rock,rock,rock;air,rock,rock;air,air,rock" data="" />
+    <stairdown1.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|rock,air,air;rock,rock,air;rock,rock,rock" data="" />
+    <stairdown2.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|rock,rock,rock;air,rock,rock;air,air,rock" data="" />
+    <stairdown3.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|rock,air,air;rock,rock,air;rock,rock,rock" data="" />
+    <stairupdown0.stone mat="air,rock,air;air,air,air;air,air,air|air,air,rock;air,air,air;air,air,air|rock,rock,rock;air,rock,rock;air,air,rock" data="" />
+    <stairupdown1.stone mat="air,air,air;air,air,air;air,rock,air|air,air,air;air,air,air;rock,air,air|rock,air,air;rock,rock,air;rock,rock,rock" data="" />
+    <stairupdown2.stone mat="air,rock,air;air,air,air;air,air,air|air,air,rock;air,air,air;air,air,air|rock,rock,rock;air,rock,rock;air,air,rock" data="" />
+    <stairupdown3.stone mat="air,air,air;air,air,air;air,rock,air|air,air,air;air,air,air;rock,air,air|rock,air,air;rock,rock,air;rock,rock,rock" data="" />
+
+    <stairup0.constructed mat="air,stone,air;air,air,air;air,air,air|air,air,stone;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <stairup1.constructed mat="air,air,air;air,air,air;air,stone,air|air,air,air;air,air,air;stone,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <stairup2.constructed mat="air,stone,air;air,air,air;air,air,air|air,air,stone;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <stairup3.constructed mat="air,air,air;air,air,air;air,stone,air|air,air,air;air,air,air;stone,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <stairdown0.constructed mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|stone,stone,stone;air,stone,stone;air,air,stone" data="" />
+    <stairdown1.constructed mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|stone,air,air;stone,stone,air;stone,stone,stone" data="" />
+    <stairdown2.constructed mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|stone,stone,stone;air,stone,stone;air,air,stone" data="" />
+    <stairdown3.constructed mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|stone,air,air;stone,stone,air;stone,stone,stone" data="" />
+    <stairupdown0.constructed mat="air,stone,air;air,air,air;air,air,air|air,air,stone;air,air,air;air,air,air|stone,stone,stone;air,stone,stone;air,air,stone" data="" />
+    <stairupdown1.constructed mat="air,air,air;air,air,air;air,stone,air|air,air,air;air,air,air;stone,air,air|stone,air,air;stone,stone,air;stone,stone,stone" data="" />
+    <stairupdown2.constructed mat="air,stone,air;air,air,air;air,air,air|air,air,stone;air,air,air;air,air,air|stone,stone,stone;air,stone,stone;air,air,stone" data="" />
+    <stairupdown3.constructed mat="air,air,air;air,air,air;air,stone,air|air,air,air;air,air,air;stone,air,air|stone,air,air;stone,stone,air;stone,stone,stone" data="" />
+
+    <stairup0.constructed.bars mat="air,iron,air;air,air,air;air,air,air|air,air,iron;air,air,air;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <stairup1.constructed.bars mat="air,air,air;air,air,air;air,iron,air|air,air,air;air,air,air;iron,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <stairup2.constructed.bars mat="air,iron,air;air,air,air;air,air,air|air,air,iron;air,air,air;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <stairup3.constructed.bars mat="air,air,air;air,air,air;air,iron,air|air,air,air;air,air,air;iron,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <stairdown0.constructed.bars mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|iron,iron,iron;air,iron,iron;air,air,iron" data="" />
+    <stairdown1.constructed.bars mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|iron,air,air;iron,iron,air;iron,iron,iron" data="" />
+    <stairdown2.constructed.bars mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|iron,iron,iron;air,iron,iron;air,air,iron" data="" />
+    <stairdown3.constructed.bars mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|iron,air,air;iron,iron,air;iron,iron,iron" data="" />
+    <stairupdown0.constructed.bars mat="air,iron,air;air,air,air;air,air,air|air,air,iron;air,air,air;air,air,air|iron,iron,iron;air,iron,iron;air,air,iron" data="" />
+    <stairupdown1.constructed.bars mat="air,air,air;air,air,air;air,iron,air|air,air,air;air,air,air;iron,air,air|iron,air,air;iron,iron,air;iron,iron,iron" data="" />
+    <stairupdown2.constructed.bars mat="air,iron,air;air,air,air;air,air,air|air,air,iron;air,air,air;air,air,air|iron,iron,iron;air,iron,iron;air,air,iron" data="" />
+    <stairupdown3.constructed.bars mat="air,air,air;air,air,air;air,iron,air|air,air,air;air,air,air;iron,air,air|iron,air,air;iron,iron,air;iron,iron,iron" data="" />
+
+    <stairup0.constructed.blocks mat="air,dstep,air;air,air,air;air,air,air|air,air,dstep;air,air,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <stairup1.constructed.blocks mat="air,air,air;air,air,air;air,dstep,air|air,air,air;air,air,air;dstep,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <stairup2.constructed.blocks mat="air,dstep,air;air,air,air;air,air,air|air,air,dstep;air,air,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <stairup3.constructed.blocks mat="air,air,air;air,air,air;air,dstep,air|air,air,air;air,air,air;dstep,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <stairdown0.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dstep,dstep,dstep;air,dstep,dstep;air,air,dstep" data="" />
+    <stairdown1.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dstep,air,air;dstep,dstep,air;dstep,dstep,dstep" data="" />
+    <stairdown2.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dstep,dstep,dstep;air,dstep,dstep;air,air,dstep" data="" />
+    <stairdown3.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dstep,air,air;dstep,dstep,air;dstep,dstep,dstep" data="" />
+    <stairupdown0.constructed.blocks mat="air,dstep,air;air,air,air;air,air,air|air,air,dstep;air,air,air;air,air,air|dstep,dstep,dstep;air,dstep,dstep;air,air,dstep" data="" />
+    <stairupdown1.constructed.blocks mat="air,air,air;air,air,air;air,dstep,air|air,air,air;air,air,air;dstep,air,air|dstep,air,air;dstep,dstep,air;dstep,dstep,dstep" data="" />
+    <stairupdown2.constructed.blocks mat="air,dstep,air;air,air,air;air,air,air|air,air,dstep;air,air,air;air,air,air|dstep,dstep,dstep;air,dstep,dstep;air,air,dstep" data="" />
+    <stairupdown3.constructed.blocks mat="air,air,air;air,air,air;air,dstep,air|air,air,air;air,air,air;dstep,air,air|dstep,air,air;dstep,dstep,air;dstep,dstep,dstep" data="" />
+
+    <stairup0.constructed.logs mat="air,wood,air;air,air,air;air,air,air|air,air,wood;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <stairup1.constructed.logs mat="air,air,air;air,air,air;air,wood,air|air,air,air;air,air,air;wood,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <stairup2.constructed.logs mat="air,wood,air;air,air,air;air,air,air|air,air,wood;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <stairup3.constructed.logs mat="air,air,air;air,air,air;air,wood,air|air,air,air;air,air,air;wood,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <stairdown0.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|wood,wood,wood;air,wood,wood;air,air,wood" data="" />
+    <stairdown1.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|wood,air,air;wood,wood,air;wood,wood,wood" data="" />
+    <stairdown2.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|wood,wood,wood;air,wood,wood;air,air,wood" data="" />
+    <stairdown3.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|wood,air,air;wood,wood,air;wood,wood,wood" data="" />
+    <stairupdown0.constructed.logs mat="air,wood,air;air,air,air;air,air,air|air,air,wood;air,air,air;air,air,air|wood,wood,wood;air,wood,wood;air,air,wood" data="" />
+    <stairupdown1.constructed.logs mat="air,air,air;air,air,air;air,wood,air|air,air,air;air,air,air;wood,air,air|wood,air,air;wood,wood,air;wood,wood,wood" data="" />
+    <stairupdown2.constructed.logs mat="air,wood,air;air,air,air;air,air,air|air,air,wood;air,air,air;air,air,air|wood,wood,wood;air,wood,wood;air,air,wood" data="" />
+    <stairupdown3.constructed.logs mat="air,air,air;air,air,air;air,wood,air|air,air,air;air,air,air;wood,air,air|wood,air,air;wood,wood,air;wood,wood,wood" data="" />
+
+    <stairup0.vein mat="air,coal ore,air;air,air,air;air,air,air|air,air,coal ore;air,air,air;air,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <stairup1.vein mat="air,air,air;air,air,air;air,coal ore,air|air,air,air;air,air,air;coal ore,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <stairup2.vein mat="air,coal ore,air;air,air,air;air,air,air|air,air,coal ore;air,air,air;air,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <stairup3.vein mat="air,air,air;air,air,air;air,coal ore,air|air,air,air;air,air,air;coal ore,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <stairdown0.vein mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|coal ore,coal ore,coal ore;air,coal ore,coal ore;air,air,coal ore" data="" />
+    <stairdown1.vein mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|coal ore,air,air;coal ore,coal ore,air;coal ore,coal ore,coal ore" data="" />
+    <stairdown2.vein mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|coal ore,coal ore,coal ore;air,coal ore,coal ore;air,air,coal ore" data="" />
+    <stairdown3.vein mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|coal ore,air,air;coal ore,coal ore,air;coal ore,coal ore,coal ore" data="" />
+    <stairupdown0.vein mat="air,coal ore,air;air,air,air;air,air,air|air,air,coal ore;air,air,air;air,air,air|coal ore,coal ore,coal ore;air,coal ore,coal ore;air,air,coal ore" data="" />
+    <stairupdown1.vein mat="air,air,air;air,air,air;air,coal ore,air|air,air,air;air,air,air;coal ore,air,air|coal ore,air,air;coal ore,coal ore,air;coal ore,coal ore,coal ore" data="" />
+    <stairupdown2.vein mat="air,coal ore,air;air,air,air;air,air,air|air,air,coal ore;air,air,air;air,air,air|coal ore,coal ore,coal ore;air,coal ore,coal ore;air,air,coal ore" data="" />
+    <stairupdown3.vein mat="air,air,air;air,air,air;air,coal ore,air|air,air,air;air,air,air;coal ore,air,air|coal ore,air,air;coal ore,coal ore,air;coal ore,coal ore,coal ore" data="" />
+
+    <stairup0.soil mat="air,dirt,air;air,air,air;air,air,air|air,air,dirt;air,air,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <stairup1.soil mat="air,air,air;air,air,air;air,dirt,air|air,air,air;air,air,air;dirt,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <stairup2.soil mat="air,dirt,air;air,air,air;air,air,air|air,air,dirt;air,air,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <stairup3.soil mat="air,air,air;air,air,air;air,dirt,air|air,air,air;air,air,air;dirt,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <stairdown0.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,dirt,dirt;air,dirt,dirt;air,air,dirt" data="" />
+    <stairdown1.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,air,air;dirt,dirt,air;dirt,dirt,dirt" data="" />
+    <stairdown2.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,dirt,dirt;air,dirt,dirt;air,air,dirt" data="" />
+    <stairdown3.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,air,air;dirt,dirt,air;dirt,dirt,dirt" data="" />
+    <stairupdown0.soil mat="air,dirt,air;air,air,air;air,air,air|air,air,dirt;air,air,air;air,air,air|dirt,dirt,dirt;air,dirt,dirt;air,air,dirt" data="" />
+    <stairupdown1.soil mat="air,air,air;air,air,air;air,dirt,air|air,air,air;air,air,air;dirt,air,air|dirt,air,air;dirt,dirt,air;dirt,dirt,dirt" data="" />
+    <stairupdown2.soil mat="air,dirt,air;air,air,air;air,air,air|air,air,dirt;air,air,air;air,air,air|dirt,dirt,dirt;air,dirt,dirt;air,air,dirt" data="" />
+    <stairupdown3.soil mat="air,air,air;air,air,air;air,dirt,air|air,air,air;air,air,air;dirt,air,air|dirt,air,air;dirt,dirt,air;dirt,dirt,dirt" data="" />
+
+    <stairup0.obsidian mat="air,obsidian,air;air,air,air;air,air,air|air,air,obsidian;air,air,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <stairup1.obsidian mat="air,air,air;air,air,air;air,obsidian,air|air,air,air;air,air,air;obsidian,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <stairup2.obsidian mat="air,obsidian,air;air,air,air;air,air,air|air,air,obsidian;air,air,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <stairup3.obsidian mat="air,air,air;air,air,air;air,obsidian,air|air,air,air;air,air,air;obsidian,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <stairdown0.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|obsidian,obsidian,obsidian;air,obsidian,obsidian;air,air,obsidian" data="" />
+    <stairdown1.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|obsidian,air,air;obsidian,obsidian,air;obsidian,obsidian,obsidian" data="" />
+    <stairdown2.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|obsidian,obsidian,obsidian;air,obsidian,obsidian;air,air,obsidian" data="" />
+    <stairdown3.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|obsidian,air,air;obsidian,obsidian,air;obsidian,obsidian,obsidian" data="" />
+    <stairupdown0.obsidian mat="air,obsidian,air;air,air,air;air,air,air|air,air,obsidian;air,air,air;air,air,air|obsidian,obsidian,obsidian;air,obsidian,obsidian;air,air,obsidian" data="" />
+    <stairupdown1.obsidian mat="air,air,air;air,air,air;air,obsidian,air|air,air,air;air,air,air;obsidian,air,air|obsidian,air,air;obsidian,obsidian,air;obsidian,obsidian,obsidian" data="" />
+    <stairupdown2.obsidian mat="air,obsidian,air;air,air,air;air,air,air|air,air,obsidian;air,air,air;air,air,air|obsidian,obsidian,obsidian;air,obsidian,obsidian;air,air,obsidian" data="" />
+    <stairupdown3.obsidian mat="air,air,air;air,air,air;air,obsidian,air|air,air,air;air,air,air;obsidian,air,air|obsidian,air,air;obsidian,obsidian,air;obsidian,obsidian,obsidian" data="" />
+
+
+    <ramp.featstone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,bedrock,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp2.featstone mat="bedrock,bedrock,bedrock;air,air,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp28.featstone mat="bedrock,bedrock,bedrock;air,air,air;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;air,bedrock,air;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp26.featstone mat="bedrock,bedrock,bedrock;air,air,bedrock;air,air,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;air,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp24.featstone mat="bedrock,bedrock,bedrock;bedrock,air,air;bedrock,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp268.featstone mat="air,bedrock,bedrock;air,air,bedrock;air,bedrock,bedrock|bedrock,bedrock,bedrock;air,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp248.featstone mat="bedrock,bedrock,air;bedrock,air,air;bedrock,bedrock,air|bedrock,bedrock,bedrock;bedrock,bedrock,air;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp246.featstone mat="bedrock,bedrock,bedrock;bedrock,air,bedrock;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,air,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp2468.featstone mat="air,air,air;bedrock,air,bedrock;bedrock,bedrock,bedrock|bedrock,air,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp46.featstone mat="bedrock,air,bedrock;bedrock,air,bedrock;bedrock,air,bedrock|bedrock,air,bedrock;bedrock,bedrock,bedrock;bedrock,air,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp48.featstone mat="bedrock,air,air;bedrock,air,air;bedrock,bedrock,bedrock|bedrock,bedrock,air;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp8.featstone mat="air,air,air;air,air,air;bedrock,bedrock,bedrock|air,air,air;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp68.featstone mat="air,air,bedrock;air,air,bedrock;bedrock,bedrock,bedrock|air,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp468.featstone mat="air,air,air;bedrock,air,bedrock;bedrock,bedrock,bedrock|bedrock,air,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp6.featstone mat="air,air,bedrock;air,air,bedrock;air,air,bedrock|air,bedrock,bedrock;air,bedrock,bedrock;air,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp4.featstone mat="bedrock,air,air;bedrock,air,air;bedrock,air,air|bedrock,bedrock,air;bedrock,bedrock,air;bedrock,bedrock,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp1.featstone mat="bedrock,air,air;air,air,air;air,air,air|bedrock,bedrock,air;bedrock,bedrock,air;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp3.featstone mat="air,air,bedrock;air,air,air;air,air,air|air,bedrock,bedrock;air,bedrock,bedrock;air,air,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp7.featstone mat="air,air,air;air,air,air;bedrock,air,air|air,air,air;bedrock,bedrock,air;bedrock,bedrock,air|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+    <ramp9.featstone mat="air,air,air;air,air,air;air,air,bedrock|air,air,air;air,bedrock,bedrock;air,bedrock,bedrock|bedrock,bedrock,bedrock;bedrock,bedrock,bedrock;bedrock,bedrock,bedrock" data="" />
+
+    <ramp.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,rock,air;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp2.stone mat="rock,rock,rock;air,air,air;air,air,air|rock,rock,rock;rock,rock,rock;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp28.stone mat="rock,rock,rock;air,air,air;rock,rock,rock|rock,rock,rock;air,rock,air;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp26.stone mat="rock,rock,rock;air,air,rock;air,air,rock|rock,rock,rock;rock,rock,rock;air,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp24.stone mat="rock,rock,rock;rock,air,air;rock,air,air|rock,rock,rock;rock,rock,rock;rock,rock,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp268.stone mat="air,rock,rock;air,air,rock;air,rock,rock|rock,rock,rock;air,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp248.stone mat="rock,rock,air;rock,air,air;rock,rock,air|rock,rock,rock;rock,rock,air;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp246.stone mat="rock,rock,rock;rock,air,rock;air,air,air|rock,rock,rock;rock,rock,rock;rock,air,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp2468.stone mat="air,air,air;rock,air,rock;rock,rock,rock|rock,air,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp46.stone mat="rock,air,rock;rock,air,rock;rock,air,rock|rock,air,rock;rock,rock,rock;rock,air,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp48.stone mat="rock,air,air;rock,air,air;rock,rock,rock|rock,rock,air;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp8.stone mat="air,air,air;air,air,air;rock,rock,rock|air,air,air;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp68.stone mat="air,air,rock;air,air,rock;rock,rock,rock|air,rock,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp468.stone mat="air,air,air;rock,air,rock;rock,rock,rock|rock,air,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp6.stone mat="air,air,rock;air,air,rock;air,air,rock|air,rock,rock;air,rock,rock;air,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp4.stone mat="rock,air,air;rock,air,air;rock,air,air|rock,rock,air;rock,rock,air;rock,rock,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp1.stone mat="rock,air,air;air,air,air;air,air,air|rock,rock,air;rock,rock,air;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp3.stone mat="air,air,rock;air,air,air;air,air,air|air,rock,rock;air,rock,rock;air,air,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp7.stone mat="air,air,air;air,air,air;rock,air,air|air,air,air;rock,rock,air;rock,rock,air|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+    <ramp9.stone mat="air,air,air;air,air,air;air,air,rock|air,air,air;air,rock,rock;air,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
+
+    <ramp.vein mat="air,air,air;air,air,air;air,air,air|air,air,air;air,coal ore,air;air,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp2.vein mat="coal ore,coal ore,coal ore;air,air,air;air,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;air,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp28.vein mat="coal ore,coal ore,coal ore;air,air,air;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;air,coal ore,air;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp26.vein mat="coal ore,coal ore,coal ore;air,air,coal ore;air,air,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;air,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp24.vein mat="coal ore,coal ore,coal ore;coal ore,air,air;coal ore,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp268.vein mat="air,coal ore,coal ore;air,air,coal ore;air,coal ore,coal ore|coal ore,coal ore,coal ore;air,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp248.vein mat="coal ore,coal ore,air;coal ore,air,air;coal ore,coal ore,air|coal ore,coal ore,coal ore;coal ore,coal ore,air;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp246.vein mat="coal ore,coal ore,coal ore;coal ore,air,coal ore;air,air,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,air,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp2468.vein mat="air,air,air;coal ore,air,coal ore;coal ore,coal ore,coal ore|coal ore,air,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp46.vein mat="coal ore,air,coal ore;coal ore,air,coal ore;coal ore,air,coal ore|coal ore,air,coal ore;coal ore,coal ore,coal ore;coal ore,air,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp48.vein mat="coal ore,air,air;coal ore,air,air;coal ore,coal ore,coal ore|coal ore,coal ore,air;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp8.vein mat="air,air,air;air,air,air;coal ore,coal ore,coal ore|air,air,air;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp68.vein mat="air,air,coal ore;air,air,coal ore;coal ore,coal ore,coal ore|air,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp468.vein mat="air,air,air;coal ore,air,coal ore;coal ore,coal ore,coal ore|coal ore,air,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp6.vein mat="air,air,coal ore;air,air,coal ore;air,air,coal ore|air,coal ore,coal ore;air,coal ore,coal ore;air,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp4.vein mat="coal ore,air,air;coal ore,air,air;coal ore,air,air|coal ore,coal ore,air;coal ore,coal ore,air;coal ore,coal ore,air|coal ore,coal ore,coal ore;coal ore,coal ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp1.vein mat="coal ore,air,air;air,air,air;air,air,air|coal ore,coal ore,air;coal ore,coal ore,air;air,air,air|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp3.vein mat="air,air,coal ore;air,air,air;air,air,air|air,coal ore,coal ore;air,coal ore,coal ore;air,air,air|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp7.vein mat="air,air,air;air,air,air;coal ore,air,air|air,air,air;coal ore,coal ore,air;coal ore,coal ore,air|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore" data="" />
+    <ramp9.vein mat="air,air,air;air,air,air;air,air,coal ore|air,air,air;air,coal ore,coal ore;air,coal ore,coal ore|coal ore,coal ore,coal ore;coal ore,iron ore,coal ore;coal ore,coal ore,coal ore" data="" />
+
+    <ramp.grass mat="air,air,air;air,air,air;air,air,air|air,air,air;air,grass,air;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp2.grass mat="grass,grass,grass;air,air,air;air,air,air|grass,grass,grass;grass,grass,grass;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp28.grass mat="grass,grass,grass;air,air,air;grass,grass,grass|grass,grass,grass;air,grass,air;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp26.grass mat="grass,grass,grass;air,air,grass;air,air,grass|grass,grass,grass;grass,grass,grass;air,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp24.grass mat="grass,grass,grass;grass,air,air;grass,air,air|grass,grass,grass;grass,grass,grass;grass,grass,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp268.grass mat="air,grass,grass;air,air,grass;air,grass,grass|grass,grass,grass;air,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp248.grass mat="grass,grass,air;grass,air,air;grass,grass,air|grass,grass,grass;grass,grass,air;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp246.grass mat="grass,grass,grass;grass,air,grass;air,air,air|grass,grass,grass;grass,grass,grass;grass,air,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp2468.grass mat="air,air,air;grass,air,grass;grass,grass,grass|grass,air,grass;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp46.grass mat="grass,air,grass;grass,air,grass;grass,air,grass|grass,air,grass;grass,grass,grass;grass,air,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp48.grass mat="grass,air,air;grass,air,air;grass,grass,grass|grass,grass,air;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp8.grass mat="air,air,air;air,air,air;grass,grass,grass|air,air,air;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp68.grass mat="air,air,grass;air,air,grass;grass,grass,grass|air,grass,grass;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp468.grass mat="air,air,air;grass,air,grass;grass,grass,grass|grass,air,grass;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp6.grass mat="air,air,grass;air,air,grass;air,air,grass|air,grass,grass;air,grass,grass;air,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp4.grass mat="grass,air,air;grass,air,air;grass,air,air|grass,grass,air;grass,grass,air;grass,grass,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp1.grass mat="grass,air,air;air,air,air;air,air,air|grass,grass,air;grass,grass,air;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp3.grass mat="air,air,grass;air,air,air;air,air,air|air,grass,grass;air,grass,grass;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp7.grass mat="air,air,air;air,air,air;grass,air,air|air,air,air;grass,grass,air;grass,grass,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp9.grass mat="air,air,air;air,air,air;air,air,grass|air,air,air;air,grass,grass;air,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+
+    <ramp.grass2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,grass,air;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp2.grass2 mat="grass,grass,grass;air,air,air;air,air,air|grass,grass,grass;grass,grass,grass;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp28.grass2 mat="grass,grass,grass;air,air,air;grass,grass,grass|grass,grass,grass;air,grass,air;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp26.grass2 mat="grass,grass,grass;air,air,grass;air,air,grass|grass,grass,grass;grass,grass,grass;air,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp24.grass2 mat="grass,grass,grass;grass,air,air;grass,air,air|grass,grass,grass;grass,grass,grass;grass,grass,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp268.grass2 mat="air,grass,grass;air,air,grass;air,grass,grass|grass,grass,grass;air,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp248.grass2 mat="grass,grass,air;grass,air,air;grass,grass,air|grass,grass,grass;grass,grass,air;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp246.grass2 mat="grass,grass,grass;grass,air,grass;air,air,air|grass,grass,grass;grass,grass,grass;grass,air,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp2468.grass2 mat="air,air,air;grass,air,grass;grass,grass,grass|grass,air,grass;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp46.grass2 mat="grass,air,grass;grass,air,grass;grass,air,grass|grass,air,grass;grass,grass,grass;grass,air,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp48.grass2 mat="grass,air,air;grass,air,air;grass,grass,grass|grass,grass,air;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp8.grass2 mat="air,air,air;air,air,air;grass,grass,grass|air,air,air;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp68.grass2 mat="air,air,grass;air,air,grass;grass,grass,grass|air,grass,grass;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp468.grass2 mat="air,air,air;grass,air,grass;grass,grass,grass|grass,air,grass;grass,grass,grass;grass,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp6.grass2 mat="air,air,grass;air,air,grass;air,air,grass|air,grass,grass;air,grass,grass;air,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp4.grass2 mat="grass,air,air;grass,air,air;grass,air,air|grass,grass,air;grass,grass,air;grass,grass,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp1.grass2 mat="grass,air,air;air,air,air;air,air,air|grass,grass,air;grass,grass,air;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp3.grass2 mat="air,air,grass;air,air,air;air,air,air|air,grass,grass;air,grass,grass;air,air,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp7.grass2 mat="air,air,air;air,air,air;grass,air,air|air,air,air;grass,grass,air;grass,grass,air|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+    <ramp9.grass2 mat="air,air,air;air,air,air;air,air,grass|air,air,air;air,grass,grass;air,grass,grass|grass,grass,grass;grass,grass,grass;grass,grass,grass" data="" />
+
+    <ramp.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,dirt,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp2.soil mat="dirt,dirt,dirt;air,air,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp28.soil mat="dirt,dirt,dirt;air,air,air;dirt,dirt,dirt|dirt,dirt,dirt;air,dirt,air;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp26.soil mat="dirt,dirt,dirt;air,air,dirt;air,air,dirt|dirt,dirt,dirt;dirt,dirt,dirt;air,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp24.soil mat="dirt,dirt,dirt;dirt,air,air;dirt,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp268.soil mat="air,dirt,dirt;air,air,dirt;air,dirt,dirt|dirt,dirt,dirt;air,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp248.soil mat="dirt,dirt,air;dirt,air,air;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,air;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp246.soil mat="dirt,dirt,dirt;dirt,air,dirt;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,air,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp2468.soil mat="air,air,air;dirt,air,dirt;dirt,dirt,dirt|dirt,air,dirt;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp46.soil mat="dirt,air,dirt;dirt,air,dirt;dirt,air,dirt|dirt,air,dirt;dirt,dirt,dirt;dirt,air,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp48.soil mat="dirt,air,air;dirt,air,air;dirt,dirt,dirt|dirt,dirt,air;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp8.soil mat="air,air,air;air,air,air;dirt,dirt,dirt|air,air,air;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp68.soil mat="air,air,dirt;air,air,dirt;dirt,dirt,dirt|air,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp468.soil mat="air,air,air;dirt,air,dirt;dirt,dirt,dirt|dirt,air,dirt;dirt,dirt,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp6.soil mat="air,air,dirt;air,air,dirt;air,air,dirt|air,dirt,dirt;air,dirt,dirt;air,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp4.soil mat="dirt,air,air;dirt,air,air;dirt,air,air|dirt,dirt,air;dirt,dirt,air;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp1.soil mat="dirt,air,air;air,air,air;air,air,air|dirt,dirt,air;dirt,dirt,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp3.soil mat="air,air,dirt;air,air,air;air,air,air|air,dirt,dirt;air,dirt,dirt;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp7.soil mat="air,air,air;air,air,air;dirt,air,air|air,air,air;dirt,dirt,air;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp9.soil mat="air,air,air;air,air,air;air,air,dirt|air,air,air;air,dirt,dirt;air,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+
+    <ramp.grassdry mat="air,air,air;air,air,air;air,air,air|air,air,air;air,grass,air;air,air,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp2.grassdry mat="grass,dirt,grass;air,air,air;air,air,air|dirt,dirt,dirt;dirt,grass,dirt;air,air,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp28.grassdry mat="grass,dirt,grass;air,air,air;grass,dirt,grass|dirt,dirt,dirt;air,grass,air;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp26.grassdry mat="grass,dirt,grass;air,air,dirt;air,air,grass|dirt,dirt,dirt;dirt,grass,dirt;air,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp24.grassdry mat="grass,dirt,grass;dirt,air,air;grass,air,air|dirt,dirt,dirt;dirt,grass,dirt;dirt,dirt,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp268.grassdry mat="air,dirt,grass;air,air,dirt;air,dirt,grass|dirt,dirt,dirt;air,grass,dirt;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp248.grassdry mat="grass,dirt,air;dirt,air,air;grass,dirt,air|dirt,dirt,dirt;dirt,grass,air;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp246.grassdry mat="grass,dirt,grass;dirt,air,dirt;air,air,air|dirt,dirt,dirt;dirt,grass,dirt;dirt,air,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp2468.grassdry mat="air,air,air;dirt,air,dirt;grass,dirt,grass|dirt,air,dirt;dirt,grass,dirt;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp46.grassdry mat="grass,air,dirt;dirt,air,dirt;grass,air,grass|dirt,air,dirt;dirt,grass,dirt;dirt,air,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp48.grassdry mat="grass,air,air;dirt,air,air;grass,dirt,grass|dirt,dirt,air;dirt,grass,dirt;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp8.grassdry mat="air,air,air;air,air,air;grass,dirt,grass|air,air,air;dirt,grass,dirt;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp68.grassdry mat="air,air,grass;air,air,dirt;grass,dirt,grass|air,dirt,dirt;dirt,grass,dirt;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp468.grassdry mat="air,air,air;dirt,air,dirt;grass,dirt,grass|dirt,air,dirt;dirt,grass,dirt;dirt,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp6.grassdry mat="air,air,grass;air,air,dirt;air,air,grass|air,dirt,dirt;air,grass,dirt;air,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp4.grassdry mat="grass,air,air;dirt,air,air;grass,air,air|dirt,dirt,air;dirt,grass,air;dirt,dirt,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp1.grassdry mat="dirt,air,air;air,air,air;air,air,air|dirt,dirt,air;dirt,grass,air;air,air,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp3.grassdry mat="air,air,dirt;air,air,air;air,air,air|air,dirt,dirt;air,grass,dirt;air,air,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp7.grassdry mat="air,air,air;air,air,air;dirt,air,air|air,air,air;dirt,grass,air;dirt,dirt,air|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+    <ramp9.grassdry mat="air,air,air;air,air,air;air,air,dirt|air,air,air;air,grass,dirt;air,dirt,dirt|grass,dirt,dirt;grass,dirt,dirt;grass,dirt,grass" data="" />
+
+    <ramp.grassdead mat="air,air,air;air,air,air;air,air,air|air,air,air;air,grass,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp2.grassdead mat="dirt,dirt,dirt;air,air,air;air,air,air|dirt,dirt,dirt;dirt,grass,dirt;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp28.grassdead mat="dirt,dirt,dirt;air,air,air;dirt,dirt,dirt|dirt,dirt,dirt;air,grass,air;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp26.grassdead mat="dirt,dirt,dirt;air,air,dirt;air,air,dirt|dirt,dirt,dirt;dirt,grass,dirt;air,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp24.grassdead mat="dirt,dirt,dirt;dirt,air,air;dirt,air,air|dirt,dirt,dirt;dirt,grass,dirt;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp268.grassdead mat="air,dirt,dirt;air,air,dirt;air,dirt,dirt|dirt,dirt,dirt;air,grass,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp248.grassdead mat="dirt,dirt,air;dirt,air,air;dirt,dirt,air|dirt,dirt,dirt;dirt,grass,air;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp246.grassdead mat="dirt,dirt,dirt;dirt,air,dirt;air,air,air|dirt,dirt,dirt;dirt,grass,dirt;dirt,air,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp2468.grassdead mat="air,air,air;dirt,air,dirt;dirt,dirt,dirt|dirt,air,dirt;dirt,grass,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp46.grassdead mat="dirt,air,dirt;dirt,air,dirt;dirt,air,dirt|dirt,air,dirt;dirt,grass,dirt;dirt,air,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp48.grassdead mat="dirt,air,air;dirt,air,air;dirt,dirt,dirt|dirt,dirt,air;dirt,grass,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp8.grassdead mat="air,air,air;air,air,air;dirt,dirt,dirt|air,air,air;dirt,grass,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp68.grassdead mat="air,air,dirt;air,air,dirt;dirt,dirt,dirt|air,dirt,dirt;dirt,grass,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp468.grassdead mat="air,air,air;dirt,air,dirt;dirt,dirt,dirt|dirt,air,dirt;dirt,grass,dirt;dirt,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp6.grassdead mat="air,air,dirt;air,air,dirt;air,air,dirt|air,dirt,dirt;air,grass,dirt;air,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp4.grassdead mat="dirt,air,air;dirt,air,air;dirt,air,air|dirt,dirt,air;dirt,grass,air;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp1.grassdead mat="dirt,air,air;air,air,air;air,air,air|dirt,dirt,air;dirt,grass,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp3.grassdead mat="air,air,dirt;air,air,air;air,air,air|air,dirt,dirt;air,grass,dirt;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp7.grassdead mat="air,air,air;air,air,air;dirt,air,air|air,air,air;dirt,grass,air;dirt,dirt,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <ramp9.grassdead mat="air,air,air;air,air,air;air,air,dirt|air,air,air;air,grass,dirt;air,dirt,dirt|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+
+    <ramp.constructed mat="air,air,air;air,air,air;air,air,air|air,air,air;air,stone,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp2.constructed mat="stone,stone,stone;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp28.constructed mat="stone,stone,stone;air,air,air;stone,stone,stone|stone,stone,stone;air,stone,air;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp26.constructed mat="stone,stone,stone;air,air,stone;air,air,stone|stone,stone,stone;stone,stone,stone;air,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp24.constructed mat="stone,stone,stone;stone,air,air;stone,air,air|stone,stone,stone;stone,stone,stone;stone,stone,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp268.constructed mat="air,stone,stone;air,air,stone;air,stone,stone|stone,stone,stone;air,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp248.constructed mat="stone,stone,air;stone,air,air;stone,stone,air|stone,stone,stone;stone,stone,air;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp246.constructed mat="stone,stone,stone;stone,air,stone;air,air,air|stone,stone,stone;stone,stone,stone;stone,air,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp2468.constructed mat="air,air,air;stone,air,stone;stone,stone,stone|stone,air,stone;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp46.constructed mat="stone,air,stone;stone,air,stone;stone,air,stone|stone,air,stone;stone,stone,stone;stone,air,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp48.constructed mat="stone,air,air;stone,air,air;stone,stone,stone|stone,stone,air;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp8.constructed mat="air,air,air;air,air,air;stone,stone,stone|air,air,air;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp68.constructed mat="air,air,stone;air,air,stone;stone,stone,stone|air,stone,stone;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp468.constructed mat="air,air,air;stone,air,stone;stone,stone,stone|stone,air,stone;stone,stone,stone;stone,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp6.constructed mat="air,air,stone;air,air,stone;air,air,stone|air,stone,stone;air,stone,stone;air,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp4.constructed mat="stone,air,air;stone,air,air;stone,air,air|stone,stone,air;stone,stone,air;stone,stone,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp1.constructed mat="stone,air,air;air,air,air;air,air,air|stone,stone,air;stone,stone,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp3.constructed mat="air,air,stone;air,air,air;air,air,air|air,stone,stone;air,stone,stone;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp7.constructed mat="air,air,air;air,air,air;stone,air,air|air,air,air;stone,stone,air;stone,stone,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <ramp9.constructed mat="air,air,air;air,air,air;air,air,stone|air,air,air;air,stone,stone;air,stone,stone|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+
+    <ramp.constructed.bars mat="air,air,air;air,air,air;air,air,air|air,air,air;air,iron,air;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp2.constructed.bars mat="iron,iron,iron;air,air,air;air,air,air|iron,iron,iron;iron,iron,iron;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp28.constructed.bars mat="iron,iron,iron;air,air,air;iron,iron,iron|iron,iron,iron;air,iron,air;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp26.constructed.bars mat="iron,iron,iron;air,air,iron;air,air,iron|iron,iron,iron;iron,iron,iron;air,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp24.constructed.bars mat="iron,iron,iron;iron,air,air;iron,air,air|iron,iron,iron;iron,iron,iron;iron,iron,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp268.constructed.bars mat="air,iron,iron;air,air,iron;air,iron,iron|iron,iron,iron;air,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp248.constructed.bars mat="iron,iron,air;iron,air,air;iron,iron,air|iron,iron,iron;iron,iron,air;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp246.constructed.bars mat="iron,iron,iron;iron,air,iron;air,air,air|iron,iron,iron;iron,iron,iron;iron,air,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp2468.constructed.bars mat="air,air,air;iron,air,iron;iron,iron,iron|iron,air,iron;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp46.constructed.bars mat="iron,air,iron;iron,air,iron;iron,air,iron|iron,air,iron;iron,iron,iron;iron,air,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp48.constructed.bars mat="iron,air,air;iron,air,air;iron,iron,iron|iron,iron,air;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp8.constructed.bars mat="air,air,air;air,air,air;iron,iron,iron|air,air,air;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp68.constructed.bars mat="air,air,iron;air,air,iron;iron,iron,iron|air,iron,iron;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp468.constructed.bars mat="air,air,air;iron,air,iron;iron,iron,iron|iron,air,iron;iron,iron,iron;iron,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp6.constructed.bars mat="air,air,iron;air,air,iron;air,air,iron|air,iron,iron;air,iron,iron;air,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp4.constructed.bars mat="iron,air,air;iron,air,air;iron,air,air|iron,iron,air;iron,iron,air;iron,iron,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp1.constructed.bars mat="iron,air,air;air,air,air;air,air,air|iron,iron,air;iron,iron,air;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp3.constructed.bars mat="air,air,iron;air,air,air;air,air,air|air,iron,iron;air,iron,iron;air,air,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp7.constructed.bars mat="air,air,air;air,air,air;iron,air,air|air,air,air;iron,iron,air;iron,iron,air|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+    <ramp9.constructed.bars mat="air,air,air;air,air,air;air,air,iron|air,air,air;air,iron,iron;air,iron,iron|iron,iron,iron;iron,iron,iron;iron,iron,iron" data="" />
+
+    <ramp.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,dstep,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp2.constructed.blocks mat="dstep,dstep,dstep;air,air,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp28.constructed.blocks mat="dstep,dstep,dstep;air,air,air;dstep,dstep,dstep|dstep,dstep,dstep;air,dstep,air;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp26.constructed.blocks mat="dstep,dstep,dstep;air,air,dstep;air,air,dstep|dstep,dstep,dstep;dstep,dstep,dstep;air,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp24.constructed.blocks mat="dstep,dstep,dstep;dstep,air,air;dstep,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp268.constructed.blocks mat="air,dstep,dstep;air,air,dstep;air,dstep,dstep|dstep,dstep,dstep;air,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp248.constructed.blocks mat="dstep,dstep,air;dstep,air,air;dstep,dstep,air|dstep,dstep,dstep;dstep,dstep,air;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp246.constructed.blocks mat="dstep,dstep,dstep;dstep,air,dstep;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,air,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp2468.constructed.blocks mat="air,air,air;dstep,air,dstep;dstep,dstep,dstep|dstep,air,dstep;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp46.constructed.blocks mat="dstep,air,dstep;dstep,air,dstep;dstep,air,dstep|dstep,air,dstep;dstep,dstep,dstep;dstep,air,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp48.constructed.blocks mat="dstep,air,air;dstep,air,air;dstep,dstep,dstep|dstep,dstep,air;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp8.constructed.blocks mat="air,air,air;air,air,air;dstep,dstep,dstep|air,air,air;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp68.constructed.blocks mat="air,air,dstep;air,air,dstep;dstep,dstep,dstep|air,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp468.constructed.blocks mat="air,air,air;dstep,air,dstep;dstep,dstep,dstep|dstep,air,dstep;dstep,dstep,dstep;dstep,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp6.constructed.blocks mat="air,air,dstep;air,air,dstep;air,air,dstep|air,dstep,dstep;air,dstep,dstep;air,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp4.constructed.blocks mat="dstep,air,air;dstep,air,air;dstep,air,air|dstep,dstep,air;dstep,dstep,air;dstep,dstep,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp1.constructed.blocks mat="dstep,air,air;air,air,air;air,air,air|dstep,dstep,air;dstep,dstep,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp3.constructed.blocks mat="air,air,dstep;air,air,air;air,air,air|air,dstep,dstep;air,dstep,dstep;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp7.constructed.blocks mat="air,air,air;air,air,air;dstep,air,air|air,air,air;dstep,dstep,air;dstep,dstep,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+    <ramp9.constructed.blocks mat="air,air,air;air,air,air;air,air,dstep|air,air,air;air,dstep,dstep;air,dstep,dstep|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
+
+    <ramp.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,wood,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp2.constructed.logs mat="wood,wood,wood;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp28.constructed.logs mat="wood,wood,wood;air,air,air;wood,wood,wood|wood,wood,wood;air,wood,air;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp26.constructed.logs mat="wood,wood,wood;air,air,wood;air,air,wood|wood,wood,wood;wood,wood,wood;air,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp24.constructed.logs mat="wood,wood,wood;wood,air,air;wood,air,air|wood,wood,wood;wood,wood,wood;wood,wood,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp268.constructed.logs mat="air,wood,wood;air,air,wood;air,wood,wood|wood,wood,wood;air,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp248.constructed.logs mat="wood,wood,air;wood,air,air;wood,wood,air|wood,wood,wood;wood,wood,air;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp246.constructed.logs mat="wood,wood,wood;wood,air,wood;air,air,air|wood,wood,wood;wood,wood,wood;wood,air,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp2468.constructed.logs mat="air,air,air;wood,air,wood;wood,wood,wood|wood,air,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp46.constructed.logs mat="wood,air,wood;wood,air,wood;wood,air,wood|wood,air,wood;wood,wood,wood;wood,air,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp48.constructed.logs mat="wood,air,air;wood,air,air;wood,wood,wood|wood,wood,air;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp8.constructed.logs mat="air,air,air;air,air,air;wood,wood,wood|air,air,air;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp68.constructed.logs mat="air,air,wood;air,air,wood;wood,wood,wood|air,wood,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp468.constructed.logs mat="air,air,air;wood,air,wood;wood,wood,wood|wood,air,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp6.constructed.logs mat="air,air,wood;air,air,wood;air,air,wood|air,wood,wood;air,wood,wood;air,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp4.constructed.logs mat="wood,air,air;wood,air,air;wood,air,air|wood,wood,air;wood,wood,air;wood,wood,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp1.constructed.logs mat="wood,air,air;air,air,air;air,air,air|wood,wood,air;wood,wood,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp3.constructed.logs mat="air,air,wood;air,air,air;air,air,air|air,wood,wood;air,wood,wood;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp7.constructed.logs mat="air,air,air;air,air,air;wood,air,air|air,air,air;wood,wood,air;wood,wood,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <ramp9.constructed.logs mat="air,air,air;air,air,air;air,air,wood|air,air,air;air,wood,wood;air,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+
+    <ramp.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,obsidian,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp2.obsidian mat="obsidian,obsidian,obsidian;air,air,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp28.obsidian mat="obsidian,obsidian,obsidian;air,air,air;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;air,obsidian,air;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp26.obsidian mat="obsidian,obsidian,obsidian;air,air,obsidian;air,air,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;air,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp24.obsidian mat="obsidian,obsidian,obsidian;obsidian,air,air;obsidian,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp268.obsidian mat="air,obsidian,obsidian;air,air,obsidian;air,obsidian,obsidian|obsidian,obsidian,obsidian;air,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp248.obsidian mat="obsidian,obsidian,air;obsidian,air,air;obsidian,obsidian,air|obsidian,obsidian,obsidian;obsidian,obsidian,air;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp246.obsidian mat="obsidian,obsidian,obsidian;obsidian,air,obsidian;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,air,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp2468.obsidian mat="air,air,air;obsidian,air,obsidian;obsidian,obsidian,obsidian|obsidian,air,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp46.obsidian mat="obsidian,air,obsidian;obsidian,air,obsidian;obsidian,air,obsidian|obsidian,air,obsidian;obsidian,obsidian,obsidian;obsidian,air,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp48.obsidian mat="obsidian,air,air;obsidian,air,air;obsidian,obsidian,obsidian|obsidian,obsidian,air;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp8.obsidian mat="air,air,air;air,air,air;obsidian,obsidian,obsidian|air,air,air;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp68.obsidian mat="air,air,obsidian;air,air,obsidian;obsidian,obsidian,obsidian|air,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp468.obsidian mat="air,air,air;obsidian,air,obsidian;obsidian,obsidian,obsidian|obsidian,air,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp6.obsidian mat="air,air,obsidian;air,air,obsidian;air,air,obsidian|air,obsidian,obsidian;air,obsidian,obsidian;air,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp4.obsidian mat="obsidian,air,air;obsidian,air,air;obsidian,air,air|obsidian,obsidian,air;obsidian,obsidian,air;obsidian,obsidian,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp1.obsidian mat="obsidian,air,air;air,air,air;air,air,air|obsidian,obsidian,air;obsidian,obsidian,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp3.obsidian mat="air,air,obsidian;air,air,air;air,air,air|air,obsidian,obsidian;air,obsidian,obsidian;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp7.obsidian mat="air,air,air;air,air,air;obsidian,air,air|air,air,air;obsidian,obsidian,air;obsidian,obsidian,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+    <ramp9.obsidian mat="air,air,air;air,air,air;air,air,obsidian|air,air,air;air,obsidian,obsidian;air,obsidian,obsidian|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+
+
+	<flow.water.1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,still water,air;air,air,air" data="" />
+	<flow.water.2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,still water,air;still water,still water,still water;air,still water,air" data="" />
+	<flow.water.3 mat="air,air,air;air,air,air;air,air,air|air,still water,air;still water,air,still water;air,still water,air|still water,still water,still water;still water,still water,still water;still water,still water,still water" data="" />
+	<flow.water.4 mat="air,air,air;air,air,air;air,air,air|still water,air,still water;air,still water,air;still water,air,still water|still water,still water,still water;still water,still water,still water;still water,still water,still water" data="" />
+	<flow.water.5 mat="air,air,air;air,air,air;air,air,air|still water,still water,still water;still water,still water,still water;still water,still water,still water|still water,still water,still water;still water,still water,still water;still water,still water,still water" data="" />
+	<flow.water.6 mat="air,air,air;air,still water,air;air,air,air|still water,still water,still water;still water,still water,still water;still water,still water,still water|still water,still water,still water;still water,still water,still water;still water,still water,still water" data="" />
+	<flow.water.7 mat="still water,still water,still water;still water,still water,still water;still water,still water,still water|still water,still water,still water;still water,still water,still water;still water,still water,still water|still water,still water,still water;still water,still water,still water;still water,still water,still water" data="" />
+
+	<flow.magma.1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,still lava,air;air,air,air" data="" />
+	<flow.magma.2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,still lava,air;still lava,still lava,still lava;air,still lava,air" data="" />
+	<flow.magma.3 mat="air,air,air;air,air,air;air,air,air|air,still lava,air;still lava,air,still lava;air,still lava,air|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava" data="" />
+	<flow.magma.4 mat="air,air,air;air,air,air;air,air,air|still lava,air,still lava;air,still lava,air;still lava,air,still lava|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava" data="" />
+	<flow.magma.5 mat="air,air,air;air,air,air;air,air,air|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava" data="" />
+	<flow.magma.6 mat="air,air,air;air,still lava,air;air,air,air|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava" data="" />
+	<flow.magma.7 mat="still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava|still lava,still lava,still lava;still lava,still lava,still lava;still lava,still lava,still lava" data="" />
+
+
+    <ramptop.air mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <tree.soil mat="air,leaves,air;leaves,log,leaves;air,leaves,air|air,air,air;air,log,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <shrub.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,rose,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <shrubdead.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,log,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <saplingdead.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,log,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <sapling.soil mat="air,air,air;air,air,air;air,air,air|air,air,air;air,sapling,air;air,air,air|dirt,dirt,dirt;dirt,dirt,dirt;dirt,dirt,dirt" data="" />
+    <pebbles.stone mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dirt,dirt,dirt;dirt,stone,dirt;dirt,dirt,dirt" data="" />
+    <boulder.stone mat="air,air,air;air,rock,air;air,air,air|air,rock,air;rock,rock,rock;air,rock,air|dirt,dirt,dirt;dirt,rock,dirt;dirt,dirt,dirt" data="" />
+
+
+    <treetop.air mat="air,leaves,air;leaves,leaves,leaves;air,leaves,air|leaves,leaves,leaves;leaves,log,leaves;leaves,leaves,leaves|leaves,leaves,leaves;leaves,log,leaves;leaves,leaves,leaves" data="" />
+
+
+    <building.torch mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+
+    <building.doorst mat="air,air,air;air,stone,air;air,air,air|air,door,air;door,stone,door;air,door,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.floodgatest mat="air,air,air;air,stone,air;air,air,air|air,iron door,air;iron door,stone,iron door;air,iron door,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leverst mat="air,air,air;air,torch,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.bedst mat="log,log,log;air,air,air;air,air,air|log,log,log;cloth,cloth,cloth;cloth,cloth,cloth|air,air,air;air,air,air;air,air,air" data="" />
+    <building.chairst mat="air,air,air;air,air,air;air,step,air|air,air,air;air,step,air;air,dstep,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tablest mat="air,air,air;air,torch,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.cagest mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.window_glassst mat="glass,glass,glass;glass,glass,glass;glass,glass,glass|glass,glass,glass;glass,glass,glass;glass,glass,glass|air,air,air;air,air,air;air,air,air" data="" />
+
+
+    <building.civzonest mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<!--assuming civzonest are water/ fishing / meeting / hosptial / etc. zones - no decoration of now-->
+
+	<building.tradedepotst mat="air,air,air;air,torch,air;air,air,air|air,air,air;air,bookshelf,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tradedepotst.x0y0 mat="air,air,air;air,air,air;air,air,air|air,stone,air;stone,stone,stone;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tradedepotst.x0ymax mat="air,air,air;air,air,air;air,air,air|air,stone,air;stone,stone,stone;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tradedepotst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,stone,air;stone,stone,stone;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tradedepotst.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,stone,air;stone,stone,stone;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tradedepotst.x2y2 mat="air,air,air;air,air,air;air,air,air|air,stone,air;stone,stone,stone;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+
+	<building.stockpilest mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x1y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x2y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x3y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x4y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x5y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x6y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x7y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x8y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x9y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x10y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x11y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x12y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x13y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x14y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x15y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x16y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x17y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x18y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x19y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x1ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x2ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x3ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x4ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x5ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x6ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x7ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x8ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x9ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x10ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x11ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x12ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x13ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x14ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x15ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x16ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x17ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x18ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x19ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y1 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y2 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y3 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y4 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y5 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y6 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y7 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y8 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y9 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y10 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y11 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y12 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y13 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y14 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y15 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y16 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y17 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y18 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y19 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy3 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy4 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy5 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy6 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy7 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy8 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy9 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy10 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy11 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy12 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy13 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy14 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy15 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy16 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy17 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy18 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy19 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy1 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy2 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy3 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy4 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy5 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy6 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy7 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy8 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy9 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy10 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy11 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy12 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy13 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy14 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy15 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy16 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy17 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy18 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy19 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyymax mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x1yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x2yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x3yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x4yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x5yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x6yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x7yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x8yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x9yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x10yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x11yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x12yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x13yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x14yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x15yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x16yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x17yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x18yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x19yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxyonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.only mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+
+
+    <building.farmplotst mat="air,air,air;air,air,air;air,air,air|soil,soil,soil;soil,water,soil;soil,soil,soil|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.stillst.x0y0 mat="air,wood,air;wood,air,wood;air,wood,air|air,wood,air;wood,air,wood;air,wood,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst.x1y0 mat="air,air,air;air,air,air;air,air,air|air,stone,stone;air,stone,stone;air,workbench,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,air;stone,stone,air;stone,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst.x0y1 mat="air,air,air;air,iron,iron;air,iron,iron|air,air,air;air,iron,iron;air,iron,iron|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst.xmaxy1 mat="air,air,air;iron,iron,air;air,iron,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst.x0ymax mat="air,iron,air;air,iron,iron;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst.xmaxymax mat="iron,iron,air;iron,iron,air;air,air,air|iron,iron,air;iron,iron,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.stillst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.kitchenst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kitchenst.x0y0 mat="air,air,air;air,air,air;air,air,air|air,air,chest;air,air,chest;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kitchenst.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kitchenst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,workbench,stone;air,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kitchenst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,stone,stone;air,stone,stone;air,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kitchenst.xmaxymax mat="bookshelf,bookshelf,bookshelf;bookshelf,bookshelf,bookshelf;air,air,air|bookshelf,bookshelf,bookshelf;bookshelf,bookshelf,bookshelf;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kitchenst.x0ymax mat="air,furnace,stone;air,stone,furnace;air,air,air|air,furnace,stone;air,stone,furnace;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.farmers_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.farmers_workshopst.x1y0 mat="air,air,air;wood,air,wood;air,air,air|wood,wood,wood;wood,air,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.farmers_workshopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,wood,wood;air,air,air;air,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.farmers_workshopst.x0ymax mat="air,air,air;wood,wood,step;air,air,air|wood,wood,air;wood,wood,air;wood,wood,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.farmers_workshopst.x1ymax mat="air,air,air;step,step,air;air,air,air|air,workbench,air;wood,wood,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.farmers_workshopst.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,cloth,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.carpenters_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.carpenters_workshopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,air,air;stone,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.carpenters_workshopst.x0y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,air;stone,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.carpenters_workshopst.x0ymax mat="air,air,air;air,air,air;air,air,air|stone,stone,air;stone,stone,air;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.carpenters_workshopst.x1ymax mat="air,wood,air;air,wood,air;air,wood,air|air,wood,air;air,air,air;air,wood,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.carpenters_workshopst.xmaxymax mat="air,air,air;air,air,air;air,air,air|workbench,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.mechanics_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.mechanics_workshopst.x0y0 mat="air,air,air;air,step,air;air,air,air|air,dstep,air;air,air,air;air,dstep,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.mechanics_workshopst.x1y1 mat="wood,air,air;wood,air,air;wood,air,air|wood,air,air;air,air,air;wood,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.mechanics_workshopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;workbench,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.mechanics_workshopst.x0ymax mat="air,air,air;step,step,step;air,air,air|air,air,air;air,dstep,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.mechanics_workshopst.x1ymax mat="air,air,air;air,air,air;air,air,air|air,step,air;air,dstep,air;air,step,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.mechanics_workshopst.xmaxymax mat="air,air,air;air,step,air;air,air,air|air,air,air;dstep,air,dstep;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.craftdwarfs_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.craftdwarfs_workshopst.x1y0 mat="air,air,air;bookshelf,bookshelf,air;air,air,air|air,air,air;bookshelf,bookshelf,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.craftdwarfs_workshopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.craftdwarfs_workshopst.x0y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,air;stone,stone,air;stone,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.craftdwarfs_workshopst.x0ymax mat="air,air,air;air,air,air;air,air,air|stone,stone,air;stone,workbench,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.craftdwarfs_workshopst.x1ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.metalsmiths_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.metalsmiths_workshopst.x0y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;wood,wood,wood;air,wood,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.metalsmiths_workshopst.x0y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still lava,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.metalsmiths_workshopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still water,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.metalsmiths_workshopst.x1ymax mat="air,air,air;air,air,air;air,air,air|air,workbench,air;iron,iron,iron;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.metalsmiths_workshopst.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,step,air;air,air,air;air,step,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.smelterst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.smelterst.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still lava,stone;stone,furnace,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.smelterst.xmaxy0 mat="air,stone,air;air,stone,air;air,stone,air|air,stone,air;air,air,air;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.smelterst.x0y1 mat="air,air,air;air,air,air;air,air,air|air,iron,air;air,air,air;air,iron,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.smelterst.xmaxymax mat="stone,stone,air;stone,stone,air;air,air,air|stone,stone,air;stone,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.wood_furnacest mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.wood_furnacest.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still lava,stone;stone,furnace,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.wood_furnacest.xmaxy0 mat="air,stone,air;air,stone,air;air,stone,air|air,stone,air;air,air,air;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.wood_furnacest.x0y1 mat="air,air,air;air,air,air;air,air,air|air,log,air;air,air,air;air,log,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.wood_furnacest.xmaxymax mat="stone,stone,air;stone,stone,air;air,air,air|stone,stone,air;stone,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+
+    <building.glass_furnacest mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.glass_furnacest.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still lava,stone;stone,furnace,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.glass_furnacest.xmaxy0 mat="air,stone,air;air,stone,air;air,stone,air|air,stone,air;air,air,air;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.glass_furnacest.x0y1 mat="air,air,air;air,air,air;air,air,air|air,glass,air;air,air,air;air,glass,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.glass_furnacest.xmaxymax mat="stone,stone,air;stone,stone,air;air,air,air|stone,stone,air;stone,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+
+    <building.kennelsst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x2y2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x1y0 mat="air,air,air;air,cloth,air;air,air,air|air,air,air;air,step,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x3y2 mat="air,air,air;air,cloth,air;air,air,air|air,air,air;air,step,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x1y1 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x3y1 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x1y3 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kennelsst.x3y3 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+
+
+	<!-- TODO: the rest are unimplemented - items from alpha such as plates would be better-->
+    <building.cage_trapst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+</objects>
