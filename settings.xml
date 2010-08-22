@@ -224,6 +224,8 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
     <floor.constructed.blocks mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|dstep,dstep,dstep;dstep,dstep,dstep;dstep,dstep,dstep" data="" />
     <floor.constructed.logs mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
     <floor.obsidian mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|obsidian,obsidian,obsidian;obsidian,obsidian,obsidian;obsidian,obsidian,obsidian" data="" />
+	<floor.soil.stream_top mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|still water,still water,still water;still water,dirt,still water;still water,still water,still water" data="" />
+	<!-- Streams are strange in DF - they look like water, but dwarfs can cross them and not fall in and you must channel out the stream top to power a waterwheel-->
 
     <wall.magma mat="lava,lava,lava;lava,lava,lava;lava,lava,lava|lava,lava,lava;lava,lava,lava;lava,lava,lava|lava,lava,lava;lava,lava,lava;lava,lava,lava" data="" />
     <wall.stone mat="rock,rock,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock|rock,rock,rock;rock,rock,rock;rock,rock,rock" data="" />
@@ -726,6 +728,19 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
 	<building.stockpilest.x17y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x18y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x19y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x20y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x21y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x22y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x23y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x24y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x25y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x26y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x27y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x28y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x29y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x30y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x31y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x32y0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x1ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
@@ -747,6 +762,19 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
 	<building.stockpilest.x17ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x18ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x19ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x20ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x21ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x22ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x23ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x24ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x25ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x26ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x27ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x28ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x29ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x30ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x21ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x32ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0y1 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0y2 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
@@ -767,6 +795,19 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
 	<building.stockpilest.x0y17 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0y18 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0y19 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y20 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y21 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y22 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y23 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y24 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y25 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y26 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y27 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y28 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y29 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y30 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y31 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x0y32 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
@@ -788,6 +829,19 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
 	<building.stockpilest.xmaxy17 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxy18 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxy19 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy20 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy21 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy22 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy23 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy24 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy25 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy26 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy27 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy28 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy29 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy30 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy31 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xmaxy32 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xonlyy0 mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xonlyy1 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xonlyy2 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
@@ -808,6 +862,19 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
 	<building.stockpilest.xonlyy17 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xonlyy18 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xonlyy19 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy20 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy21 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy22 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy23 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy24 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy25 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy26 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy27 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy28 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy29 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy30 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy31 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.xonlyy32 mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xonlyymax mat="air,air,air;air,air,air;air,air,air|air,air,air;torch,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x0yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x1yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
@@ -829,6 +896,19 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
 	<building.stockpilest.x17yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x18yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.x19yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x20yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x21yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x22yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x23yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x24yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x25yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x26yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x27yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x28yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x29yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x30yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x31yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.stockpilest.x32yonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,air;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.xmaxyonly mat="air,air,air;air,air,air;air,air,air|air,torch,air;air,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 	<building.stockpilest.only mat="air,air,air;air,air,air;air,air,air|air,torch,air;torch,air,torch;air,torch,air|air,air,air;air,air,air;air,air,air" data="" />
 
@@ -908,6 +988,13 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
     <building.glass_furnacest.xmaxymax mat="stone,stone,air;stone,stone,air;air,air,air|stone,stone,air;stone,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 
 
+    <building.kilnst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kilnst.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still lava,stone;stone,furnace,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kilnst.xmaxy0 mat="air,stone,air;air,stone,air;air,stone,air|air,stone,air;air,air,air;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.kilnst.x0y1 mat="air,air,air;air,air,air;air,air,air|air,brick,air;air,air,air;air,brick,air|air,air,air;air,air,air;air,air,air" data="" /><!-- TODO, change brick to clay for alpha-->
+    <building.kilnst.xmaxymax mat="stone,stone,air;stone,stone,air;air,air,air|stone,stone,air;stone,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+
     <building.kennelsst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
     <building.kennelsst.x2y2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
     <building.kennelsst.x1y0 mat="air,air,air;air,cloth,air;air,air,air|air,air,air;air,step,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
@@ -916,6 +1003,256 @@ Each object also has a list of numbers, the same squaresize^3 in size, that repr
     <building.kennelsst.x3y1 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
     <building.kennelsst.x1y3 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
     <building.kennelsst.x3y3 mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,air,wood;air,air,air;wood,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+
+
+
+
+    <building.screw_pumpst mat="stone,stone,stone;stone,step,stone;stone,stone,stone|stone,stone,stone;stone,step,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.axle_horizontalst.x0yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x1yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x2yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x3yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x4yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x5yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x6yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x7yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.x8yonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xmaxyonly mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy0 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy1 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy2 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy3 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy4 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy5 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy6 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy7 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyy8 mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.xonlyymax mat="air,step,air;air,step,air;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst.only mat="air,step,air;step,step,step;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+	<building.axle_horizontalst mat="air,step,air;step,step,step;air,step,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.gear_assemblyst mat="air,stone,air;stone,stone,stone;air,stone,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,stone,air;air,air,air" data="" />
+
+    <building.asheryst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.asheryst.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,air,stone;air,stone,air;stone,workbench,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.asheryst.xmaxy0 mat="air,air,air;air,stone,stone;air,air,air|air,air,air;air,stone,stone;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.asheryst.x1y1 mat="air,air,air;air,wood,wood;air,wood,wood|air,air,air;air,wood,wood;air,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.asheryst.x0ymax mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.asheryst.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,step,air;air,air,air;step,air,step|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.masons_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.masons_workshopst.x0y0 mat="air,air,air;air,step,air;air,air,air|air,air,air;air,step,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.masons_workshopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;air,stone,stone;air,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.masons_workshopst.x0y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,workbench;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.masons_workshopst.x1y1 mat="air,stone,air;air,stone,air;air,stone,air|air,stone,air;air,air,air;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.masons_workshopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,stone,stone;air,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.masons_workshopst.x1ymax mat="air,air,air;air,stone,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.siege_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x1y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x2y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x3y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x1y3 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x2y3 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x3y3 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x2y0 mat="air,air,air;air,stone,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x0y3 mat="air,air,air;air,stone,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.x0y2 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,wood,air;wood,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.siege_workshopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,wood,air;air,air,wood|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.jewelers_workshopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;air,stone,stone;air,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,stone,stone;air,workbench,stone;air,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,stone,stone;air,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.x1y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,glass,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.x0y1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.x1y1 mat="air,stone,air;air,stone,air;air,stone,air|air,stone,air;air,air,air;air,stone,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.jewelers_workshopst.x1ymax mat="air,glass,air;air,air,air;air,air,air|dstep,step,dstep;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.dyers_shopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.dyers_shopst.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,leaves,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.dyers_shopst.x0ymax mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still lava,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.dyers_shopst.xmaxymax mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,still water,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.dyers_shopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|step,air,air;air,step,air;step,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.clothiers_shopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.clothiers_shopst.x0y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.clothiers_shopst.x1ymax mat="air,air,air;air,air,air;air,air,air|stone,workbench,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.clothiers_shopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,cloth,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.clothiers_shopst.xmaxy1 mat="air,air,air;step,step,step;air,air,air|air,air,air;dstep,air,dstep;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.clothiers_shopst.x0ymax mat="air,wood,air;air,wood,air;air,wood,air|air,wood,air;air,air,air;air,wood,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.loomst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.loomst.x0y0 mat="air,air,wood;air,air,air;air,air,air|air,air,wood;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.loomst.x1y0 mat="cloth,cloth,cloth;air,air,air;air,air,air|cloth,cloth,cloth;air,air,air;air,workbench,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.loomst.xmaxy0 mat="wood,air,air;air,air,air;air,air,air|wood,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.loomst.x0y1 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,cloth,iron;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.loomst.xmaxymax mat="air,air,air;air,cloth,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.windmillst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.windmillst.x1y1 mat="air,wood,air;air,wood,air;air,wood,air|step,step,step;step,wood,step;step,step,step|air,air,air;air,wood,air;air,air,air" data="" />
+    <building.windmillst.x1y0 mat="air,air,air;wood,air,air;air,wood,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.windmillst.x0y0 mat="air,air,wood;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.windmillst.x1ymax mat="air,wood,air;air,air,wood;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.windmillst.xmaxymax mat="air,air,air;air,air,air;wood,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.water_wheelst mat="wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood|wood,wood,wood;wood,wood,wood;wood,wood,wood" data="" />
+    <building.water_wheelst.xonlyy0 mat="air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.water_wheelst.xonlyymax mat="air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.water_wheelst.x0yonly mat="air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.water_wheelst.xmaxyonly mat="air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.ballistast.x0y0 mat="air,air,wood;air,wood,air;air,wood,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.x0y1 mat="wood,air,air;wood,step,air;wood,air,air|wood,air,air;dstep,dstep,dstep;wood,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.x0ymax mat="air,wood,air;air,wood,air;air,air,wood|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.x1y0 mat="wood,wood,cloth;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.x1y1 mat="air,air,air;air,iron,log;air,air,air|air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.x1ymax mat="air,air,air;air,air,air;wood,wood,cloth|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.xmaxy0 mat="air,air,air;cloth,air,air;air,cloth,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.xmaxy1 mat="air,leaves,cloth;log,log,cloth;air,leaves,cloth|air,air,air;step,step,dstep;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.ballistast.xmaxymax mat="air,cloth,air;cloth,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.catapultst.x0y0 mat="air,air,air;air,air,air;step,air,air|air,air,air;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.x1y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,air,air;wood,wood,wood;wood,wood,wood|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.x0y1 mat="step,air,air;step,step,step;step,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.x1y1 mat="air,air,air;step,step,step;air,air,air|air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.xmaxy1 mat="air,step,air;step,stone,step;air,step,air|air,step,air;air,dstep,air;air,step,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.x0ymax mat="step,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.x1ymax mat="air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.catapultst.xmaxymax mat="air,air,air;air,air,air;air,air,air|wood,wood,wood;wood,wood,wood;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.fisheryst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.fisheryst.x0y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,wood,wood;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.fisheryst.x1y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;wood,wood,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.fisheryst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|air,air,air;cloth,air,cloth;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.fisheryst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|cloth,air,cloth;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.fisheryst.x1ymax mat="air,air,air;air,air,air;air,air,air|stone,workbench,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.butchers_shopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.butchers_shopst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,log,stone;stone,log,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.butchers_shopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|stone,log,stone;stone,log,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.butchers_shopst.x0y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,workbench;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.leather_worksst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leather_worksst.x0y0 mat="air,air,air;air,wood,cloth;air,air,air|air,air,air;air,wood,cloth;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leather_worksst.x1y0 mat="air,air,air;cloth,wood,air;air,air,air|air,air,air;cloth,wood,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leather_worksst.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leather_worksst.x0y1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,workbench;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leather_worksst.maxymax mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.leather_worksst.x0ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,stone,air;air,air,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.tanners_shopst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tanners_shopst.x0y0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,leaves,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tanners_shopst.xmaxy1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;workbench,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.tanners_shopst.x0ymax mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,leaves,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+
+	<!-- Is Soapery a custom workshop with no name ?-->
+    <building.soap_makers_workshop mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.soap_makers_workshop.xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,cloth,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.soap_makers_workshop.xmaxy1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,cloth,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.soap_makers_workshop.x1ymax mat="air,air,air;air,air,air;air,air,air|air,workbench,air;cloth,cloth,cloth;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.soap_makers_workshop.x0y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,step;air,step,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.soap_makers_workshop.x1y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.soap_makers_workshop.x0y1 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building. mat="air,air,air;air,air,air;air,air,air|air,air,air;air,torch,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building..xmaxy0 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,cloth,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building..xmaxy1 mat="air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,cloth,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building..x1ymax mat="air,air,air;air,air,air;air,air,air|air,workbench,air;cloth,cloth,cloth;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building..x0y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,step;air,step,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building..x1y0 mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building..x0y1 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+
+
+
+    <building.road_pavedst mat="air,air,air;air,air,air;air,air,air|step,step,step;step,step,step;step,step,step|air,air,air;air,air,air;air,air,air" data="" />
+
+    <building.bridgest mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+    <building.bridgest.only mat="air,air,air;air,air,air;air,air,air|step,torch,step;torch,air,torch;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0ymax mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxymax mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;torch,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyymax mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,torch;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy1 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy2 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy3 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy4 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy5 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy6 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy7 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy8 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xonlyy9 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0yonly mat="air,air,air;air,air,air;air,air,air|step,torch,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxyonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x1yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x2yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x3yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x4yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x5yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x6yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x7yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x8yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x9yonly mat="air,air,air;air,air,air;air,air,air|step,air,step;torch,air,torch;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x1y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x2y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x3y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x4y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x5y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x6y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x7y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x8y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x9y0 mat="air,air,air;air,air,air;air,air,air|step,torch,step;air,air,air;air,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x1ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x2ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x3ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x4ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x5ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x6ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x7ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x8ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x9ymax mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;step,torch,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y1 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y2 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y3 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y4 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y5 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y6 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y7 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y8 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.x0y9 mat="air,air,air;air,air,air;air,air,air|step,air,air;torch,air,air;step,air,air|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy1 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy2 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy3 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy4 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy5 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy6 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy7 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy8 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+	<building.bridgest.xmaxy9 mat="air,air,air;air,air,air;air,air,air|air,air,step;air,air,torch;air,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone" data="" />
+
+    <building.boxst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,chest,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.statuest mat="air,air,air;step,dstep,step;air,air,air|dstep,air,air;air,air,air;air,air,dstep|air,air,air;air,air,air;air,air,air" data="" />
+    <building.weaponrackst mat="step,air,air;air,step,air;air,air,step|dstep,air,air;air,dstep,air;air,air,dstep|air,air,air;air,air,air;air,air,air" data="" />
+    <building.armorstandst mat="air,step,air;step,step,step;air,step,air|air,air,air;air,dstep,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.quernst mat="step,dstep,step;dstep,wood,dstep;step,dstep,step|step,step,step;step,workbench,step;step,step,step|air,air,air;air,air,air;air,air,air" data="" />
+    <building.window_gemst mat="glass,glass,glass;glass,air,glass;glass,glass,glass|glass,glass,glass;glass,air,glass;glass,glass,glass|air,air,air;air,air,air;air,air,air" data="" />
+    <building.grate_wallst mat="dstep,step,dstep;step,air,step;dstep,step,dstep|dstep,step,dstep;step,air,step;dstep,step,dstep|air,air,air;air,air,air;air,air,air" data="" />
+    <building.grate_floorst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|air,stone,air;stone,stone,stone;air,stone,air" data="" />
+    <building.bars_floorst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|iron,air,iron;air,iron,air;iron,air,iron" data="" />
+    <building.hatchst mat="air,air,air;air,air,air;air,air,air|air,air,air;air,air,air;air,air,air|step,step,step;step,step,dstep;step,step,step" data="" />
+    <building.bars_verticalst mat="air,air,air;air,iron,air;air,air,air|iron,air,iron;air,air,air;iron,air,iron|air,air,air;air,air,air;air,air,air" data="" />
+    <building.cabinetst mat="air,air,air;air,chest,air;air,air,air|air,air,air;air,bookshelf,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.supportst mat="air,air,air;air,stone,air;air,air,air|air,air,air;air,stone,air;air,air,air|air,air,air;air,stone,air;air,air,air" data="" />
+    <building.traction_benchst mat="step,air,step;air,air,air;step,air,step|stone,stone,stone;stone,stone,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.coffinst mat="air,step,air;air,step,air;air,step,air|stone,stone,stone;stone,air,stone;stone,stone,stone|air,air,air;air,air,air;air,air,air" data="" />
+    <building.axle_verticalst mat="air,air,air;air,dstep,air;air,air,air|air,air,air;air,dstep,air;air,air,air|air,air,air;air,dstep,air;air,air,air" data="" />
+    <building.millstonest mat="step,step,step;step,stone,step;step,step,step|step,step,step;step,workbench,step;step,step,step|air,air,air;air,air,air;air,air,air" data="" />
+    <building.archerytargetst mat="air,air,air;air,step,air;air,air,air|air,air,air;air,wood,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
+    <building.wellst mat="air,air,air;air,step,air;air,air,air|step,step,step;dstep,air,dstep;step,step,step|dstep,dstep,dstep;dstep,air,dstep;dstep,dstep,dstep" data="" />
+    <building.chainst mat="air,air,air;air,iron,air;air,air,air|air,air,air;air,step,air;air,air,air|air,air,air;air,air,air;air,air,air" data="" />
 
 
 	<!-- TODO: the rest are unimplemented - items from alpha such as plates would be better-->

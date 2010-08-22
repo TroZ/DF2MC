@@ -1,5 +1,5 @@
 /*
-DF2MC version 0.1
+DF2MC version 0.11
 Dwarf Fortress To Minecraft
 Converts Dwarf Frotress Game Maps into Minecraft Game Level for use as a
 Dwarf Fortress 3D visulaizer or for creating Minecraft levels to play in.
@@ -295,7 +295,7 @@ void loadObjects(){
 			std::vector<std::string> vals;
 			split(val,",;|",vals);
 			if(vals.size() != (squaresize*squaresize*squaresize) ){
-				printf("Object %s doesn't have correct number of materials\n (%d expeted %d) - resetting to Air",name,vals.size(),(squaresize*squaresize*squaresize));
+				printf("Object %s doesn't have correct number of materials\n (%d expeted %d) - resetting to Air\n",name,vals.size(),(squaresize*squaresize*squaresize));
 				vals.clear();
 				val = makeAirArray();
 				elm->SetAttribute("mat",val.c_str());
@@ -1091,8 +1091,11 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 				}
 
 				object = getObject(uio,dfx, dfy, zzz,"building", mb.type, 0, mb.desc, mat);
-				if(object!=NULL)
+				if(object!=NULL){
 					addObject(mclayers, mcdata, object,  dfx,  dfy, zzz, xoffset, yoffset, zcount, mcxsquares, mcysquares);
+				}else{
+					printf("Cant find building that should already be defined!\n");
+				}
 			}
 
 			//add object if any (mostly convert bins and barrels to chests)
@@ -1362,8 +1365,8 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 	uint32_t numConstr;
     Cons->Start(numConstr);
 
-	//TODO - read the constructions and buildings into a map organized by location (10 bit each for x,y,z packed into an int?)
 
+	//read buildings into a map organized by location (10 bit each for x,y,z packed into an int)
 	DFHack::Buildings * Bld = DF->getBuildings();
 	map <uint32_t, string> custom_workshop_types;
 	uint32_t numBuildings;
@@ -1406,20 +1409,24 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 					mb->material.type = temp.material.type;
 					mb->material.index = temp.material.index;
 
-					if((x<temp.x2) && (y<temp.y2)){
-						_snprintf(mb->desc,15,"x%dy%d",x-temp.x1,y-temp.y1);
+					if((temp.x1==temp.x2) && (temp.y1==temp.y2)){
+						_snprintf(mb->desc,15,"only");
+					}else if((temp.x1==temp.x2) && (y==temp.y2)){
+						_snprintf(mb->desc,15,"xonlyymax");
+					}else if((temp.x1==temp.x2) && (y<temp.y2)){
+						_snprintf(mb->desc,15,"xonlyy%d",y-temp.y1);
+					}else if((x==temp.x2) && (temp.y1==temp.y2)){
+						_snprintf(mb->desc,15,"xmaxyonly");
+					}else if((x<=temp.x2) && (temp.y1==temp.y2)){
+						_snprintf(mb->desc,15,"x%dyonly",x-temp.x1);
+					}else if((x==temp.x2) && (y==temp.y2)){
+						_snprintf(mb->desc,15,"xmaxymax");
 					}else if((x==temp.x2) && (y<temp.y2)){
 						_snprintf(mb->desc,15,"xmaxy%d",y-temp.y1);
 					}else if((x<temp.x2) && (y==temp.y2)){
 						_snprintf(mb->desc,15,"x%dymax",x-temp.x1);
-					}else if((temp.x1==temp.x2) && (temp.y2==temp.y2)){
-						_snprintf(mb->desc,15,"only");
-					}else if((temp.x1==temp.x2) && (y==temp.y2)){
-						_snprintf(mb->desc,15,"xonlyymax");
-					}else if((x==temp.x2) && (temp.y1==temp.y2)){
-						_snprintf(mb->desc,15,"xmaxyonly");
 					}else{
-						_snprintf(mb->desc,15,"xmaxymax");
+						_snprintf(mb->desc,15,"x%dy%d",x-temp.x1,y-temp.y1);
 					}
 					mb->desc[15]='\0';
 
