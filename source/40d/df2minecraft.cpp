@@ -1,5 +1,5 @@
 /*
-DF2MC version 0.1
+DF2MC40d version 0.2
 Dwarf Fortress To Minecraft
 Converts Dwarf Frotress Game Maps into Minecraft Game Level for use as a
 Dwarf Fortress 3D visulaizer or for creating Minecraft levels to play in.
@@ -38,12 +38,16 @@ http://github.com/TroZ/DF2MC
 #include <algorithm>
 #include <time.h>
 
+using namespace std;
+
 
 #define DFHACK_WANT_MISCUTILS
 #define DFHACK_WANT_TILETYPES
-#include <DFHack.h>
-#include <dfhack/DFTileTypes.h>
-#include <tinyxml.h>
+#include <DFHackAPI.h>
+#include <DFTypes.h>
+#include <DFTileTypes.h>
+#include <DFMemInfo.h>
+#include <tinyxml/tinyxml.h>
 
 #include "zlib-1.2.5\zlib.h"
 
@@ -392,7 +396,6 @@ int saveMCLevel(uint8_t* mclayers,uint8_t* mcdata,int mcxsquares,int mcysquares,
 	int of = open("out.mcraw",O_BINARY | _O_CREAT | _O_TRUNC | _O_WRONLY,_S_IREAD | _S_IWRITE);
 
 	//first write the raw file to disk - can be large - up to 1GB or more depending on DF area size.
-	stringbuf file(ios_base::in | ios_base::out);
 	write(of,"\012\000\016MinecraftLevel\012\000\013Environment\001\000\025SurroundingGroundType\002\002\000\027SurroundingGroundHeight\000\004\002\000\026SurroundingWaterHeight\000\003\002\000\013CloudHeight",125);
 	int cloudheight = mczsquares-(cloudheightdf*squaresize);
 	write(of,((char*)&(cloudheight))+1,1);
@@ -808,7 +811,7 @@ void addObject(uint8_t* mclayers, uint8_t* mcdata, uint8_t *object, int dfx, int
 }
 
 
-void getRampDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,char *dir,int x,int y,int z,int bx, int by,const char* mat, int varient,const char* full,const char* specmat,const char* consmat){
+void getRampDir(DFHack::API *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,char *dir,int x,int y,int z,int bx, int by,const char* mat, int varient,const char* full,const char* specmat,const char* consmat){
 	//this will find and place in the string dir the letters of the high side of a ramp
 
 	DFHack::mapblock40d *Block;
@@ -895,7 +898,7 @@ void getRampDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,cha
 	
 }
 
-int findLevels(DFHack::Maps *Maps,int xmin,int xmax,int ymin,int ymax,int zmax,int typeToFind){
+int findLevels(DFHack::API *Maps,int xmin,int xmax,int ymin,int ymax,int zmax,int typeToFind){
 
 	DFHack::mapblock40d Block;
 	int count = 0;
@@ -934,9 +937,10 @@ int findLevels(DFHack::Maps *Maps,int xmin,int xmax,int ymin,int ymax,int zmax,i
 }
 
 
-void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector <uint16_t> > layerassign, 
-		vector<DFHack::t_feature> global_features, std::map <DFHack::planecoord, std::vector<DFHack::t_feature *> > local_features,
-		DFHack::Constructions *Cons, uint32_t numCons, map<uint32_t,myBuilding> Buildings, map<uint32_t,char*> vegs,
+void convertDFBlock(DFHack::API *Maps, /*DFHack::API * Mats,*/ vector< vector <uint16_t> > layerassign, 
+		//vector<DFHack::t_feature> global_features, std::map <DFHack::planecoord, std::vector<DFHack::t_feature *> > local_features,
+		std::vector<t_matgloss> &stonematgloss, std::vector<t_matgloss> &metalmatgloss, std::vector<t_matgloss> &woodmatgloss,
+		DFHack::API *Cons, uint32_t numCons, map<uint32_t,myBuilding> Buildings, map<uint32_t,char*> vegs,
 		TiXmlElement *uio, uint8_t* mclayers, uint8_t* mcdata,
 		uint32_t dfblockx, uint32_t dfblocky, uint32_t zzz, uint32_t zcount,
 		uint32_t xoffset, uint32_t yoffset, int mcxsquares, int mcysquares){
@@ -949,8 +953,9 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 	//Maps->ReadDesignations(x,y,z, &designations);
 
 	vector<DFHack::t_vein> veins;
-	vector<DFHack::t_spattervein> splatter;
-	Maps->ReadVeins(dfblockx,dfblocky,zzz,&veins,NULL,&splatter);
+	//vector<DFHack::t_spattervein> splatter;
+	vector<DFHack::t_frozenliquidvein> ices;
+	Maps->ReadVeins(dfblockx,dfblocky,zzz,veins,ices);//,&splatter);
 
 			
 	for(uint32_t dfoffsetx=0;dfoffsetx<SQUARESPERBLOCK;dfoffsetx++){
@@ -987,6 +992,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 					}
 				}
 				// global feature overrides
+				/*
 				int16_t idx = Block.global_feature;
 				if( idx != -1 && uint16_t(idx) < global_features.size() && global_features[idx].type == DFHack::feature_Underworld){
 					if(Block.designation[dfoffsetx][dfoffsety].bits.feature_global){
@@ -1016,10 +1022,11 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 							}
 						}
 					}
-				}	
+				}
+				*/
 
 				if(tempvein!=-1){
-					mat = Mats->inorganic[tempvein].id;
+					mat = stonematgloss[tempvein].id;
 				}else{
 					mat=NULL;
 				}
@@ -1030,19 +1037,61 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 				consmat=NULL;
 				t_construction con;
 				for(uint32_t i = 0; i < numCons; i++){
-					Cons->Read(i,con);
+					Cons->ReadConstruction(i,con);
 					if(dfx == con.x && dfy == con.y && zzz == con.z){
 						consmat="unknown";
-						if(con.mat_type == 0){
-							if(con.mat_idx != 0xffffffff)
-								consmat = Mats->inorganic[con.mat_idx].id;
+						//TODO
+						switch (con.material.type){
+							case 0:
+								if(con.material.index>=0 && con.material.index<woodmatgloss.size()){
+									consmat = woodmatgloss[con.material.index].id;
+								}else{
+									consmat = "unknown";
+								}
+								mat = "logs";
+								break;
+							case 1:
+								if(con.material.index>=0 && con.material.index<woodmatgloss.size()){
+									consmat = stonematgloss[con.material.index].id;
+								}else{
+									consmat = "unknown";
+								}
+								mat = "stone";
+								break;
+							case 2:
+								if(con.material.index>=0 && con.material.index<woodmatgloss.size()){
+									consmat = metalmatgloss[con.material.index].id;
+								}else{
+									consmat = "unknown";
+								}
+								mat = "bars";
+								break;
+							//case 12: // don't ask me why this has such a large jump, maybe this is not actually the matType for plants, but they all have this set to 12
+							//	consmat = mat.plantMat[con.material.index].id;
+							//	break;
+							//case 32:
+							//	consmat = mat.plantMat[con.material.index].id;
+							//	break;
+							//case 121:
+							//	consmat = mat.creatureMat[con.material.index].id;
+							//	break;
+							
+						}
+
+
+						/*
+						if(con.material.type == 0){
+							if(con.material.index != 0xffffffff)
+								consmat = Mats->inorganic[con.material.index].id;
 							else consmat = "inorganic";
 						}
-						if(con.mat_type == 420){
-							if(con.mat_idx != 0xffffffff)
-								consmat = Mats->organic[con.mat_idx].id;
+						if(con.material.type == 420){
+							if(con.material.index != 0xffffffff)
+								consmat = Mats->organic[con.material.index].id;
 							else consmat = "organic";
+							mat="logs";
 						}
+						
 						switch(con.form){
 							case constr_bar:
 								mat="bars";
@@ -1060,6 +1109,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 								mat="unknown";
 						}
 						break;
+						*/
 					}
 				}
 			}
@@ -1126,7 +1176,34 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 			if(it!=Buildings.end()){
 				myBuilding mb = it->second;
 				mat="unknown";
-				if(mb.material.type == 0){
+				//TODO
+				switch (mb.material.type){
+							case 0:
+								if(mb.material.index>=0 && mb.material.index<woodmatgloss.size()){
+									consmat = woodmatgloss[mb.material.index].id;
+								}else{
+									consmat = "unknown";
+								}
+								mat = "logs";
+								break;
+							case 1:
+								if(mb.material.index>=0 && mb.material.index<woodmatgloss.size()){
+									consmat = stonematgloss[mb.material.index].id;
+								}else{
+									consmat = "unknown";
+								}
+								mat = "stone";
+								break;
+							case 2:
+								if(mb.material.index>=0 && mb.material.index<woodmatgloss.size()){
+									consmat = metalmatgloss[mb.material.index].id;
+								}else{
+									consmat = "unknown";
+								}
+								mat = "bars";
+								break;
+				}
+				/*if(mb.material.type == 0){
 					if(mb.material.index!= 0xffffffff)
 						mat = Mats->inorganic[mb.material.index].id;
 					else mat = "inorganic";
@@ -1136,7 +1213,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 						mat = Mats->organic[mb.material.index].id;
 					else mat = "organic";
 				}
-
+				*/
 				object = getObject(uio,dfx, dfy, zzz,"building", mb.type, 0, mb.desc, mat);
 				if(object!=NULL){
 					addObject(mclayers, mcdata, object,  dfx,  dfy, zzz, xoffset, yoffset, zcount, mcxsquares, mcysquares);
@@ -1176,6 +1253,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 							
 				//check for mud
 				bool mud = false;
+				/*TODO
 				for(int v = 0; v < (int)splatter.size()&&!mud;v++){
 					if(splatter[v].mat1=0xC){//magic number for mud - see cleanmap.cpp
 						if(splatter[v].intensity[dfoffsetx][dfoffsety]>0){
@@ -1183,7 +1261,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 						}
 					}
 				}
-
+				*/
 				if(!mud){
 					//ok, good spot for torch - add if the random number is less than the chance depending on the 'dark' type, we don't want every floor to have a torch, just randomly placed
 					int percent = 0;
@@ -1207,15 +1285,15 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 	}
 }
 
-int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
+int convertMaps(DFHack::API *DF/*,DFHack::Materials * Mats*/){
 
 	printf("\nCalculating size limit...\n");
 
 	//setup
 
 	uint32_t x_max,y_max,z_max;
-	vector<DFHack::t_feature> global_features;
-    std::map <DFHack::planecoord, std::vector<DFHack::t_feature *> > local_features;
+	//vector<DFHack::t_feature> global_features;
+    //std::map <DFHack::planecoord, std::vector<DFHack::t_feature *> > local_features;
 	vector< vector <uint16_t> > layerassign;
 	
 	uint16_t cloudheight=0;
@@ -1234,10 +1312,10 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 		}
 	}
 
-	DFHack::Maps * Maps = DF->getMaps();
+	//DFHack::Maps * Maps = DF->getMaps();
 
 	// init the map
-    if(!Maps->Start())
+    if(!DF->InitMap())
     {
         cerr << "Can't init map." << endl;
         #ifndef LINUX_BUILD
@@ -1245,7 +1323,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
         #endif
         return 103;
     }
-    Maps->getSize(x_max,y_max,z_max);
+    DF->getSize(x_max,y_max,z_max);
 
 	printf("DF Map size in \'blocks\' %dx%d with %d levels (a 3x3 block is one embark space)\n",x_max,y_max,z_max);
 	printf("DF Map size in squares %d, %d, %d\n",x_max*SQUARESPERBLOCK,y_max*SQUARESPERBLOCK,z_max);
@@ -1276,7 +1354,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 			cloudheight=5;
 		}else{
 			//keep top limitlevels, but only airtokeep air levels
-			findLevels(Maps,xoffset,x_max,yoffset,y_max,z_max,(1<<EMPTY)^0xffff);
+			findLevels(DF,xoffset,x_max,yoffset,y_max,z_max,(1<<EMPTY)^0xffff);
 
 			//ok levels that are not all air are now marked
 			//we need to add 'airtokeep' levels to the top and then limit it to limitlevels
@@ -1311,7 +1389,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 	}else if(limittype == LIMITSMART){
 
 		//keep 'interesting' levels and airtokeep air levels
-		findLevels(Maps,xoffset,x_max,yoffset,y_max,z_max, (1<<FLOOR) + (1<<PILLAR) + 
+		findLevels(DF,xoffset,x_max,yoffset,y_max,z_max, (1<<FLOOR) + (1<<PILLAR) + 
 			(1<<FORTIFICATION) + (1<<RAMP) + (1<<RAMP_TOP) );
 
 		//ok, interesting levels are marked, mark the airtokeep levels above the top most interesting level
@@ -1351,7 +1429,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 		}else if(count<limitlevels){
 			//too few levels, add one uninteresting level after each uninteresting
 			int last=0;
-			uint32_t oldcount = count-1;
+			int oldcount = count-1;
 			while(count<limitlevels&&oldcount<count){
 				oldcount = count;
 				for(int i=z_max;i>=0&&count<limitlevels;i--){
@@ -1394,7 +1472,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 		return 20;
 	}
 
-    
+    /*
     if(!Maps->ReadGlobalFeatures(global_features))
     {
         cerr << "Can't get global features." << endl;
@@ -1406,58 +1484,85 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
         cerr << "Can't get local features." << endl;
         return 105; 
     }
+	*/
 
 	// get region geology
-    if(!Maps->ReadGeology( layerassign ))
+    if(!DF->ReadGeology( layerassign ))
     {
         cerr << "Can't get region geology." << endl;
         return 106; 
     }
 
-	DFHack::Constructions *Cons = DF->getConstructions();
+
+	std::vector<t_matgloss> stonematgloss;
+	std::vector<t_matgloss> woodmatgloss;
+	std::vector<t_matgloss> metalmatgloss;
+	std::vector<t_matgloss> plantmatgloss;
+	DF->ReadStoneMatgloss(stonematgloss);
+    DF->ReadWoodMatgloss (woodmatgloss);
+    DF->ReadMetalMatgloss(metalmatgloss);
+    DF->ReadPlantMatgloss(plantmatgloss);
+
+
+	//DFHack::Constructions *Cons = DF->getConstructions();
 	uint32_t numConstr;
-    Cons->Start(numConstr);
+    //Cons->Start(numConstr);
+	DF->InitReadConstructions(numConstr);
 
 	printf("\nReading Plants... ");
-	DFHack::Vegetation * v = DF->getVegetation();
+	//DFHack::Vegetation * v = DF->getVegetation();
 	uint32_t numVegs = 0;
-    v->Start(numVegs);
+    //v->Start(numVegs);
+	DF->InitReadVegetation(numVegs);
 	//read vegetation into a map for faster access later
 	map<uint32_t,char*> vegs;
 	for(uint32_t i =0; i < numVegs; i++){
-		DFHack::t_tree tree;
-		v->Read(i,tree);
+		DFHack::t_tree_desc tree;
+		DF->ReadVegetation(i,tree);
 	
-		vegs[getMapIndex(tree.x,tree.y,tree.z)] = Mats->organic[tree.material].id;
+		if(tree.material.type!=2){
+			if(tree.material.index>0 && tree.material.index<woodmatgloss.size()){
+				vegs[getMapIndex(tree.x,tree.y,tree.z)] = woodmatgloss[tree.material.index].id;
+			}else{
+				vegs[getMapIndex(tree.x,tree.y,tree.z)] = "unknowntree";
+			}
+		}else{
+			if(tree.material.index>0 && tree.material.index<plantmatgloss.size()){
+				vegs[getMapIndex(tree.x,tree.y,tree.z)] = plantmatgloss[tree.material.index].id;
+			}else{
+				vegs[getMapIndex(tree.x,tree.y,tree.z)] = "unknownplant";
+			}
+			
+		}
 	}
 	printf("%d\n",vegs.size());
 
 
 	//read buildings into a map organized by location (10 bit each for x,y,z packed into an int)
 	printf("Reading Buildings... ");
-	DFHack::Buildings * Bld = DF->getBuildings();
-	map <uint32_t, string> custom_workshop_types;
+	//DFHack::Buildings * Bld = DF->getBuildings();
+	//map <uint32_t, string> custom_workshop_types;
 	uint32_t numBuildings;
-	DFHack::memory_info * mem = DF->getMemoryInfo();
+	memory_info * mem = DF->getMemoryInfo();
     //DFHack::Position * Pos = DF->getPosition();
 
 	map<uint32_t,myBuilding> Buildings;
     
-    if(Bld->Start(numBuildings)){
-        Bld->ReadCustomWorkshopTypes(custom_workshop_types);
+	if(DF->InitReadBuildings(numBuildings)){
+        //Bld->ReadCustomWorkshopTypes(custom_workshop_types);
 
 		for(uint32_t i = 0; i < numBuildings; i++){
             DFHack::t_building temp;
-            Bld->Read(i, temp);
-            std::string typestr;
+			DF->ReadBuilding(i, temp);
+            string typestr;
             mem->resolveClassIDToClassname(temp.type, typestr);
             //printf("Address 0x%x, type %d (%s), %d/%d to %d/%d on level %d\n",temp.origin, temp.type, typestr.c_str(), temp.x1,temp.y1,temp.x2,temp.y2,temp.z);
             //printf("Material %d %d\n", temp.material.type, temp.material.index);
-            int32_t custom;
-            if((custom = Bld->GetCustomWorkshopType(temp)) != -1){
+            //int32_t custom;
+            //if((custom = Bld->GetCustomWorkshopType(temp)) != -1){
 				//printf("Custom workshop type %s (%d)\n",custom_workshop_types[custom].c_str(),custom);
-				typestr = custom_workshop_types[custom];
-            }
+				//typestr = custom_workshop_types[custom];
+            //}
 
 			char tempstr[256];
 			if(typestr.find("building_")==0){
@@ -1466,12 +1571,6 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 			}else{
 				strncpy(tempstr,typestr.c_str(),255);
 				tempstr[255]='\0';
-			}
-			
-			//remove ending 'st' if it exists
-			int len=strlen(tempstr);
-			if(len>2 && tempstr[len-1]=='t' && tempstr[len-2]=='s'){
-				tempstr[len-2]='\0';
 			}
 
 			for(uint32_t x=temp.x1;x<=temp.x2;x++){
@@ -1538,6 +1637,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 
 	//read DF map data and create MC map blocks and data arrays;
 	printf("\nConverting Map...\n");
+	DF->InitMap();
 
 	// walk the DF map!
 	uint32_t zcount = 0;
@@ -1548,10 +1648,12 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 		for(uint32_t dfblockx = xoffset; dfblockx< x_max;dfblockx++){
 			for(uint32_t dfblocky = yoffset; dfblocky< y_max;dfblocky++){
 
-				if(Maps->isValidBlock(dfblockx,dfblocky,zzz)){
+				if(DF->isValidBlock(dfblockx,dfblocky,zzz)){
 					
-					convertDFBlock(Maps, Mats, layerassign, global_features, local_features,
-						Cons, numConstr, Buildings, vegs,
+					convertDFBlock(DF, layerassign, 
+						//global_features, local_features,
+						stonematgloss, metalmatgloss, woodmatgloss,
+						DF, numConstr, Buildings, vegs,
 						uio, mclayers,mcdata,
 						dfblockx, dfblocky, zzz, zcount, xoffset, yoffset, mcxsquares, mcysquares);
 				
@@ -1580,13 +1682,14 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 			mclayers[idx]=7; // bedrock / adminium
 		}
 	}
-	
+
 
 	//place the spawn at DF cursor location, if within output area and not a wall
 	printf("\nPlancing spawn location\n");
-	DFHack::Position *Pos = DF->getPosition();
+	//DFHack::Position *Pos = DF->getPosition();
     int32_t cx, cy, cz,ocx,ocy,ocz; 
-    Pos->getCursorCoords(ocx,ocy,ocz);
+	DF->InitViewAndCursor();
+    DF->getCursorCoords(ocx,ocy,ocz);
 	cx=ocx;cy=ocy;cz=ocz;
     if(cx != -30000 && cx>=0 && cy>=0 && cz>=0){
 		//see if it is in an output layer (should be if a open space was chosen)
@@ -1662,14 +1765,28 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 
 	//save the level!
 	char name[256];
-	strcpy(name,"out.mclevel");
+	//strcpy(name,"out.mclevel");
 	//DFHack::World *world;
 	//world = DF->getWorld();
 	//int year = world->ReadCurrentYear();
 	//int month = (world->ReadCurrentMonth())%12;
 	//int day = world->ReadCurrentDay();
-	//_snprintf(name,255,"out %d-%s-%d.mclevel",year,Months[month],day);
-	//name[255]='\0';
+	DFHack::t_settlement here;
+	uint32_t numSettle;
+	DF->InitReadSettlements(numSettle);
+	DF->ReadCurrentSettlement(here);
+
+	
+	vector< vector<string> > englishWords;
+    vector< vector<string> > foreignWords;
+    if(DF->InitReadNameTables(englishWords,foreignWords)){
+        string genericName = DF->TranslateName(here.name,englishWords,foreignWords,true);
+		_snprintf(name,255,"%s.mclevel",genericName.c_str());
+    }else{
+		_snprintf(name,255,"out.mclevel");
+	}
+	name[255]='\0';
+	printf("\n%s\n",name);
 
 	return saveMCLevel(mclayers, mcdata, mcxsquares, mcysquares, mczsquares, cloudheight,cx,cy,cz,name);
 
@@ -1884,12 +2001,13 @@ int main (int argc, const char* argv[]){
 	//return result;
 
 	//setup DFHHack
-	DFHack::ContextManager DFMgr("Memory.xml");
-    DFHack::Context *DF;
+	//DFHack::ContextManager DFMgr("Memory.xml");
+    //DFHack::Context *DF;
+	DFHack::API DF ("Memory.xml");
     try
     {
-        DF = DFMgr.getSingleContext();
-        DF->Attach();
+        //DF = DFMgr.getSingleContext();
+        DF.Attach();
     }
     catch (exception& e)
     {
@@ -1900,17 +2018,17 @@ int main (int argc, const char* argv[]){
         return 100;
     }
 
-	DFHack::Materials * Mats = DF->getMaterials();
-	Mats->ReadAllMaterials();
+	//DFHack::Materials * Mats = DF->getMaterials();
+	//Mats->ReadAllMaterials();
 
 	
 
 	//convert the map
-	int result = convertMaps(DF,Mats);
+	int result = convertMaps(&DF/*,Mats*/);
 
 
 
-	if(!DF->Detach())
+	if(!DF.Detach())
     {
         cerr << "Can't detach from DF" << endl;
     }

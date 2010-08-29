@@ -1,11 +1,11 @@
 ﻿Dwarf Fortress 2 Minecraft (DF2MC) ReadMe
-version 0.11
+version 0.2
 
 ABOUT:
 DF2MC attempts to convert a Dwarf Fortress local area into a Minecraft map. It
 does this by turning each 'square' of the Dwarf Fortress map in to a NxNxN 
 group of cubes in the Minecraft map by looking up the Dwarf Fortress object and 
-replacing with a configuration of cubes specified for that object in a settings
+replacing with a confugration of cubes specified for that object in a settings
 file. The default settings file converts each object in to a 3x3x3 group of 
 cubes. There is the smallest group that is feasable (floor to walk on and 2 
 empty spaces above), but larger sizes are possible, but require a new 
@@ -19,8 +19,7 @@ viewer programs to render views of running Dwarf Fortress games.
 USE:
 Start Dwarf Fortress an load the world/region you want to convert.
 Pause the Dwarf Fortress game.
-Run DF2MC.
-	It will run for about 10 minutes, depending on home much of the 
+Run DF2MC.	It will run for about 10 minutes, depending on home much of the 
 	level is being converted and your computer's speed. Dwarf Fortress won't
 	respond durring this time.
 When it has finished converting the level, check if there were any 'unknown 
@@ -31,7 +30,7 @@ Press enter to close the DF2MC program. Dwarf Fortress should then again
 	respond to input. If it does not, run DFunstuck which will fix the issue.
 There should be 4 new files in the directory where you ran DF2MC:
 	out.mclevel - the converted Minecraft level
-	out.mcraw - an uncompressed version of out.mclevel, for debugging not needed
+	out.mcraw - an uncompressed version of the level, for debugging not needed
 	updated.xml - an updated version of the settings file with new object types
 	unimplementedobjects.xml - the full description of every object found
 
@@ -43,7 +42,7 @@ sections:
 Settings
 	This section holds basic information like the size of the group of cubes 
 	that each DF 'square' get converted into, the size and position of the 
-	section of the Dwarf Fortress map to convert, and how ofter to place
+	section of the Dwarf Fortress map to convert, and how often to place
 	torches in the dark sections of the Dwarf Fortress map.
 MinecraftMaterials
 	This sections lists the minecraft materials names and their associated
@@ -62,14 +61,18 @@ Objects
 	of N^3 materials separeated by any combination of those separtors.
 	Objects can have several different names. The most specifically matching
 	object name will be used for an object. The object names that are used are:
-		class, basic material, varient, description, specific material
-		class, basic material, varient, description
-		class, basic material, description, specific material
-		class, basic material, description 
-		class, basic material, varient, specific material
-		class, basic material, varient
-		class, basic material, specific material
-		class, basic material
+	 class, basic material, varient, description, specific material-really specific
+	 class, basic material, varient, description, specific material
+	 class, basic material, varient, description
+	 class, basic material, description, specific material-really specific
+	 class, basic material, description, specific material
+	 class, basic material, description 
+	 class, basic material, varient, specific material-really specific
+	 class, basic material, varient, specific material
+	 class, basic material, varient
+	 class, basic material, specific material-really specific
+	 class, basic material, specific material
+	 class, basic material
 	with class being one of:
 		"empty"
 		"wall"
@@ -111,7 +114,7 @@ Objects
 		"ashes"
 		"constructed"
 		"cyanglow"
-	Ramps, Stairs and Buildings are handled a bit differently. 
+	Ramps and Stairs are handled a bit differently. 
 	Stairs have a number append to their class name to indicate the level mod 4
 	(the remainder after the level they are on is divided by 4). This allows 
 	you to define stairs in such a way that tall up-down stair stacks result in
@@ -130,16 +133,20 @@ Objects
 	surrounding walls. If no match is found, it then attempts to use the 
 	numbers for only the walls in the 4 cardinal directions (2,4,6,8). If 
 	still no match is found, it will use an unsupported ramp for that location.
-	Buildings typically span several squares. The description field is used to
-	describe which square of the building this location is. It will describe
-	the X and Y offset from the top left corner which is 'x0y0'. The final row
-	and colum are described as 'max' with the bottom right corner being 
-	'xmaxymax'. In cases of single location buildings, like doors, tables, etc.
-	the description is 'only'. For narrow building, like some bridges or piles,
-	the x or y may be described as 'only' while the other increments if it is 
-	both the min and max of that direction. For example, and 3x1 stockpile
-	would have locations described as 'x0yonly', 'x1yonly' and 'xmaxyonly'. The
-	default settings file uses this to have stockpiles outlined by torches.
+
+
+
+There is now a separate execuitable for converting 40d maps. It has similar 
+features but there are some differenes.  I'm not sure how to tell if a 
+construction is made out of stones or blocks, but metal bars and logs should
+be shown correctly. There is some issue preventing wells from appearing, but
+there will be a hole where they should be locted. On the slightly possitive
+side, I can determine the fortress name, and so the save file is named after 
+the fortress converted, no more out.mclevel.
+
+This 40d version has only been tested with one fortress, so there may be other 
+problems not identified yet.
+
 
 
 
@@ -148,7 +155,6 @@ Lighting isn't calculated at all. The game calculates the lighting over the firs
 few minutes of play, but it starts completely dark.
 Not all buildings are described in the settings file yet, and so they aren't all
 converted with the default settings file.
-Tree and plant types aren't currently determined, ans do they all look the same.
 Files outputted only work in Minecraft Indev. An Infdev save routine is yet to be
 written.
 A out.mcraw file (uncompressed version of the level) is left in the program 
@@ -163,7 +169,7 @@ I'm not good with setting up separate projects - hopefully someone can help me o
 with that.
 This code should be able to be compiled where ever DFHack can be compiled.
 Requirements:
-DFHack 0.4.0.5 (not tested with 7b yet)
+DFHack 0.4.0.7b (current version) - DFHack 0.2.1 (40d version)
 TinyXml (also used by DFHack - I used the version that DFHack was using)
 Zlib (I used 1.2.5)
 
@@ -174,36 +180,27 @@ Technical stuff:
 
 Things to implement
 √ a ReadMe file
-√ Put the spawn in the center of the map, three cubes above the highest piece of 
-	ground in that column, or where inital wagon was (if still in chosen output
-	area), if my assumption that it is always the certer of the map is wrong
+√ Put the spawn in the center of the map, three cubes above the highest piece of ground in that column, or where inital wagon was (if still in chosen output area), if my assumption that it is always the certer of the map is wrong
 √ add a layer of adminium at the bottom of the level
-√ implement a way to specify what x and y area to output 
+√ implement a way to specify what x and y area to output (somewhat implemented)
 √ implement several ways to 'cut down' the level so that it is playable (z direction)
 	√ none - output whole level (already implemented)
-	√ top - top N levels will be output - gives room to build upwards - option to
-		specify how much air (in DF levels (minimum 1)) to keep
-	√ smart - scans the world, marking 'interesting' levels and outputs the top 
-		42 interesting levels interesting levels are one that aren't all air,
-		and aren't all wall (for the cut down x and y area) if room, possibly
-		keep one or more 'uninteresting' levels between interesting levels
-			how to deal with repetitive Stair layers / pump stack layers?
-√ change ramps to use 1-9 instead of NSEW and implement diagnal only ramps, have 
-	fallback to 2468 if not found and again to just 'ramp'
+	√ top - top N levels will be output - gives room to build upwards - option to specify how much air (in DF levels (minimum 1)) to keep
+	√ smart - scans the world, marking 'interesting' levels and outputs the top 42 interesting levels
+		interesting levels are one that aren't all air, and aren't all wall (for the cut down x and y area)
+		if room, possibly keep one or more 'uninteresting' levels between interesting levels
+			how to deal with repetitive Stair layers / pump stack layers
+√ change ramps to use 1-9 instead of NSEW and implement diagnal only ramps, have fallback to 2468 if not found and again to just 'ramp'
 √ implement material look-up for (wall, ramp, stair, floor) constructions
 √ implement buildings (workshops, doors, floodgates, etc)
-* implement objects (needs DFHack support for reporting on objects) - probably only 
-	implement barrels, bins and cages (maybe coins to gold cube)
-√ make sure liquid conversion is working properly (noticed an air gap in water, but 
-	may have been because water - ice interaction
-* figure out tree and shrub types and replace stone material with shrub / tree type 
+* implement objects (needs DFHack support for reporting on objects) - probably only implement barrels, bins and cages (maybe coins to gold cube)
+√ make sure liquid conversion is working properly (noticed an air gap in water, but may have been because water - ice interaction
+√ figure out tree and shrub types and replace floor material with shrub / tree type 
 * replace dirt around shrub / tree with grass unless area is muddy
 * properly calculate inital lighting
-* setup a project of some source code hosting site
-* setup project like DFHack is setup so that different compilers can be used from cmake
-	scripts or similar
-√ rotate .mclevel output so that sun rises in east and set is west / clouds go north, so
-	it matches assumed DF north is top of screen
-* implement infdev file output
-* convert mud splatter to wood pressue plates, snow splatter to snow thin layer (78?), 
-	and other splatter to stone pressure plates ?
+√ setup a project of some source code hosting site
+* setup project like DFHack is setup so that different compilers can be used from cmake scripts or similar
+√ rotate .mclevel output so that sun rises in east and set is west / clouds go north, so it matches assumed DF north is top of screen
+* implement infdev/alpha file output
+* convert mud splatter to wood pressue plates, snow splatter to snow thin layer (78?), and other splatter to stone pressure plates ?
+* possible add directions to buildings - eg. align beds with the headboard against the wall, align chairs to face tables, doors to surrounding walls (for alpha).
