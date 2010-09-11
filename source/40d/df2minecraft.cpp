@@ -1,5 +1,5 @@
 /*
-DF2MC40d version 0.2
+DF2MC40d version 0.5
 Dwarf Fortress To Minecraft
 Converts Dwarf Frotress Game Maps into Minecraft Game Level for use as a
 Dwarf Fortress 3D visulaizer or for creating Minecraft levels to play in.
@@ -37,6 +37,7 @@ http://github.com/TroZ/DF2MC
 #include <stdio.h>
 #include <algorithm>
 #include <time.h>
+#include <direct.h>
 
 using namespace std;
 
@@ -69,6 +70,11 @@ static uint32_t SQUARESPERBLOCK = 16;//number of squares per DF block
 std::map<std::string,uint8_t> mcMats;		//Minecraft material name to id
 std::map<int,int> dfMat2mcMat;			//DF Material name to minecraft id
 std::map<std::string,uint8_t*> objects;	//object description string to minecraft material array of size 2 * squaresize * squaresize * squaresize; 0 is material, 1 is data
+
+int cubeSkyOpacity[256];//how much light each block absorbes from the sky
+int cubeBlockOpacity[256];//how much light each block absorbes from the block sources
+int cubePartialLit[256];//if the block is partially light - mostly 1/2 step and stais blocks, that are lit themselves but block light from passing through
+
 
 TiXmlElement *settings;
 TiXmlElement *materialmapping;
@@ -150,6 +156,11 @@ bool createUnknown = true;
 #define LIMITRANGE	2
 #define LIMITSMART	3
 
+#define OUTPUT_ALPHA 0
+#define OUTPUT_INDEV 1
+
+int outputtype = OUTPUT_ALPHA;
+
 //settings
 int squaresize=3;//number of minecraft blocks per DF square
 int torchPerInside = 10;
@@ -165,6 +176,10 @@ uint32_t limitlevels = 1000;
 uint32_t limitairtokeep = 1000;
 uint32_t limittoplevel = 0;
 uint8_t limitz[1000];
+
+_int64 seed = 0x004446746F4D43FF;// DFtoMC
+
+int biome = 0; //for now = 0 is normal, 1 is snow
 
 //stats counters
 int unknowncount = 0;
@@ -182,10 +197,17 @@ void loadMcMats(TiXmlDocument* doc){
 
 	printf("Loading Minecraft Materials...\n");
 
+	char* tagname;
+	if(outputtype!=OUTPUT_ALPHA){
+		tagname = "minecraftmaterials";
+	}else{
+		tagname = "minecraftmaterialsalpha";
+	}
+
 	TiXmlElement *elm = doc->FirstChildElement();
 	while(elm!=NULL){
 
-		if(strcmp(elm->Value(),"minecraftmaterials")==0){
+		if(strcmp(elm->Value(),tagname)==0){
 			TiXmlElement *mat = elm->FirstChildElement();
 			while(mat!=NULL){
 
@@ -195,9 +217,27 @@ void loadMcMats(TiXmlDocument* doc){
 					string name(mat->GetText());
 
 					//printf("%s -> %d\n",name.c_str(),val);
+					if(val>=0 && val <256){
+						mcMats[name]=(uint8_t)val;
 
-					mcMats[name]=(uint8_t)val;
+						int opacity;
+						if(mat->Attribute("opacity",&opacity)!=NULL){
+							cubeSkyOpacity[val] = max(min(opacity,15),0);
+							cubeBlockOpacity[val] = max(min(opacity,15),-15);
+						}
 
+						if(mat->Attribute("skyopacity",&opacity)!=NULL){
+							cubeSkyOpacity[val] = max(min(opacity,15),0);
+						}
+
+						if(mat->Attribute("blockopacity",&opacity)!=NULL){
+							cubeBlockOpacity[val] = max(min(opacity,15),-15);
+						}
+
+						if(mat->Attribute("partlit",&opacity)!=NULL){
+							cubePartialLit[val] = opacity;
+						}
+					}
 					mat=mat->NextSiblingElement();
 				}
 			}
@@ -353,10 +393,10 @@ void loadObjects(){
 				for(unsigned int i=0;i<datas.size();i++){
 					int8_t d=0;
 					d = atoi(datas[i].c_str());
-					if(d!=0){
-						printf("non-zero d");
-						test=true;
-					}
+					//if(d!=0){
+					//	printf("non-zero d");
+					//	test=true;
+					//}
 					obj[i + (squaresize*squaresize*squaresize)] = (d&0xf)<<4;//data it the upper nibble, lighting appears to be the lower nibble.
 				}
 			}
@@ -382,6 +422,82 @@ void loadObjects(){
 }
 
 
+int compressFile(char* src, char* dest){
+	//compress file gzip
+	int ret, flush;
+    unsigned have;
+    z_stream strm;
+	unsigned char in[CHUNK];
+    unsigned char out[CHUNK];
+
+	FILE *s = fopen("out.mcraw","r");
+	if(s==NULL){
+		printf("Could not open file for reading, exiting.");
+		return -50;
+	}
+	SET_BINARY_MODE(s);
+
+
+	FILE *f = fopen(dest,"w");
+	if(f==NULL){
+		printf("Could not open file for writing, exiting.");
+		return -51;
+	}
+	SET_BINARY_MODE(f);
+
+	//most of the rest of this is from a zlib example
+
+	/* allocate deflate state */
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    ret = deflateInit2(&strm, Z_BEST_COMPRESSION,Z_DEFLATED,31,9,Z_DEFAULT_STRATEGY);//the 31 indicates gzip, set to 15 for normal zlib file header
+    if (ret != Z_OK){
+		printf("Unable to initalize compression routine, exiting.");
+        return ret;
+	}
+
+	/* compress until end of file */
+    do {
+		strm.avail_in = fread(in, 1, CHUNK, s);
+        if (ferror(s)) {
+            (void)deflateEnd(&strm);
+            return Z_ERRNO;
+        }
+        flush = feof(s) ? Z_FINISH : Z_NO_FLUSH;
+        strm.next_in = in;
+		
+		/* run deflate() on input until output buffer not full, finish
+           compression if all of source has been read in */
+		do {
+			strm.avail_out = CHUNK;
+			strm.next_out = out;
+			ret = deflate(&strm, flush);    /* no bad return value */
+			assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
+			have = CHUNK - strm.avail_out;
+			if (fwrite(out, 1, have, f) != have || ferror(f)) {
+				(void)deflateEnd(&strm);
+				return Z_ERRNO;
+			}
+		} while (strm.avail_out == 0);
+		assert(strm.avail_in == 0);     /* all input will be used */
+
+		/* done when last data in file processed */
+    } while (flush != Z_FINISH);
+    assert(ret == Z_STREAM_END);        /* stream will be complete */
+
+
+	/* clean up and return */
+    (void)deflateEnd(&strm);
+
+	fclose(f);
+	fclose(s);
+
+	return Z_OK;
+}
+
+
+
 int saveMCLevel(uint8_t* mclayers,uint8_t* mcdata,int mcxsquares,int mcysquares,int mczsquares,int cloudheightdf, int xs, int ys, int zs,char* name){
 
 	//This saves the level in .mclevel format which is used by the indev version of Minecraft.
@@ -391,7 +507,7 @@ int saveMCLevel(uint8_t* mclayers,uint8_t* mcdata,int mcxsquares,int mcysquares,
 	//should support 65536 x 65536 x 65536 blocks, but practically limited to ~ 512 x 512 x 128 due to memory limits of the indev client
 
 	//ok save minecraft file as a gzipped stream
-	printf("\nWritting file...");
+	printf("\n\nWritting file...");
 
 	int of = open("out.mcraw",O_BINARY | _O_CREAT | _O_TRUNC | _O_WRONLY,_S_IREAD | _S_IWRITE);
 
@@ -518,81 +634,544 @@ int saveMCLevel(uint8_t* mclayers,uint8_t* mcdata,int mcxsquares,int mcysquares,
 	close(of);
 
 
-	//compress file gzip
-	int ret, flush;
-    unsigned have;
-    z_stream strm;
-	unsigned char in[CHUNK];
-    unsigned char out[CHUNK];
-
-	FILE *s = fopen("out.mcraw","r");
-	if(s==NULL){
-		printf("Could not open file for reading, exiting.");
-		return -50;
+	int res = compressFile("out.mcraw",name);
+	if(res != Z_OK){
+		printf("\nError compressing file (%d)\n",res);
+	}else{
+		printf("\n%s\n",name);
+		printf("Done!\n");
 	}
-	SET_BINARY_MODE(s);
-
-
-	FILE *f = fopen(name,"w");
-	if(f==NULL){
-		printf("Could not open file for writing, exiting.");
-		return -51;
-	}
-	SET_BINARY_MODE(f);
-
-	//most of the rest of this is from a zlib example
-
-	/* allocate deflate state */
-    strm.zalloc = Z_NULL;
-    strm.zfree = Z_NULL;
-    strm.opaque = Z_NULL;
-    ret = deflateInit2(&strm, Z_BEST_COMPRESSION,Z_DEFLATED,31,9,Z_DEFAULT_STRATEGY);//the 31 indicates gzip, set to 15 for normal zlib file header
-    if (ret != Z_OK){
-		printf("Unable to initalize compression routine, exiting.");
-        return ret;
-	}
-
-	/* compress until end of file */
-    do {
-		strm.avail_in = fread(in, 1, CHUNK, s);
-        if (ferror(s)) {
-            (void)deflateEnd(&strm);
-            return Z_ERRNO;
-        }
-        flush = feof(s) ? Z_FINISH : Z_NO_FLUSH;
-        strm.next_in = in;
-		
-		/* run deflate() on input until output buffer not full, finish
-           compression if all of source has been read in */
-		do {
-			strm.avail_out = CHUNK;
-			strm.next_out = out;
-			ret = deflate(&strm, flush);    /* no bad return value */
-			assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
-			have = CHUNK - strm.avail_out;
-			if (fwrite(out, 1, have, f) != have || ferror(f)) {
-				(void)deflateEnd(&strm);
-				return Z_ERRNO;
-			}
-		} while (strm.avail_out == 0);
-		assert(strm.avail_in == 0);     /* all input will be used */
-
-		/* done when last data in file processed */
-    } while (flush != Z_FINISH);
-    assert(ret == Z_STREAM_END);        /* stream will be complete */
-
-
-	/* clean up and return */
-    (void)deflateEnd(&strm);
-
-	fclose(f);
-	fclose(s);
-
-
-	printf("Done!\n");
 	
 
 	return 0;
+}
+
+
+
+
+void base36(int val, char* str){
+	char *alpha = "0123456789abcdefghijklmnopqrstuvwxyz";
+	char *ptr=str;
+	bool neg = false;
+	if(val<0){
+		neg=true;
+		val*=-1;
+	}
+	if(val==0){
+		*ptr='0';
+		ptr++;
+	}
+	while(val!=0){
+		*ptr=alpha[val%36];
+		ptr++;
+		val=val/36;
+	}
+	if(neg){
+		*ptr='-';
+		ptr++;
+	}
+	*ptr='\0';
+	strrev(str);
+}
+
+int saveChunk(char* dirname,uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskylight,uint8_t* mcblocklight,int mcxsquares,int mcysquares,int mczsquares,int x, int y, _int64 &size){
+	//BABY RUTH?!?
+
+	//make sure path for chunk exists - this should be x then y but south is +x and east is -y
+	char path[1024];
+	char part[16];
+	//int xpos = y/16;
+	//int ypos = -x/16;
+	int xpos = x/16;
+	int ypos = y/16;
+	base36(xpos%64,part);
+	_snprintf(path,1023,"%s/%s",dirname,part);
+	path[1023]='\0';
+	if(access(path,0)!=0){
+		if(_mkdir(path)!=0)
+			return -100;
+	}
+	int mod = ypos%64;
+	if(mod<0) mod+=64;//the plus 64 is because mod of a negative number is a negative, but we want 0-63
+	base36(mod,part); 
+	strncat(path,"/",1023);
+	strncat(path,part,1023);
+	path[1023]='\0';
+	if(access(path,0)!=0){
+		if(_mkdir(path)!=0)
+			return -101;
+	}
+
+	//make file name
+	strncat(path,"/c.",1023);
+	base36(xpos,part);
+	strncat(path,part,1023);
+	strncat(path,".",1023);
+	base36(ypos,part);
+	strncat(path,part,1023);
+	strncat(path,".dat",1023);
+	path[1023]='\0';
+
+
+	int of = open("out.mcraw",O_BINARY | _O_CREAT | _O_TRUNC | _O_WRONLY,_S_IREAD | _S_IWRITE);
+
+	//first write the raw file to disk
+	write(of,"\012\000\000\012\000\005Level\011\000\010Entities\012\000\000\000\000\011\000\014TileEntities\012\000\000\000\000\001\000\020TerrainPopulated\001\004\000\012LastUpdate",80);
+	_int64 timer = 0;//apparently game time, not unix time
+	//_time64(&timer);
+	write(of,((char*)(&timer))+7,1);
+	write(of,((char*)(&timer))+6,1);
+	write(of,((char*)(&timer))+5,1);
+	write(of,((char*)(&timer))+4,1);
+	write(of,((char*)(&timer))+3,1);
+	write(of,((char*)(&timer))+2,1);
+	write(of,((char*)(&timer))+1,1);
+	write(of,((char*)(&timer))+0,1);
+
+	write(of,"\003\000\004xPos",7);
+	char val[9];
+	val[0] = *(((char*)(&xpos))+3);
+	val[1] = *(((char*)(&xpos))+2);
+	val[2] = *(((char*)(&xpos))+1);
+	val[3] = *(((char*)(&xpos))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	write(of,"\003\000\004zPos",7);
+	val[0] = *(((char*)(&ypos))+3);
+	val[1] = *(((char*)(&ypos))+2);
+	val[2] = *(((char*)(&ypos))+1);
+	val[3] = *(((char*)(&ypos))+0);
+	val[4] = '\0';
+	write(of,val,4);
+
+
+	//prepair data
+	char blocks[16*16*128];
+	char data[16*16*64];
+	char skylight[16*16*64];
+	char blocklight[16*16*64];
+	char heightmap[16*16];
+	memset(blocks,0,16*16*128);
+	memset(data,0,16*16*64);
+	memset(skylight,0,16*16*64);
+	memset(blocklight,0,16*16*64);
+	memset(heightmap,0,16*16);
+
+	for(int zz=0;zz<mczsquares;zz++){
+		for(int yy=0;yy<16;yy++){
+			for(int xx=0;xx<16;xx++){
+
+				//get info for current position
+				int idx = x+xx + (zz * mcysquares +y+yy) * mcxsquares;
+				assert(idx<(mcxsquares*mcysquares*mczsquares));
+
+				int blocktype = mclayers[idx];
+				int blockdata = mcdata[idx]; //upper nibble is the data because of mclevel format
+				int skyl = mcskylight[idx];
+				int blockl = mcblocklight[idx];
+
+				int index = zz + ( yy * 128 + ( xx * 128 * 16 ) ) ;
+				assert(index<(16 * 16 * 128));
+
+				blocks[index] = blocktype;
+
+				if(blocktype!=0)
+					heightmap[yy*16 + xx] = min(zz+1,127);
+
+				if(zz%2==0){
+					data[index/2] |= (blockdata >> 4);
+					skylight[index/2] |= (skyl & 0x0f);
+					blocklight[index/2] |= (blockl &0x0f);
+				}else{
+					data[index/2] |= (blockdata & 0xf0);
+					skylight[index/2] |= ((skyl & 0x0f) << 4);
+					blocklight[index/2] |= ((blockl &0x0f) << 4);
+				}
+			}
+		}
+	}
+
+	//blocks
+	write(of,"\007\000\006Blocks",9);
+	int isize = 16 * 16 * 128;
+	val[0] = *(((char*)(&isize))+3);
+	val[1] = *(((char*)(&isize))+2);
+	val[2] = *(((char*)(&isize))+1);
+	val[3] = *(((char*)(&isize))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	write(of,(char*)blocks,isize);
+	//data
+	write(of,"\007\000\004Data",7);
+	isize = 16 * 16 * 64;
+	val[0] = *(((char*)(&isize))+3);
+	val[1] = *(((char*)(&isize))+2);
+	val[2] = *(((char*)(&isize))+1);
+	val[3] = *(((char*)(&isize))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	write(of,(char*)data,isize);
+	//skylight
+	write(of,"\007\000\010SkyLight",11);
+	write(of,val,4);//same size as above
+	write(of,(char*)skylight,isize);
+	//blocklight
+	write(of,"\007\000\012BlockLight",13);
+	write(of,val,4);//same size as above
+	write(of,(char*)blocklight,isize);
+	//heightMap
+	write(of,"\007\000\011HeightMap",12);
+	isize = 16 * 16;
+	val[0] = *(((char*)(&isize))+3);
+	val[1] = *(((char*)(&isize))+2);
+	val[2] = *(((char*)(&isize))+1);
+	val[3] = *(((char*)(&isize))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	write(of,(char*)heightmap,isize);
+
+
+	//now close tag_compound 'level'
+	write(of,"\000",1);
+
+/*	write(of,"\010\000\013GeneratedBy",14);
+	char str[256];
+	strcpy(str,"Dwarf Fortress To Minecraft by TroZ");
+	int len = strlen(str);
+	write(of,((char*)&(len))+1,1);
+	write(of,&(len),1);
+	write(of,str,len);
+*/
+	write(of,"\000",1);// end of unnamed compound
+
+	close(of);
+
+
+	int res = compressFile("out.mcraw",path);
+	if(res != Z_OK){
+		printf("\nError compressing file (%d)\n",res);
+	}else{
+
+		//now get file size
+		struct _stat filestatus;
+		if(_stat(path,&filestatus)==0){
+			size = filestatus.st_size;
+		}else{
+			printf(" Error getting file size ");
+		}
+	}
+
+	return res;
+}
+
+int saveMCLevelAlpha(uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskylight,uint8_t* mcblocklight,int mcxsquares,int mcysquares,int mczsquares, int xs, int ys, int zs,char* name){
+
+	printf("\n\nWritting save...\n");
+	
+	zs++;//I think this is needed - still need to test
+
+	char dirname[256];
+	char tempname[250];
+	if(name==NULL || strlen(name)<1){
+		_snprintf(tempname,250,"World ");
+	}else{
+		strncpy(tempname,name,250);
+		tempname[249]='\0';
+	}
+	//find not use dir name
+	int count=1;
+	do{
+		_snprintf(dirname,255,"%s%d",tempname,count);
+		count++;
+	}while(_access( dirname, 0 ) ==0 && count < 10000);
+
+	if(count>9999)
+		return count;
+
+	if(_mkdir(dirname)!=0){
+		return -1;
+	}
+
+	_int64 totalsize = 0;
+	_int64 size = 0;
+
+	//ok iterate through 16x16 blocks and save individual chunck files off
+	for(int x=0;x<mcxsquares;x+=16){
+		printf(".");
+		for(int y=0;y<mcysquares;y+=16){
+			size = 0;
+			int ret = saveChunk(dirname, mclayers, mcdata, mcskylight, mcblocklight, mcxsquares, mcysquares, mczsquares, x, y, size);
+			if(ret != 0){
+				printf("Error writing file!\n");
+				return ret;
+			}else{
+				totalsize += size;
+			}
+		}
+	}
+	
+
+	//now save the main index.dat
+	int of = open("out.mcraw",O_BINARY | _O_CREAT | _O_TRUNC | _O_WRONLY,_S_IREAD | _S_IWRITE);
+
+	//first write the raw file to disk - can be large - up to 1GB or more depending on DF area size.
+	write(of,"\012\000\000\012\000\004Data\001\000\013SnowCovered",24);
+	write(of,((char*)(&biome)),1);
+	write(of,"\004\000\012LastPlayed",13);
+	_int64 timer = 0;
+	_time64(&timer);
+	timer *= 1000; //java stores time in milliseconds
+	write(of,((char*)(&timer))+7,1);
+	write(of,((char*)(&timer))+6,1);
+	write(of,((char*)(&timer))+5,1);
+	write(of,((char*)(&timer))+4,1);
+	write(of,((char*)(&timer))+3,1);
+	write(of,((char*)(&timer))+2,1);
+	write(of,((char*)(&timer))+1,1);
+	write(of,((char*)(&timer))+0,1);
+	
+	write(of,"\004\000\004Time\000\000\000\000\000\000\000\000\004\000\012RandomSeed",28);
+
+	char val[9];
+	val[0] = *(((char*)(&seed))+7);
+	val[1] = *(((char*)(&seed))+6);
+	val[2] = *(((char*)(&seed))+5);
+	val[3] = *(((char*)(&seed))+4);
+	val[4] = *(((char*)(&seed))+3);
+	val[5] = *(((char*)(&seed))+2);
+	val[6] = *(((char*)(&seed))+1);
+	val[7] = *(((char*)(&seed))+0);
+	val[8] = '\0';
+	write(of,val,8);
+
+	write(of,"\012\000\006Player\002\000\006Health\000\024\001\000\010OnGround\001\002\000\003Air\001\000\002\000\004Fire\xff\xec\002\000\010HurtTime\000\000\002\000\011DeathTime\000\000\002\000\012AttackTime\000\000\003\000\005Score\000\000\000\000\005\000\014FallDistance\000\000\000\000\011\000\011Inventory\012",135);
+	short entid[] = {276,277,278,279,293,261,280,263,282,262,310,311,312,313};
+	char entcnt[] = {1,	1,	1,	1,	1,	1,	64,	64,	64,	64,	1,	1,	1,	1};
+	char entpos[] = {1,	2,	3,	4,	5,	6,	18,	19,	20,	21,	27,	28,	29,	30};
+	int numinv = 14;
+	val[0] = *(((char*)(&numinv))+3);
+	val[1] = *(((char*)(&numinv))+2);
+	val[2] = *(((char*)(&numinv))+1);
+	val[3] = *(((char*)(&numinv))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	for(int i=0;i<numinv;i++){
+		write(of,"\002\000\002id",5);
+		write(of,((char*)&(entid[i]))+1,1);
+		write(of,&(entid[i]),1);
+		write(of,"\001\000\005Count",8);
+		write(of,&entcnt[i],1);
+		write(of,"\001\000\004Slot",7);
+		write(of,&entpos[i],1);
+		write(of,"\002\000\005Damage\000\000",10);
+		write(of,"\000",1);
+	}
+	write(of,"\011\000\003Pos\006\000\000\000\003",11);
+	double xf = (double)xs + 0.5;
+	double yf = (double)ys + 0.5;
+	double zf = (double)zs + 0.05;
+	//float negxf = -xf;
+	val[0] = *(((char*)&(xf))+7);
+	val[1] = *(((char*)&(xf))+6);
+	val[2] = *(((char*)&(xf))+5);
+	val[3] = *(((char*)&(xf))+4);
+	val[4] = *(((char*)&(xf))+3);
+	val[5] = *(((char*)&(xf))+2);
+	val[6] = *(((char*)&(xf))+1);
+	val[7] = *(((char*)&(xf))+0);
+	write(of,val,8);
+	val[0] = *(((char*)&(zf))+7);
+	val[1] = *(((char*)&(zf))+6);
+	val[2] = *(((char*)&(zf))+5);
+	val[3] = *(((char*)&(zf))+4);
+	val[4] = *(((char*)&(zf))+3);
+	val[5] = *(((char*)&(zf))+2);
+	val[6] = *(((char*)&(zf))+1);
+	val[7] = *(((char*)&(zf))+0);
+	write(of,val,8);
+	val[0] = *(((char*)&(yf))+7);
+	val[1] = *(((char*)&(yf))+6);
+	val[2] = *(((char*)&(yf))+5);
+	val[3] = *(((char*)&(yf))+4);
+	val[4] = *(((char*)&(yf))+3);
+	val[5] = *(((char*)&(yf))+2);
+	val[6] = *(((char*)&(yf))+1);
+	val[7] = *(((char*)&(yf))+0);
+	write(of,val,8);
+	write(of,"\011\000\010Rotation\005\000\000\000\002\000\000\000\000\000\000\000\000",24);
+	write(of,"\011\000\006Motion\006\000\000\000\003\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000",38);
+	write(of,"\000",1);
+
+	write(of,"\003\000\006SpawnX",9);
+	val[0] = *(((char*)(&xs))+3);
+	val[1] = *(((char*)(&xs))+2);
+	val[2] = *(((char*)(&xs))+1);
+	val[3] = *(((char*)(&xs))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	write(of,"\003\000\006SpawnY",9);
+	val[0] = *(((char*)(&zs))+3);
+	val[1] = *(((char*)(&zs))+2);
+	val[2] = *(((char*)(&zs))+1);
+	val[3] = *(((char*)(&zs))+0);
+	val[4] = '\0';
+	write(of,val,4);
+	//int negx = -xs;
+	write(of,"\003\000\006SpawnZ",9);
+	val[0] = *(((char*)(&ys))+3);
+	val[1] = *(((char*)(&ys))+2);
+	val[2] = *(((char*)(&ys))+1);
+	val[3] = *(((char*)(&ys))+0);
+	val[4] = '\0';
+	write(of,val,4);
+
+	write(of,"\004\000\012SizeOnDisk",13);
+	val[0] = *(((char*)(&totalsize))+7);//this is the total size of the chunk files, does not include this files size, nor disk space for directories
+	val[1] = *(((char*)(&totalsize))+6);
+	val[2] = *(((char*)(&totalsize))+5);
+	val[3] = *(((char*)(&totalsize))+4);
+	val[4] = *(((char*)(&totalsize))+3);
+	val[5] = *(((char*)(&totalsize))+2);
+	val[6] = *(((char*)(&totalsize))+1);
+	val[7] = *(((char*)(&totalsize))+0);
+	val[8] = '\0';
+	write(of,val,8);
+
+	write(of,"\000",1);//end of data coumpound
+
+	write(of,"\010\000\013GeneratedBy",14);
+	char str[256];
+	strcpy(str,"Dwarf Fortress To Minecraft by TroZ");
+	int len = strlen(str);
+	write(of,((char*)&(len))+1,1);
+	write(of,&(len),1);
+	write(of,str,len);
+
+	write(of,"\000",1);// end of unnamed compound
+
+
+	close(of);
+
+	char filename[512];
+	_snprintf(filename,511,"%s/%s",dirname,"level.dat");
+	filename[511]='\0';
+	int res = compressFile("out.mcraw",filename);
+	if(res != Z_OK){
+		printf("\nError compressing file (%d)\n",res);
+	}else{
+		printf("Done!\nDirectory \'%s\'\n",dirname);
+	}
+	
+
+	return res;
+}
+
+int getLight(uint8_t *light,int xmax, int ymax, int zmax, int x, int y , int z, bool isSky){
+
+	//is it out of bounds?
+	if(x<0 || y<0 || z<0 || x>=xmax || y>=ymax){
+		return 0;
+	}
+	if(z>=zmax){
+		if(isSky){
+			return 15;
+		}else{
+			return 0;
+		}
+	}
+
+	int index = x + (z * ymax +y) * xmax;
+	return light[index];
+}
+
+inline void lightCubeSky(uint8_t *mcskylight, int xmax, int ymax, int zmax, int x, int y, int z, int opacity, int index){
+	int skylightvert=max(getLight(mcskylight,xmax, ymax, zmax, x, y , z+1, true),getLight(mcskylight,xmax, ymax, zmax, x, y , z-1, false));
+	int skylighthoriz = max(
+			max(getLight(mcskylight,xmax, ymax, zmax, x+1, y , z, false),getLight(mcskylight,xmax, ymax, zmax, x-1, y , z, false)),
+			max(getLight(mcskylight,xmax, ymax, zmax, x, y+1 , z, false),getLight(mcskylight,xmax, ymax, zmax, x, y-1 , z, false)));
+	skylighthoriz = (skylighthoriz>0)?skylighthoriz-1:0;
+	int skylight = max(skylightvert, skylighthoriz);
+	if(opacity>0){
+		skylight=max(skylight-opacity,0);
+	}
+	mcskylight[index] = skylight;
+}
+
+inline void lightCubeBlock(uint8_t *mcblocklight, int xmax, int ymax, int zmax, int x, int y, int z, int opacity, int index){
+	int blocklightvert=max(getLight(mcblocklight,xmax, ymax, zmax, x, y , z+1, false),getLight(mcblocklight,xmax, ymax, zmax, x, y , z-1, false));
+	int blocklighthoriz = max(
+			max(getLight(mcblocklight,xmax, ymax, zmax, x+1, y , z, false),getLight(mcblocklight,xmax, ymax, zmax, x-1, y , z, false)),
+			max(getLight(mcblocklight,xmax, ymax, zmax, x, y+1 , z, false),getLight(mcblocklight,xmax, ymax, zmax, x, y-1 , z, false)));
+
+	int blocklight = max(max(blocklightvert, blocklighthoriz),getLight(mcblocklight,xmax, ymax, zmax, x, y , z, false));
+	if(opacity>=0){
+		blocklight=max(blocklight-opacity-1,0);
+	}
+	mcblocklight[index] = blocklight;
+}
+
+void calcLighting(uint8_t *mclayers,uint8_t *mcskylight,uint8_t *mcblocklight, int xmax, int ymax, int zmax){
+
+	printf("\nCalculating lighting...\n");
+
+	//cin.ignore();
+
+	for(int pass=15;pass>0;pass--){
+		printf(".");
+		for(int z=zmax-1;z>-1;z--){
+			for(int y=0;y<ymax;y++){
+				for(int x=0;x<xmax;x++){
+
+					int index = x + (z * ymax +y) * xmax;
+					int blocktype = mclayers[index];
+
+					//calc skylight
+					int opacity = cubeSkyOpacity[blocktype];
+					if(opacity<15){
+						lightCubeSky(mcskylight, xmax, ymax, zmax, x, y, z,opacity, index);
+					}
+
+					//calc blocklight
+					opacity = cubeBlockOpacity[blocktype];
+					if(opacity<0){
+						mcblocklight[index] = -opacity;
+						lightCubeBlock(mcblocklight, xmax, ymax, zmax, x, y, z, opacity, index);
+					}else if(opacity<15){
+						lightCubeBlock(mcblocklight, xmax, ymax, zmax, x, y, z, opacity, index);
+					}
+				}
+			}
+		}
+	}
+
+	//final pass - fill only the partially lit objects
+	printf(" .");
+	for(int z=zmax-1;z>-1;z--){
+		for(int y=0;y<ymax;y++){
+			for(int x=0;x<zmax;x++){
+
+				int index = x + (z * ymax +y) * xmax;
+				int blocktype = mclayers[index];
+
+				if(cubePartialLit[blocktype]){
+					//calc skylight
+					lightCubeSky(mcskylight, xmax, ymax, zmax, x, y, z, index,0);
+
+					//calc blocklight
+					lightCubeBlock(mcblocklight, xmax, ymax, zmax, x, y, z, index,0);
+				}
+			}
+		}
+	}
+
+}
+
+void calcLightingIndev(uint8_t *mcdata,uint8_t *mcskylight,uint8_t *mcblocklight, int mcxsquares, int mcysquares, int mczsquares){
+	printf("  .");
+	int total = mcxsquares * mcysquares * mczsquares;
+	for(int i = 0; i<total; i++){
+		mcdata[i] = 0x0f & ( max(mcskylight[i],mcblocklight[i]) );
+	}
 }
 
 
@@ -1147,12 +1726,16 @@ void convertDFBlock(DFHack::API *Maps, /*DFHack::API * Mats,*/ vector< vector <u
 				}//no break, we want to fall through
 				default:
 					strncpy(classname,TileClassNames[tileTypeTable[tiletype].c],127);
-					if(strnicmp(tileTypeTable[tiletype].name,"smooth",5)==0){//doing this as des.smooth never seems to be set.
+					if(tileTypeTable[tiletype].name!=NULL && strnicmp(tileTypeTable[tiletype].name,"smooth",5)==0){//doing this as des.smooth never seems to be set.
 						variant+=10;//and if I could figure out engraved it would be 20 over base variant
 					}
 					break;
 			}
 
+			if(tileTypeTable[tiletype].name == NULL){
+				printf("Unknown tile type at %d,%d layer %d - id is %d, DFHAck needs description\n",dfx,dfy,zzz,tiletype);
+				unknowncount++;
+			}
 						
 			uint8_t* object = getObject(uio,dfx, dfy, zzz,classname, TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat,consmat);
 
@@ -1461,10 +2044,19 @@ int convertMaps(DFHack::API *DF/*,DFHack::Materials * Mats*/){
 	int mcysquares = dfysquares * squaresize;
 	int mczsquares = dfzsquares * squaresize+1;
 
-	printf("DF Map size cut down to %dx%d \'blocks\'\n",(x_max-xoffset),(y_max-yoffset));
-	printf("DF Map size cut down to %d, %d, %d squares\n",dfxsquares,dfysquares, dfzsquares);
-	printf("MC Map size cut down to %d, %d, %d squares\n",mcxsquares,mcysquares, mczsquares);
-	if(mcxsquares > 512 || mcysquares > 512 || mczsquares > 128){
+	if(outputtype!=OUTPUT_ALPHA){
+		printf("DF Map size cut down to %dx%d \'blocks\'\n",(x_max-xoffset),(y_max-yoffset));
+		printf("DF Map size cut down to %d, %d, %d squares\n",dfxsquares,dfysquares, dfzsquares);
+		printf("MC Map size cut down to %d, %d, %d squares\n",mcxsquares,mcysquares, mczsquares);
+	}else{
+		if(z_max>limitlevels){
+			printf("DF Map size cut down to %d, %d, %d squares\n",dfxsquares,dfysquares, dfzsquares);
+		}
+		if(mczsquares<128) mczsquares = 128;//this should be the case (<128) most of the time
+		printf("MC Map size will be %d, %d, %d squares\n",mcxsquares,mcysquares, mczsquares);
+		printf("plus surrounding random terrain using seed: %I64d\n",seed);
+	}
+	if(outputtype==OUTPUT_INDEV && (mcxsquares > 512 || mcysquares > 512 || mczsquares > 128)){
 		printf("WARNING: maps larger than 512x512x128 can cause issues with Minecraft indev\n");
 	}
 	if(mcxsquares<0 || mcysquares<0 || mczsquares<0){
@@ -1605,7 +2197,7 @@ int convertMaps(DFHack::API *DF/*,DFHack::Materials * Mats*/){
 
 					uint32_t index = getMapIndex(x,y,temp.z);
 
-					if(strcmp(mb->type,"stockpilest")==0){
+					if(strcmp(mb->type,"stockpile")==0){
 						if(Buildings.find(index)==Buildings.end()){
 							Buildings[index] = *mb;
 //						}else{
@@ -1626,12 +2218,16 @@ int convertMaps(DFHack::API *DF/*,DFHack::Materials * Mats*/){
 	//allocate memory for blocks and data
 	uint8_t* mclayers = new uint8_t[mcxsquares*mcysquares*mczsquares];
 	uint8_t* mcdata = new uint8_t[mcxsquares*mcysquares*mczsquares];
-	if( mclayers==NULL || mcdata == NULL){
+	uint8_t* mcskylight = new uint8_t[mcxsquares*mcysquares*mczsquares];
+	uint8_t* mcblocklight = new uint8_t[mcxsquares*mcysquares*mczsquares];
+	if( mclayers==NULL || mcdata == NULL || mcskylight == NULL || mcblocklight == NULL){
 		printf("Unable to allocate memory to store level data, exiting.");
 		return 10;
 	}
 	memset(mclayers,0,sizeof(uint8_t)*(mcxsquares*mcysquares*mczsquares));
 	memset(mcdata,0,sizeof(uint8_t)*(mcxsquares*mcysquares*mczsquares));
+	memset(mcskylight,0,sizeof(uint8_t)*(mcxsquares*mcysquares*mczsquares));
+	memset(mcblocklight,0,sizeof(uint8_t)*(mcxsquares*mcysquares*mczsquares));
 
 	
 
@@ -1763,6 +2359,9 @@ int convertMaps(DFHack::API *DF/*,DFHack::Materials * Mats*/){
 	printf("Putting spawn at %d,%d,%d in Minecraft\nwhich is at %d,%d,%d in Dwarf Fortress\n",cx,cy,cz,ocx,ocy,ocz);
 	
 
+	calcLighting(mclayers,mcskylight,mcblocklight, mcxsquares, mcysquares, mczsquares);
+
+
 	//save the level!
 	char name[256];
 	//strcpy(name,"out.mclevel");
@@ -1786,9 +2385,15 @@ int convertMaps(DFHack::API *DF/*,DFHack::Materials * Mats*/){
 		_snprintf(name,255,"out.mclevel");
 	}
 	name[255]='\0';
-	printf("\n%s\n",name);
+	
 
-	return saveMCLevel(mclayers, mcdata, mcxsquares, mcysquares, mczsquares, cloudheight,cx,cy,cz,name);
+
+	if(outputtype!=OUTPUT_ALPHA){
+		calcLightingIndev(mcdata,mcskylight,mcblocklight,mcxsquares, mcysquares, mczsquares);
+		return saveMCLevel(mclayers, mcdata, mcxsquares, mcysquares, mczsquares, cloudheight,cx,cy,cz,name);
+	}else{
+		return saveMCLevelAlpha(mclayers, mcdata, mcskylight, mcblocklight, mcxsquares, mcysquares, mczsquares,cx,cy,cz,name);
+	}
 
 }
 
@@ -1937,21 +2542,48 @@ int main (int argc, const char* argv[]){
 		torchPerSubter=30;
 		settings->FirstChildElement("torchsubterraneanpercent")->SetAttribute("val",torchPerSubter);
 	}
+
+	if(settings->FirstChildElement("output")==NULL){
+		TiXmlElement * ss = new TiXmlElement( "output" );
+		settings->LinkEndChild( ss ); 
+	}
+	if(settings->FirstChildElement("output")->Attribute("type")==NULL){
+		settings->FirstChildElement("output")->SetAttribute("type","alpha");
+	}
+	if(settings->FirstChildElement("output")->Attribute("seed")==NULL){
+		settings->FirstChildElement("output")->SetAttribute("seed","");
+	}
+	if(stricmp("indev",settings->FirstChildElement("output")->Attribute("type"))==0){
+		outputtype=OUTPUT_INDEV;
+	}else{
+		outputtype=OUTPUT_ALPHA;
+	}
+	_int64 tmpseed = _atoi64(settings->FirstChildElement("output")->Attribute("seed"));
+	if(tmpseed != 0){
+		seed = tmpseed;
+	}
 	
 	int temp;
-	if(settings->FirstChildElement("horizontalarea")!=NULL){
-		if(settings->FirstChildElement("horizontalarea")->Attribute("xmin",&temp)!=NULL){
-			limitxmin = temp;
+	if(outputtype!=OUTPUT_ALPHA){
+		if(settings->FirstChildElement("horizontalarea")!=NULL){
+			if(settings->FirstChildElement("horizontalarea")->Attribute("xmin",&temp)!=NULL){
+				limitxmin = temp;
+			}
+			if(settings->FirstChildElement("horizontalarea")->Attribute("xmax",&temp)!=NULL){
+				limitxmax = temp;
+			}
+			if(settings->FirstChildElement("horizontalarea")->Attribute("ymin",&temp)!=NULL){
+				limitymin = temp;
+			}
+			if(settings->FirstChildElement("horizontalarea")->Attribute("ymax",&temp)!=NULL){
+				limitymax = temp;
+			}
 		}
-		if(settings->FirstChildElement("horizontalarea")->Attribute("xmax",&temp)!=NULL){
-			limitxmax = temp;
-		}
-		if(settings->FirstChildElement("horizontalarea")->Attribute("ymin",&temp)!=NULL){
-			limitymin = temp;
-		}
-		if(settings->FirstChildElement("horizontalarea")->Attribute("ymax",&temp)!=NULL){
-			limitymax = temp;
-		}
+	}else{
+		limitxmin=0;
+		limitymin=0;
+		limitxmax=2000;
+		limitymax=2000;
 	}
 
 	if(settings->FirstChildElement("verticalarea")!=NULL){
@@ -1964,7 +2596,11 @@ int main (int argc, const char* argv[]){
 			}else if( stricmp(str,"smart")==0){
 				limittype = LIMITSMART;
 			}else{
-				limittype = LIMITNONE;
+				if(outputtype!=OUTPUT_ALPHA){
+					limittype = LIMITNONE;
+				}else{
+					limittype = LIMITTOP;
+				}
 			}
 		}
 		if(settings->FirstChildElement("verticalarea")->Attribute("levels",&temp)!=NULL){
@@ -1978,6 +2614,9 @@ int main (int argc, const char* argv[]){
 		}
 	}
 	
+	if(outputtype==OUTPUT_ALPHA && (limitlevels*squaresize)>127){
+		limitlevels = 127/squaresize;
+	}
 
 
 

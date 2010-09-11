@@ -1,5 +1,5 @@
 ﻿Dwarf Fortress 2 Minecraft (DF2MC) ReadMe
-version 0.2
+version 0.5
 
 ABOUT:
 DF2MC attempts to convert a Dwarf Fortress local area into a Minecraft map. It
@@ -28,11 +28,15 @@ When it has finished converting the level, check if there were any 'unknown
 	properly. These will end up as a 'hole' in the Minecraft map.
 Press enter to close the DF2MC program. Dwarf Fortress should then again 
 	respond to input. If it does not, run DFunstuck which will fix the issue.
-There should be 4 new files in the directory where you ran DF2MC:
-	out.mclevel - the converted Minecraft level
+There should be 3 new files in the directory where you ran DF2MC:
 	out.mcraw - an uncompressed version of the level, for debugging not needed
 	updated.xml - an updated version of the settings file with new object types
 	unimplementedobjects.xml - the full description of every object found
+additionally, there will be a new directory if doing a conversion to Minecraft 
+Alpha (the default) which contains the save or a file called'out.mclevel', the 
+converted Minecraft level for Minecraft Indev.  The Alpha directory should be 
+moved to your Minecraft save directory and renamed to WorldX, where X is 1-5.
+Be careful to not delete or overwrite a Mincraft world you care about.
 
 
 SETTINGS:
@@ -151,15 +155,12 @@ problems not identified yet.
 
 
 ISSUES:
-Lighting isn't calculated at all. The game calculates the lighting over the first
-few minutes of play, but it starts completely dark.
 Not all buildings are described in the settings file yet, and so they aren't all
 converted with the default settings file.
-Files outputted only work in Minecraft Indev. An Infdev save routine is yet to be
-written.
 A out.mcraw file (uncompressed version of the level) is left in the program 
 directory. The isn't needed and can be deleted.
-Running the program again overwrites the output file without a warning.
+Running the program again in Indev mode overwrites the output file without a 
+warning.
 
 
 
@@ -196,11 +197,11 @@ Things to implement
 * implement objects (needs DFHack support for reporting on objects) - probably only implement barrels, bins and cages (maybe coins to gold cube)
 √ make sure liquid conversion is working properly (noticed an air gap in water, but may have been because water - ice interaction
 √ figure out tree and shrub types and replace floor material with shrub / tree type 
-* replace dirt around shrub / tree with grass unless area is muddy
-* properly calculate inital lighting
+- replace dirt around shrub / tree with grass unless area is muddy (no longer going to do as grass grows in alpha)
+√ properly calculate inital lighting
 √ setup a project of some source code hosting site
 * setup project like DFHack is setup so that different compilers can be used from cmake scripts or similar
 √ rotate .mclevel output so that sun rises in east and set is west / clouds go north, so it matches assumed DF north is top of screen
-* implement infdev/alpha file output
+√ implement infdev/alpha file output
 * convert mud splatter to wood pressue plates, snow splatter to snow thin layer (78?), and other splatter to stone pressure plates ?
 * possible add directions to buildings - eg. align beds with the headboard against the wall, align chairs to face tables, doors to surrounding walls (for alpha).
