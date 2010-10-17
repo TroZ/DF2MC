@@ -1,5 +1,5 @@
 /*
-DF2MC version 0.5
+DF2MC version 0.7
 Dwarf Fortress To Minecraft
 Converts Dwarf Frotress Game Maps into Minecraft Game Level for use as a
 Dwarf Fortress 3D visulaizer or for creating Minecraft levels to play in.
@@ -34,6 +34,7 @@ http://github.com/TroZ/DF2MC
 #include <string>
 #include <vector>
 #include <map>
+#include <hash_set>
 #include <stdio.h>
 #include <algorithm>
 #include <time.h>
@@ -64,8 +65,15 @@ http://github.com/TroZ/DF2MC
 static uint32_t SQUARESPERBLOCK = 16;//number of squares per DF block
 
 std::map<std::string,uint8_t> mcMats;		//Minecraft material name to id
-std::map<int,int> dfMat2mcMat;			//DF Material name to minecraft id
-std::map<std::string,uint8_t*> objects;	//object description string to minecraft material array of size 2 * squaresize * squaresize * squaresize; 0 is material, 1 is data
+//std::map<int,int> dfMat2mcMat;			//DF Material name to minecraft id
+std::map<std::string,uint8_t*> dfMats;	//what a wall of a particular df material looks like
+std::map<std::string,uint8_t*> terrain;	//object description string to minecraft material array of size 2 * squaresize * squaresize * squaresize; 0 is material, 1 is data
+std::map<std::string,uint8_t*> plants;	//object description string to minecraft material array of size 2 * squaresize * squaresize * squaresize; 0 is material, 1 is data
+std::map<std::string,uint8_t*> buildings;	//object description string to minecraft material array of size 2 * squaresize * squaresize * squaresize; 0 is material, 1 is data
+std::map<std::string,uint8_t*> flows;	//object description string to minecraft material array of size 2 * squaresize * squaresize * squaresize; 0 is material, 1 is data
+std::map<std::string,std::string> buildingNeighbors; //the buildings (second) to align a build (first) to face
+std::hash_set<int> sandhash;				//list of objects that respond to gravity (sand)
+std::hash_set<int> supporthash;				//list of objects that don't support thing that respond to gravity (water, lava, etc)
 
 int cubeSkyOpacity[256];//how much light each block absorbes from the sky
 int cubeBlockOpacity[256];//how much light each block absorbes from the block sources
@@ -74,7 +82,12 @@ int cubePartialLit[256];//if the block is partially light - mostly 1/2 step and 
 
 TiXmlElement *settings;
 TiXmlElement *materialmapping;
-TiXmlElement *xmlobjects;
+//TiXmlElement *xmlobjects;
+TiXmlElement *xmlmaterials;
+TiXmlElement *xmlterrain;
+TiXmlElement *xmlplants;
+TiXmlElement *xmlbuildings;
+TiXmlElement *xmlflows;
 
 const char TileClassNames[18][16] ={
 	"empty",
@@ -141,6 +154,12 @@ struct myBuilding {
     DFHack::t_matglossPair material;
 };
 
+struct myConstruction {
+	uint16_t form; // e_construction_base
+    uint16_t mat_type;
+    uint32_t mat_idx;
+};
+
 
 char *airarray=NULL;
 char *intarray=NULL;
@@ -162,6 +181,8 @@ int squaresize=3;//number of minecraft blocks per DF square
 int torchPerInside = 10;
 int torchPerDark = 20;
 int torchPerSubter = 30;
+int directionalWalls = 0;
+int safesand = 3;
 
 uint32_t limitxmin = 0;
 uint32_t limitxmax = 1000;
@@ -176,13 +197,25 @@ uint8_t limitz[1000];
 _int64 seed = 0x004446746F4D43FF;// DFtoMC
 
 int biome = 0; //for now = 0 is normal, 1 is snow
+int snowy = 0;
 
 //stats counters
-int unknowncount = 0;
-int imperfectknown = 0;
-int perfectknown = 0;
-int prevunseen = 0;
+#define UNKNOWN		0
+#define IMPERFECT	1
+#define PERFECT		2
+#define UNSEEN		3
+#define STAT_TYPES	4
+#define STAT_AREAS	5
+#define MATERIALS	0
+#define TERRAIN		1
+#define FLOWS		2
+#define PLANTS		3
+#define BUILDINGS	4
+int stats[STAT_AREAS][STAT_TYPES];
  
+
+
+
 
 using namespace std;
 using namespace DFHack;
@@ -232,6 +265,14 @@ void loadMcMats(TiXmlDocument* doc){
 
 						if(mat->Attribute("partlit",&opacity)!=NULL){
 							cubePartialLit[val] = opacity;
+						}
+
+						if(mat->Attribute("sand",&opacity)!=NULL && opacity==1){
+							sandhash.insert(val);
+						}
+
+						if(mat->Attribute("nonsupport",&opacity)!=NULL && opacity==1){
+							supporthash.insert(val);
 						}
 					}
 					mat=mat->NextSiblingElement();
@@ -331,22 +372,25 @@ std::vector<std::string> split(const std::string &s, const char *delim, std::vec
 }
 
 
-void loadObjects(){
+void loadObject(TiXmlElement *elm, std::map<std::string,uint8_t*> &objects, bool allowFace = false){
 
-	printf("Loading DF to MC Object Definations...\n");
-
-	TiXmlElement *elm = xmlobjects->FirstChildElement();
-
-	
 	//iterate through elements adding them into the objects map
 	while(elm!=NULL){
-		bool test=false;
+		//bool test=false;
 
 		const char *val = elm->Attribute("mat");
 		if(val!=NULL){
 			const char* name = elm->Value();
+			string data = "";
+			string face = "";
 			string val = elm->Attribute("mat");
-			string data = elm->Attribute("data");
+			if(elm->Attribute("data")!=NULL){
+				data = elm->Attribute("data");
+			}
+			if(elm->Attribute("face")!=NULL){
+				face = elm->Attribute("face");
+			}
+			
 
 			int size = squaresize*squaresize*squaresize;
 			uint8_t *obj = new uint8_t[2*size];
@@ -369,8 +413,15 @@ void loadObjects(){
 				if(it!=mcMats.end()){
 					obj[i]=it->second;
 				}else{
-					printf("Unknown Minecraft Material %s in object %s - using Air\n",vals[i].c_str(),name);
-					obj[i]=0;
+					int num = atoi(vals[i].c_str());
+					if(num>=-1 && num<256){
+						obj[i]=num;
+					}else{
+						if(vals[i].c_str()[0]!='0'){
+							printf("Unknown Minecraft Material %s in object %s - using Air\n",vals[i].c_str(),name);
+						}
+						obj[i]=0;
+					}
 				}
 			}
 
@@ -398,6 +449,9 @@ void loadObjects(){
 			}
 
 			//ok, now add to objects map
+			if(objects.find(name)!=objects.end()){
+				printf("\t %s is already defined - overwritting\n",name);
+			}
 			objects[name] = obj;
 
 			//if(test){
@@ -408,12 +462,40 @@ void loadObjects(){
 			//	}
 			//}
 
+			if(allowFace && face.length()>0){
+				buildingNeighbors[name]=face;
+			}
+
 		}
 
 		elm = elm->NextSiblingElement();
 	}
 
-	printf("loaded %d objects\n\n",objects.size());
+}
+
+void loadDFObjects(){
+
+	printf("Loading DF to MC Object Definations...\n");
+
+	TiXmlElement *elm = xmlmaterials->FirstChildElement();
+	loadObject(elm,dfMats);
+	printf("loaded %d DF materials\n",dfMats.size());
+
+	elm = xmlterrain->FirstChildElement();
+	loadObject(elm,terrain, true);
+	printf("loaded %d terrain types\n",terrain.size());
+
+	elm = xmlflows->FirstChildElement();
+	loadObject(elm,flows);
+	printf("loaded %d flow types\n",flows.size());
+
+	elm = xmlplants->FirstChildElement();
+	loadObject(elm,plants);
+	printf("loaded %d plant types\n",plants.size());
+
+	elm = xmlbuildings->FirstChildElement();
+	loadObject(elm,buildings, true);
+	printf("loaded %d building types\n\n",buildings.size());
 
 }
 
@@ -501,7 +583,7 @@ int saveMCLevel(uint8_t* mclayers,uint8_t* mcdata,int mcxsquares,int mcysquares,
 	//should support 65536 x 65536 x 65536 blocks, but practically limited to ~ 512 x 512 x 128 due to memory limits of the indev client
 
 	//ok save minecraft file as a gzipped stream
-	printf("\n\nWritting file...");
+	printf("\n\nSaving...");
 
 	int of = open("out.mcraw",O_BINARY | _O_CREAT | _O_TRUNC | _O_WRONLY,_S_IREAD | _S_IWRITE);
 
@@ -665,7 +747,6 @@ void base36(int val, char* str){
 }
 
 int saveChunk(char* dirname,uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskylight,uint8_t* mcblocklight,int mcxsquares,int mcysquares,int mczsquares,int x, int y, _int64 &size){
-	//BABY RUTH?!?
 
 	//make sure path for chunk exists - this should be x then y but south is +x and east is -y
 	char path[1024];
@@ -856,7 +937,7 @@ int saveChunk(char* dirname,uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskyligh
 
 int saveMCLevelAlpha(uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskylight,uint8_t* mcblocklight,int mcxsquares,int mcysquares,int mczsquares, int xs, int ys, int zs,char* name){
 
-	printf("\n\nWritting save...\n");
+	printf("\n\nSaving...\n");
 	
 	zs++;//I think this is needed - still need to test
 
@@ -904,9 +985,15 @@ int saveMCLevelAlpha(uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskylight,uint8
 	//now save the main index.dat
 	int of = open("out.mcraw",O_BINARY | _O_CREAT | _O_TRUNC | _O_WRONLY,_S_IREAD | _S_IWRITE);
 
-	//first write the raw file to disk - can be large - up to 1GB or more depending on DF area size.
+	//first write the raw file to disk
 	write(of,"\012\000\000\012\000\004Data\001\000\013SnowCovered",24);
-	write(of,((char*)(&biome)),1);
+	if(snowy==0)
+		write(of,((char*)(&biome)),1);
+	else if(snowy>0){
+		write(of,((char*)1),1);
+	}else{
+		write(of,((char*)0),1);
+	}
 	write(of,"\004\000\012LastPlayed",13);
 	_int64 timer = 0;
 	_time64(&timer);
@@ -935,10 +1022,10 @@ int saveMCLevelAlpha(uint8_t* mclayers,uint8_t* mcdata,uint8_t* mcskylight,uint8
 	write(of,val,8);
 
 	write(of,"\012\000\006Player\002\000\006Health\000\024\001\000\010OnGround\001\002\000\003Air\001\000\002\000\004Fire\xff\xec\002\000\010HurtTime\000\000\002\000\011DeathTime\000\000\002\000\012AttackTime\000\000\003\000\005Score\000\000\000\000\005\000\014FallDistance\000\000\000\000\011\000\011Inventory\012",135);
-	short entid[] = {276,277,278,279,293,261,280,263,282,262,310,311,312,313};
-	char entcnt[] = {1,	1,	1,	1,	1,	1,	64,	64,	64,	64,	1,	1,	1,	1};
-	char entpos[] = {1,	2,	3,	4,	5,	6,	18,	19,	20,	21,	27,	28,	29,	30};
-	int numinv = 14;
+	short entid[] = {276,277,278,279,293,261,345,280,263,282,262,310,311,312,313};
+	char entcnt[] = {1,	1,	1,	1,	1,	1,	1,	64,	64,	64,	64,	1,	1,	1,	1};
+	char entpos[] = {1,	2,	3,	4,	5,	6,	8,	18,	19,	20,	21,	27,	28,	29,	30};
+	int numinv = 15;
 	val[0] = *(((char*)(&numinv))+3);
 	val[1] = *(((char*)(&numinv))+2);
 	val[2] = *(((char*)(&numinv))+1);
@@ -1075,10 +1162,10 @@ int getLight(uint8_t *light,int xmax, int ymax, int zmax, int x, int y , int z, 
 }
 
 inline void lightCubeSky(uint8_t *mcskylight, int xmax, int ymax, int zmax, int x, int y, int z, int opacity, int index){
-	int skylightvert=max(getLight(mcskylight,xmax, ymax, zmax, x, y , z+1, true),getLight(mcskylight,xmax, ymax, zmax, x, y , z-1, false));
+	int skylightvert=max(getLight(mcskylight,xmax, ymax, zmax, x, y , z+1, true),getLight(mcskylight,xmax, ymax, zmax, x, y , z-1, true));
 	int skylighthoriz = max(
-			max(getLight(mcskylight,xmax, ymax, zmax, x+1, y , z, false),getLight(mcskylight,xmax, ymax, zmax, x-1, y , z, false)),
-			max(getLight(mcskylight,xmax, ymax, zmax, x, y+1 , z, false),getLight(mcskylight,xmax, ymax, zmax, x, y-1 , z, false)));
+			max(getLight(mcskylight,xmax, ymax, zmax, x+1, y , z, true),getLight(mcskylight,xmax, ymax, zmax, x-1, y , z, true)),
+			max(getLight(mcskylight,xmax, ymax, zmax, x, y+1 , z, true),getLight(mcskylight,xmax, ymax, zmax, x, y-1 , z, true)));
 	skylighthoriz = (skylighthoriz>0)?skylighthoriz-1:0;
 	int skylight = max(skylightvert, skylighthoriz);
 	if(opacity>0){
@@ -1103,8 +1190,6 @@ inline void lightCubeBlock(uint8_t *mcblocklight, int xmax, int ymax, int zmax, 
 void calcLighting(uint8_t *mclayers,uint8_t *mcskylight,uint8_t *mcblocklight, int xmax, int ymax, int zmax){
 
 	printf("\nCalculating lighting...\n");
-
-	//cin.ignore();
 
 	for(int pass=15;pass>0;pass--){
 		printf(".");
@@ -1180,42 +1265,65 @@ uint32_t getMapIndex(uint32_t x,uint32_t y,uint32_t z){
 }
 
 
-uint8_t* getObject(TiXmlElement *uio,int x, int y, int z,const char* classname,const  char* basicmaterial, int variant=0,const char* fullname = NULL,
-	const char* specificmaterial = NULL,const char* reallyspecificmaterial = NULL,bool addstats=true){
+void addUnknown(TiXmlElement *uio, TiXmlElement *section,const char* name,const char *data, int stattype){
 
-	//check order
-		//class, basic material, varient, description, specific material-really specific
-		//class, basic material, varient, description, specific material
-		//class, basic material, varient, description
-		//class, basic material, description, specific material-really specific
-		//class, basic material, description, specific material
-		//class, basic material, description 
-		//class, basic material, varient, specific material-really specific
-		//class, basic material, varient, specific material
-		//class, basic material, varient
-		//class, basic material, specific material-really specific
-		//class, basic material, specific material
-		//class, basic material
+	if(uio!=NULL){
+		TiXmlElement *sect = uio->FirstChildElement(section->Value());
+		if(sect==NULL){
+			sect = new TiXmlElement( section->Value() ); 
+			uio->LinkEndChild( sect );
+		}
+
+		TiXmlElement *elm = sect->FirstChildElement(name);
+		if(elm==NULL){//add perfect match to unimplemented objects
+			elm = new TiXmlElement( name );  
+			elm->SetAttribute("mat",makeAirArray());
+			if(data!=NULL){
+				elm->SetAttribute("data",data);
+			}
+			sect->LinkEndChild( elm ); 
+			if(stattype>-1)
+				stats[stattype][UNSEEN]++;
+		}
+	}
+
+}
+
+uint8_t* getMaterial(TiXmlElement *uio,int x, int y, int z,const  char* basicmaterial, int variant=0,
+	const char* fullname = NULL, const char* specificmaterial = NULL, const char* constmat = NULL, bool addstats = true){
+
+	//check order 
+		//basic material, varient, description, specific material, construction material
+		//basic material, varient, description, specific material
+		//basic material, varient, description
+		//basic material, description, specific material, construction material
+		//basic material, description, specific material
+		//basic material, description 
+		//basic material, varient, specific material, construction material
+		//basic material, varient, specific material
+		//basic material, varient
+		//basic material, specific material, construction material
+		//basic material, specific material
+		//basic material
 #define NUM_OBJECT_CHECKS 12
 
-	char loc[NUM_OBJECT_CHECKS][256]; //description of current block for lookup in objects
+	char loc[NUM_OBJECT_CHECKS][256]; //description of current material for lookup in materials
 	const char* smat = NULL;
 	if( NULL!=specificmaterial && specificmaterial[0]!='\0'){
 		smat = specificmaterial;
 	}
 
-	
 	if(smat!=NULL){
-		if(reallyspecificmaterial!=NULL ){
+		if(constmat!=NULL ){
 			if(fullname!=NULL){
-				_snprintf(loc[11],255,"%s.%s.%d.%s.%s-%s",	classname,	basicmaterial,	variant,	fullname,	smat,	reallyspecificmaterial);
-				_snprintf(loc[8],255,"%s.%s.%s.%s-%s",	classname,	basicmaterial,	fullname,	smat,	reallyspecificmaterial);
+				_snprintf(loc[11],255,"%s.%d.%s.%s-%s",	basicmaterial,	variant,	fullname,	smat,	constmat);
+				_snprintf(loc[8],255,"%s.%s.%s-%s",		basicmaterial,	fullname,	smat,	constmat);
 			}else{
 				loc[11][0]='\0';
 				loc[8][0]='\0';
 			}
-			_snprintf(loc[5],255,"%s.%s.%d.%s-%s",	classname,	basicmaterial,	variant,	smat,	reallyspecificmaterial);
-			_snprintf(loc[2],255,"%s.%s.%s-%s",	classname,	basicmaterial,	smat,	reallyspecificmaterial);
+			_snprintf(loc[5],255,"%s.%d.%s-%s",	basicmaterial,	variant,	smat,	constmat);
+			_snprintf(loc[2],255,"%s.%s-%s",	basicmaterial,	smat,	constmat);
 		}else{
 			loc[11][0]='\0';
 			loc[8][0]='\0';
@@ -1223,14 +1331,14 @@ uint8_t* getObject(TiXmlElement *uio,int x, int y, int z,const char* classname,c
 			loc[2][0]='\0';
 		}
 		if(fullname!=NULL){
-			_snprintf(loc[10],255,"%s.%s.%d.%s.%s",	classname,	basicmaterial,	variant,	fullname,	smat);
-			_snprintf(loc[7],255,"%s.%s.%s.%s",	classname,	basicmaterial,	fullname,	smat);
+			_snprintf(loc[10],255,"%s.%d.%s.%s",	basicmaterial,	variant,	fullname,	smat);
+			_snprintf(loc[7],255,"%s.%s.%s",		basicmaterial,	fullname,	smat);
 		}else{
 			loc[10][0]='\0';
 			loc[7][0]='\0';
 		}
-		_snprintf(loc[4],255,"%s.%s.%d.%s",	classname,	basicmaterial,	variant,	smat);
-		_snprintf(loc[1],255,"%s.%s.%s",	classname,	basicmaterial,	smat);
+		_snprintf(loc[4],255,"%s.%d.%s",	basicmaterial,	variant,	smat);
+		_snprintf(loc[1],255,"%s.%s",		basicmaterial,	smat);
 	}else{
 		loc[11][0]='\0';
 		loc[10][0]='\0';
@@ -1242,22 +1350,22 @@ uint8_t* getObject(TiXmlElement *uio,int x, int y, int z,const char* classname,c
 		loc[1][0]='\0';
 	}
 	if(fullname!=NULL){
-		_snprintf(loc[9],255,"%s.%s.%d.%s",	classname,	basicmaterial,	variant,	fullname);
-		_snprintf(loc[6],255,"%s.%s.%s",	classname,	basicmaterial,	fullname);
+		_snprintf(loc[9],255,"%s.%d.%s",	basicmaterial,	variant,	fullname);
+		_snprintf(loc[6],255,"%s.%s",	basicmaterial,	fullname);
 	}else{
 		loc[9][0]='\0';
 		loc[6][0]='\0';
 	}
-	_snprintf(loc[3],255,"%s.%s.%d",	classname,	basicmaterial,	variant);
-	_snprintf(loc[0],255,"%s.%s",	classname,	basicmaterial);
+	_snprintf(loc[3],255,"%s.%d",	basicmaterial,	variant);
+	_snprintf(loc[0],255,"%s",		basicmaterial);
 
 
 	for(int r=0;r<NUM_OBJECT_CHECKS;r++)
 		replacespaces(loc[r]);
 
-	uint8_t *object = NULL;
+	uint8_t *material = NULL;
 
-	//find the best description we have for the location
+		//find the best description we have for the location
 	int bpos=NUM_OBJECT_CHECKS-1;
 	char *best = loc[bpos];
 	while(best[0]=='\0' && bpos>-1){
@@ -1266,75 +1374,221 @@ uint8_t* getObject(TiXmlElement *uio,int x, int y, int z,const char* classname,c
 	}
 
 	//find the most descriptive object that matches the current location
-	if(objects.find(best)==objects.end()){
+	if(dfMats.find(best)==dfMats.end()){
 		//no perfect match - find a good match and add perfect to list of unimplemented objects
 		char* use=NULL;
 		for(int l=(NUM_OBJECT_CHECKS-1);l>-1&&use==NULL;l--){
-			if(loc[l][0]!='\0' && objects.find(loc[l])!=objects.end()){
+			if(loc[l][0]!='\0' && dfMats.find(loc[l])!=dfMats.end()){
 				use=loc[l];
-				object=objects[use];
+				material=dfMats[use];
 			}
 		}
 		if(use!=NULL){
-			//printf("location %d,%d,%d is %s\tusing %s\n",x,y,z,best,use);
-			if(addstats)
-				imperfectknown++;
-			if(uio!=NULL){
-				TiXmlElement *elm = uio->FirstChildElement(best);
-				if(elm==NULL){//add perfect match to unimplemented objects
-					elm = new TiXmlElement( best );  
-					elm->SetAttribute("mat",makeAirArray());
-					elm->SetAttribute("data","");
-					uio->LinkEndChild( elm ); 
-					if(addstats)
-						prevunseen++;
+			if(addstats){
+				if(strstr(use,".")==NULL && strstr(use,"air")!=use && strstr(use,"logs")!=use && strstr(use,"grass")!=use && strstr(use,"unknown")!=use){
+					//printf("location %d,%d,%d is %s\tusing %s\n",x,y,z,best,use);
 				}
+				stats[MATERIALS][IMPERFECT]++;
+				addUnknown(uio, xmlmaterials, best, NULL, MATERIALS);
+			}else{
+				addUnknown(uio, xmlmaterials, best, NULL, -1);
 			}
 		}else {
 			//not even a basic object found - create a basic object for settings.xml
 			if(addstats){
 				printf("location %d,%d,%d is %s\tNOT FOUND!\tcreating %s as air\n",x,y,z,best,loc[0]);
-				unknowncount++;
+				stats[MATERIALS][UNKNOWN]++;
 
 				TiXmlElement * ss = new TiXmlElement( loc[0] );  
 				ss->SetAttribute("mat",makeAirArray());
 				ss->SetAttribute("data","");
-				xmlobjects->LinkEndChild( ss ); 
+				xmlmaterials->LinkEndChild( ss ); 
 
-				object = makeAirArrayInt();
-				objects[loc[0]] = object;
+				material = makeAirArrayInt();
+				dfMats[loc[0]] = material;
 			}
 
-			if(uio!=NULL){
-				TiXmlElement *elm = uio->FirstChildElement(best);
-				if(elm==NULL){//add perfect match to unimplemented objects
-					elm = new TiXmlElement( best );  
-					elm->SetAttribute("mat",makeAirArray());
-					elm->SetAttribute("data","");
-					uio->LinkEndChild( elm ); 
-					if(addstats)
-						prevunseen++;
-				}
-			}
+			addUnknown(uio, xmlmaterials, best, NULL, addstats?MATERIALS:-1);
 		}
 
 	}else{
 		// perfect match found (this is probably rare) use this object
 		//printf("location %d,%d,%d is %s\t\n",x,y,z,best);
-		object=objects[best];
+		material=dfMats[best];
 		if(addstats)
-			perfectknown++;
+			stats[MATERIALS][PERFECT]++;
 	}
 
-	//if(stricmp("farmplotst",basicmaterial)==0){
-	//	int size=(squaresize*squaresize*squaresize);
-	//	for(int i=0;i<size;i++){
-	//		printf("%d\t%d\n",object[i],object[i+size]);
-	//	}
-	//}
-
-	return object;
+	return material;
 }
+
+uint8_t* getTerrain(TiXmlElement *uio,int x, int y, int z,const char* classname,const  char* basicmaterial, int variant=0,
+	const char* fullname = NULL,const char* specificmaterial = NULL, const char* constmat = NULL,bool addstats=NULL){//todo, change addstats to an int and see what breaks - missing constmat
+
+	//first get the material
+	uint8_t* mat = getMaterial(uio,x,y,z,basicmaterial, variant,fullname,specificmaterial, constmat, addstats);
+
+	//now get the terrian
+	char name[256];
+	strncpy(name,classname,255);
+	name[255]='\0';
+	replacespaces(name);
+	std::map<std::string,uint8_t*>::iterator it = terrain.find(name);
+	int size = squaresize*squaresize*squaresize;
+	if(it==terrain.end()){
+		if(addstats){
+			addUnknown(uio, xmlterrain, classname, NULL, TERRAIN);
+			return makeAirArrayInt();
+		}else{
+			return NULL;
+		}
+	}else{
+		stats[TERRAIN][PERFECT]++;
+	}
+
+	//now make the material in the shape of the terain
+	uint8_t *terrain = new uint8_t[size*2];
+	for(int i=0;i<size;i++){
+		if(it->second[i]==255){
+			terrain[i]=mat[i];
+		}else{
+			terrain[i]=it->second[i];
+		}
+		terrain[size+i]=it->second[size+i];
+	}
+	
+	return terrain;
+}
+
+
+uint8_t* getFlow(TiXmlElement *uio,int x, int y, int z,const char* classname,const  char* basicmaterial, int variant=0,
+	const char* fullname = NULL,const char* specificmaterial = NULL,bool addstats=true){
+
+	//first get the material
+	//uint8_t* mat = getMaterial(uio,x,y,z,basicmaterial, variant,fullname,specificmaterial);
+
+	//now get the terrian
+	char name[256];
+	strncpy(name,classname,255);
+	name[255]='\0';
+	replacespaces(name);
+	std::map<std::string,uint8_t*>::iterator it = flows.find(name);
+	int size = squaresize*squaresize*squaresize;
+	if(it==flows.end()){
+		addUnknown(uio, xmlflows, classname, NULL, FLOWS);
+		return makeAirArrayInt();
+	}else{
+		stats[FLOWS][PERFECT]++;
+	}
+
+	//return terrain;
+	return it->second;
+}
+
+uint8_t* getPlant(TiXmlElement *uio,int x, int y, int z,const char* classname,const  char* basicmaterial, int variant=0,
+	const char* fullname = NULL,const char* specificmaterial = NULL,bool addstats=true){
+
+	//first get the material
+	uint8_t* mat = getMaterial(uio,x,y,z,basicmaterial, variant,fullname,specificmaterial);
+
+	//now get the terrian
+	char name[256];
+	strncpy(name,classname,255);
+	name[255]='\0';
+	replacespaces(name);
+	std::map<std::string,uint8_t*>::iterator it = plants.find(name);
+	int size = squaresize*squaresize*squaresize;
+	if(it==plants.end()){
+		//didn't find specific plant type, try generic
+		char *pos = strchr(name,'.');
+		if(pos!=NULL){
+			*pos='\0';
+			it = plants.find(name);
+		}
+		if(it==plants.end()){
+			addUnknown(uio, xmlplants, classname, NULL, PLANTS);
+			return makeAirArrayInt();
+		}else{
+			stats[PLANTS][IMPERFECT]++;
+		}
+	}else{
+		stats[PLANTS][PERFECT]++;
+	}
+
+	//now make the material in the shape of the terain
+	uint8_t *plant = new uint8_t[size*2];
+	for(int i=0;i<size;i++){
+		if(it->second[i]==255){
+			plant[i]=mat[i];
+		}else{
+			plant[i]=it->second[i];
+		}
+		plant[size+i]=it->second[size+i];
+	}
+	
+	return plant;
+}
+
+uint8_t* getBuilding(TiXmlElement *uio,int x, int y, int z,const char* classname, int direction, const  char* basicmaterial,
+	const char* fullname = NULL,const char* specificmaterial = NULL,bool addstats=true){
+
+	//first get the material
+	uint8_t* mat = getMaterial(uio,x,y,z,basicmaterial, 0,fullname,specificmaterial,NULL,addstats);
+
+	//now get the building
+	char name[256];
+	_snprintf(name,255,"%s.%d",classname,direction);
+	name[255]='\0';
+	replacespaces(name);
+	int size = squaresize*squaresize*squaresize;
+	std::map<std::string,uint8_t*>::iterator it = buildings.find(name);
+	if(it==buildings.end()){
+
+		char* pos = strchr(name,'.');//check again without building position
+		if(pos!=NULL){
+			char name2[256];
+			*pos='\0';
+			_snprintf(name2,255,"%s.%d",name,direction);
+			name2[255]='\0';
+			it = buildings.find(name2);
+
+			if(addstats && it==buildings.end()){
+				it = buildings.find(classname); //now it position but not direction (if not looking if the direction exists)
+
+				if(it==buildings.end()){ //finally looks for just the raw classname withouth position or direction
+					it = buildings.find(name);
+				}
+			}
+		}
+
+		if(it==buildings.end()){
+			if(addstats){
+				addUnknown(uio, xmlbuildings, classname, NULL, BUILDINGS);
+				return makeAirArrayInt();
+			}else{
+				return NULL;
+			}
+		}else{
+			stats[BUILDINGS][IMPERFECT]++;
+		}
+	}else if(addstats){
+		stats[BUILDINGS][PERFECT]++;
+	}
+
+	//now make the material in the shape of the terain
+	uint8_t *building = new uint8_t[size*2];
+	for(int i=0;i<size;i++){
+		if(it->second[i]==255){
+			building[i]=mat[i];
+		}else{
+			building[i]=it->second[i];
+		}
+		building[size+i]=it->second[size+i];
+	}
+	
+	return building;
+}
+
 
 void addObject(uint8_t* mclayers, uint8_t* mcdata, uint8_t *object, int dfx, int dfy, int dfz, int xoffset, int yoffset, int zoffset, int mcxsquares, int mcysquares,bool overwrite=false){
 
@@ -1361,15 +1615,21 @@ void addObject(uint8_t* mclayers, uint8_t* mcdata, uint8_t *object, int dfx, int
 				int z = (mcz+2-oz);
 				int idx = x + (z * mcysquares +y) * mcxsquares;
 				if(overwrite || mclayers[idx]==0){
-					mclayers[idx]=object[pos];
-					mcdata[idx]=object[pos2];
-					//if(object[pos2]!=0 || object[pos]==59){
-					//	printf("non-zero data");
-					//	int size=(squaresize*squaresize*squaresize);
-					//	for(int i=0;i<size;i++){
-					//		printf("%d\t%d\n",object[i],object[i+size]);
-					//	}
-					//}
+
+					if(safesand && sandhash.find(object[pos])!=sandhash.end()){
+						hash_set<int>::iterator it = supporthash.find(mclayers[x + ((z-1) * mcysquares +y) * mcxsquares]);
+						if(it != supporthash.end()){
+							//this is sand (or other gravity obaying block) on the bottom level with air (or other nonsupport block) below it and safe sand is on, replace the sand
+							mclayers[idx]=safesand;
+							mcdata[idx]=object[pos2];
+						}else{
+							mclayers[idx]=object[pos];
+							mcdata[idx]=object[pos2];
+						}
+					}else{
+						mclayers[idx]=object[pos];
+						mcdata[idx]=object[pos2];
+					}
 				}
 				pos++;pos2++;
 
@@ -1380,7 +1640,8 @@ void addObject(uint8_t* mclayers, uint8_t* mcdata, uint8_t *object, int dfx, int
 }
 
 
-void getRampDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,char *dir,int x,int y,int z,int bx, int by,const char* mat, int varient,const char* full,const char* specmat,const char* consmat){
+void getObjDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,char *dir,int x,int y,int z,int bx, int by,const char* classname,
+	const char* mat, int varient,const char* full,const char* specmat,const char* consmat,const bool building = false){
 	//this will find and place in the string dir the letters of the high side of a ramp
 
 	DFHack::mapblock40d *Block;
@@ -1409,7 +1670,7 @@ void getRampDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,cha
 	uint8_t* obj = NULL;
 	int step = 1;
 	int start = 1;
-	//this DO tries all numverf first, and only the even ones in the second pass
+	//this DO tries all numbers first, and only the even ones in the second pass
 	do{
 		char *pos=dir;
 
@@ -1452,9 +1713,16 @@ void getRampDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,cha
 
 		*pos='\0';
 		//try to find a match
-		char test[32];
-		_snprintf(test,31,"ramp%s",dir);
-		obj = getObject(uio,x,y,z,test,mat,varient,full,specmat,consmat,false);
+		char test[128];
+
+		if(!building){
+			_snprintf(test,127,"%s%s",classname,dir);
+			test[127]='\0';
+			obj = getTerrain(uio,x,y,z,test,mat,varient,full,specmat,NULL,false);
+		}else{
+			int idir = atoi(dir);
+			obj = getBuilding(uio,x,y,z,classname,-idir,mat,full,specmat,false);
+		}
 
 		//setup of next DO loop, if needed
 		step++;
@@ -1465,6 +1733,65 @@ void getRampDir(DFHack::Maps *Maps,DFHack::mapblock40d *Bl,TiXmlElement *uio,cha
 		dir[0]='\0';
 	}
 	
+}
+
+int getBuildingDir(DFHack::Maps *Maps,map<uint32_t,myBuilding> Buildings,DFHack::mapblock40d *Bl,TiXmlElement *uio,int x,int y,int z,int bx, int by,
+	const char* thisBuilding,const char*mat, const char* full,const char* specmat,const char* buildingToFace){
+
+	//similar routine to above (getRampDir), but no need to look in different map blocks
+	uint8_t* obj = NULL;
+	int step = 1;
+	int start = 1;
+	if(strcmp(thisBuilding,"chair")==0){
+		start = 1;
+	}
+	char dir[16];
+	//this DO tries all numbers first, and only the even ones in the second pass
+	if(buildingToFace != NULL && buildingToFace[0]!='\0'){
+		do{
+			char *pos = dir;
+
+			for(int i=start;i<10;i+=step){
+
+				if(i==5) continue;//don't check self
+
+				int ox=((i-1)%3)-1;
+				int oy=((i-1)/3)-1;
+
+				uint32_t index = getMapIndex(x+ox,y+oy,z);
+				map<uint32_t,myBuilding>::iterator it;
+				it = Buildings.find(index);
+				if(it!=Buildings.end()){
+					myBuilding mb = it->second;
+
+					if(stricmp(mb.type,buildingToFace)==0){
+						*pos=('0'+i);
+					   pos++;
+					}
+				}
+			}
+			*pos='\0';
+
+			if(dir[0]!='\0'){
+				int idir;
+				idir = atoi(dir);
+				obj = getBuilding(uio,x,y,z,thisBuilding,idir,mat,full,specmat,false);
+			}
+
+			//setup of next DO loop, if needed
+			step++;
+			start++;
+		}while(obj==NULL && start < 3);
+	}
+
+	if(obj==NULL){ //no match found - now check for walls
+		dir[0]='\0';
+		getObjDir(Maps,Bl,uio,dir,x,y,z,bx,by,thisBuilding,mat,0,full,specmat,NULL,true);
+
+		return -(atoi(dir));
+	}else{
+		return atoi(dir);
+	}
 }
 
 int findLevels(DFHack::Maps *Maps,int xmin,int xmax,int ymin,int ymax,int zmax,int typeToFind){
@@ -1505,10 +1832,82 @@ int findLevels(DFHack::Maps *Maps,int xmin,int xmax,int ymin,int ymax,int zmax,i
 	return count;
 }
 
+void getConsMats(DFHack::Materials * Mats,char** mat, char** consmat, int type, int idx, int form, char* tempstr, int x, int y, int z){
+
+	*consmat="unknown";
+	if(type == 0){
+		if(idx != 0xffffffff && idx<Mats->inorganic.size())
+			*consmat = Mats->inorganic[idx].id;
+		else *consmat = "inorganic";
+	}else if(type == 420){ 
+		if(idx != 0xffffffff && idx<Mats->organic.size())
+			*consmat = Mats->organic[idx].id;
+		else *consmat = "organic";
+	}else if(type == 421){ // is 421 plant material? (rope reed fiber rope seemed to be 421 14)
+		if(idx != 0xffffffff && idx<Mats->plant.size())
+			*consmat = Mats->plant[idx].id;
+		else *consmat = "plant";
+		printf("Semi-known Construction Material at %d, %d, %d: %s  -form:%d, type:%d\n",x,y,z,*consmat,form,type);
+	}else if(type == 422){ // is 422 also plant material? (Pigtail fiber bags seemed to be 422 1)
+		if(idx != 0xffffffff && idx<Mats->plant.size())
+			*consmat = Mats->plant[idx].id;
+		else *consmat = "plant";
+		printf("Semi-known Construction Material at %d, %d, %d: %s  -form:%d, type:%d\n",x,y,z,*consmat,form,type);
+	}else if(type == 7){
+		*consmat = "coal";
+	}else if(type == 9){
+		*consmat = "ashes";
+	}else if(type == 3 || type ==  13){  //3 is .31.16  - 13 is .28.40d
+		*consmat = "greenglass";
+	}else if(type == 4 || type ==  14 ){ //4 is .31.16  - 14 is .28.40d
+		*consmat = "clearglass";
+	}else if(type == 5 ||type ==  15){ //guessing at the 5, can't get rock_crystal to make crystal glass
+		*consmat = "crystalglass";
+	}else if(type ==  18){
+		*consmat = "charcoal";
+	}else if(type == 8 || type ==  19){ //8 is .31.16  - 19 is .28.40d
+		*consmat = "potash";
+	}else if(type ==  20){
+		*consmat = "ash";
+	}else if(type == 10 || type ==  21){ //10 is .31.16  - 21 is .28.40d
+		*consmat = "perlash";
+	}else if(type ==  39){ 
+		if(idx != 0xffffffff && idx<Mats->race.size())
+			*consmat = Mats->race[idx].id;
+		else *consmat = "animal";
+		printf("Semi-known Construction Material at %d, %d, %d: %s  -form:%d, type:%d\n",x,y,z,*consmat,form,type);
+
+		*consmat = "soap";
+		//idx I believe is the creature type (I had 103 for One-humped Camel Soap), but nore sure where list of creatures is, and at this point, I'm not making soaps look different
+	}else {
+		_snprintf(tempstr,255,"unknown_%d_%d",type,idx);
+		tempstr[255]='\0';
+		*consmat = tempstr;
+		if(type>0)
+			printf("Unknown Construction Material at %d, %d, %d: %s  -form:%d\n",x,y,z,tempstr,form);
+		
+	}
+	switch(form){
+		case constr_bar:
+			*mat="bars";
+			break;
+		case constr_block:
+			*mat="blocks";
+			break;
+		case constr_boulder:
+			*mat="stone";
+			break;
+		case constr_logs:
+			*mat="logs";
+			break;
+		default:
+			*mat="unknown";
+	}
+}
 
 void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector <uint16_t> > layerassign, 
 		vector<DFHack::t_feature> global_features, std::map <DFHack::planecoord, std::vector<DFHack::t_feature *> > local_features,
-		DFHack::Constructions *Cons, uint32_t numCons, map<uint32_t,myBuilding> Buildings, map<uint32_t,char*> vegs,
+		 map<uint32_t,myConstruction> Constructions, map<uint32_t,myBuilding> Buildings, map<uint32_t,char*> vegs,
 		TiXmlElement *uio, uint8_t* mclayers, uint8_t* mcdata,
 		uint32_t dfblockx, uint32_t dfblocky, uint32_t zzz, uint32_t zcount,
 		uint32_t xoffset, uint32_t yoffset, int mcxsquares, int mcysquares){
@@ -1523,6 +1922,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 	vector<DFHack::t_vein> veins;
 	vector<DFHack::t_spattervein> splatter;
 	Maps->ReadVeins(dfblockx,dfblocky,zzz,&veins,NULL,&splatter);
+	char tempstr[256];
 
 			
 	for(uint32_t dfoffsetx=0;dfoffsetx<SQUARESPERBLOCK;dfoffsetx++){
@@ -1534,8 +1934,8 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 
 			naked_designation &des = Block.designation[dfoffsetx][dfoffsety].bits; //designations at this location
 
-			const char* mat = NULL; //item material
-			const char *consmat=NULL;//material of construction
+			char* mat = NULL; //item material
+			char *consmat=NULL;//material of construction
 							
 			if(tileTypeTable[tiletype].m != CONSTRUCTED){
 				int16_t tempvein = -1;
@@ -1600,79 +2000,72 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 				//find construction and locate it's material
 				mat = NULL;
 				consmat=NULL;
-				t_construction con;
-				for(uint32_t i = 0; i < numCons; i++){
-					Cons->Read(i,con);
-					if(dfx == con.x && dfy == con.y && zzz == con.z){
-						consmat="unknown";
-						if(con.mat_type == 0){
-							if(con.mat_idx != 0xffffffff)
-								consmat = Mats->inorganic[con.mat_idx].id;
-							else consmat = "inorganic";
-						}
-						if(con.mat_type == 420){
-							if(con.mat_idx != 0xffffffff)
-								consmat = Mats->organic[con.mat_idx].id;
-							else consmat = "organic";
-						}
-						switch(con.form){
-							case constr_bar:
-								mat="bars";
-								break;
-							case constr_block:
-								mat="blocks";
-								break;
-							case constr_boulder:
-								mat="stones";
-								break;
-							case constr_logs:
-								mat="logs";
-								break;
-							default:
-								mat="unknown";
-						}
-						break;
-					}
+				uint32_t index = getMapIndex(dfx,dfy,zzz);
+				map<uint32_t,myConstruction>::iterator it;
+				it = Constructions.find(index);
+				if(it!=Constructions.end()){
+					getConsMats(Mats, &mat,  &consmat, it->second.mat_type, it->second.mat_idx, it->second.form, tempstr,dfx,dfy,zzz);
+				}else{
+					mat="unknown";
+					consmat="unknown";
 				}
+				
 			}
 
 						
 
 			char classname[128];
+			char* plant = NULL;
+			classname[0]='\0';
 			int variant = tileTypeTable[tiletype].v;
+			uint8_t* object = NULL;
 			switch(tileTypeTable[tiletype].c){
-				case RAMP:{
-					char dir[16];
-					getRampDir(Maps,&Block,uio,dir,dfx,dfy,zzz,dfblockx,dfblocky,TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat,consmat);
-					_snprintf(classname,127,"%s%s",TileClassNames[tileTypeTable[tiletype].c],dir);
-				}break;
-				case STAIR_UP:
-				case STAIR_DOWN:
-				case STAIR_UPDOWN:{
-					_snprintf(classname,127,"%s%d",TileClassNames[tileTypeTable[tiletype].c],zcount%4);//z$4 is the level height mod 4 so you can do spiral stairs or alterante sides if object defination of 0 = 2 and 1 = 3
-				}break;
 				case TREE_DEAD:
 				case TREE_OK:
 				case SAPLING_DEAD:
 				case SAPLING_OK:
 				case SHRUB_DEAD:
 				case SHRUB_OK:{
-					consmat = mat;
-					mat = "unknown";
 					map<uint32_t,char*>::iterator vit;
 					vit = vegs.find(getMapIndex(dfx,dfy,zzz));
 					if(vit!=vegs.end()){
-						mat = vit->second;
+						plant = vit->second;
+						_snprintf(classname,127,"%s.%s",TileClassNames[tileTypeTable[tiletype].c],plant);
 					}else{
 						printf("Cant find plant that should already be defined!\n");
 					}
-				}//no break, we want to fall through
-				default:
-					strncpy(classname,TileClassNames[tileTypeTable[tiletype].c],127);
-					if(tileTypeTable[tiletype].name!=NULL && strnicmp(tileTypeTable[tiletype].name,"smooth",5)==0){//doing this as des.smooth never seems to be set.
-						variant+=10;//and if I could figure out engraved it would be 20 over base variant
+
+					object = getPlant(uio,dfx, dfy, zzz,classname, TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat);
+				}break;
+				case RAMP:{
+					if(classname[0]=='\0'){
+						char dir[16];
+						getObjDir(Maps,&Block,uio,dir,dfx,dfy,zzz,dfblockx,dfblocky,"ramp",TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat,consmat);
+						_snprintf(classname,127,"%s%s",TileClassNames[tileTypeTable[tiletype].c],dir);
 					}
-					break;
+				}break;
+				case STAIR_UP:
+				case STAIR_DOWN:
+				case STAIR_UPDOWN:{
+					if(classname[0]=='\0'){
+						_snprintf(classname,127,"%s%d",TileClassNames[tileTypeTable[tiletype].c],zcount%4);//z$4 is the level height mod 4 so you can do spiral stairs or alterante sides if object defination of 0 = 2 and 1 = 3
+					}
+				}break;
+				default:
+					if(classname[0]=='\0'){
+						if(directionalWalls){
+							char dir[16];
+							getObjDir(Maps,&Block,uio,dir,dfx,dfy,zzz,dfblockx,dfblocky,TileClassNames[tileTypeTable[tiletype].c],TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat,consmat);
+							_snprintf(classname,127,"%s%s",TileClassNames[tileTypeTable[tiletype].c],dir);
+						}else{
+							strncpy(classname,TileClassNames[tileTypeTable[tiletype].c],127);
+						}
+
+						if(tileTypeTable[tiletype].name!=NULL && strnicmp(tileTypeTable[tiletype].name,"smooth",5)==0){//doing this as des.smooth never seems to be set.
+							variant+=10;//and if I could figure out engraved it would be 20 over base variant
+						}
+					}
+
 			}
 
 			if(tileTypeTable[tiletype].m == 6){//ice
@@ -1681,11 +2074,11 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 
 			if(tileTypeTable[tiletype].name == NULL){
 				printf("Unknown tile type at %d,%d layer %d - id is %d, DFHAck needs description\n",dfx,dfy,zzz,tiletype);
-				unknowncount++;
+				stats[TERRAIN][UNKNOWN]++;
 			}
-						
-			uint8_t* object = getObject(uio,dfx, dfy, zzz,classname, TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat,consmat);
-
+					
+			if(object==NULL)
+				object = getTerrain(uio,dfx, dfy, zzz,classname, TileMaterialNames[tileTypeTable[tiletype].m], variant, tileTypeTable[tiletype].name, mat, consmat,true);
 
 			//now copy object in to mclayer array
 			addObject(mclayers, mcdata, object,  dfx,  dfy, zzz, xoffset, yoffset, zcount, mcxsquares, mcysquares);
@@ -1693,7 +2086,8 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 						
 			//add tree top if tree
 			if((tileTypeTable[tiletype].c == TREE_OK) && ((zcount+1) < limitlevels) ){
-				object = getObject(uio,dfx, dfy, zzz,"treetop", "air", variant, tileTypeTable[tiletype].name, mat);
+				_snprintf(classname,127,"%s.%s","treetop",plant);
+				object = getPlant(uio,dfx, dfy, zzz,classname, "air", variant, tileTypeTable[tiletype].name, mat);
 				if(object!=NULL)
 					addObject(mclayers, mcdata, object,  dfx,  dfy, zzz+1, xoffset, yoffset, zcount+1, mcxsquares, mcysquares);
 			}
@@ -1706,18 +2100,34 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 			if(it!=Buildings.end()){
 				myBuilding mb = it->second;
 				mat="unknown";
+				char *specmat = NULL; 
+				int form = constr_block;
 				if(mb.material.type == 0){
-					if(mb.material.index!= 0xffffffff)
-						mat = Mats->inorganic[mb.material.index].id;
-					else mat = "inorganic";
-				}
-				if(mb.material.type == 420){
-					if(mb.material.index != 0xffffffff)
-						mat = Mats->organic[mb.material.index].id;
-					else mat = "organic";
+					form = constr_boulder;
+				}else if(mb.material.type == 420){
+					form = constr_logs;
+				}else{
+					//todo, how to tell if blocks of material as opposed to raw? or metal ?
+					//constr_bar
 				}
 
-				object = getObject(uio,dfx, dfy, zzz,"building", mb.type, 0, mb.desc, mat);
+				getConsMats(Mats, &mat,  &consmat, mb.material.type, mb.material.index, form, tempstr, dfx, dfy, zzz);
+
+				char building[256];
+				_snprintf(building,255,"%s.%s",mb.type,mb.desc);
+				building[255]='\0';
+
+				string toFace = ""; 
+				map<string,string>::iterator it = buildingNeighbors.find(mb.type);
+				if(it != buildingNeighbors.end()){
+					toFace = it->second;
+				}
+				int dir = getBuildingDir(Maps, Buildings, &Block, uio,dfx,dfy,zzz,dfblockx,dfblocky,building,mat,"building",specmat,toFace.c_str());
+
+				_snprintf(building,255,"%s.%s",mb.type,mb.desc);
+				building[255]='\0';
+
+				object = getBuilding(uio,dfx, dfy, zzz, building, dir, mat, "building", specmat);
 				if(object!=NULL){
 					addObject(mclayers, mcdata, object,  dfx,  dfy, zzz, xoffset, yoffset, zcount, mcxsquares, mcysquares);
 				}else{
@@ -1736,13 +2146,10 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 				if(des.liquid_type == DFHack::liquid_water){
 					type = "water";
 				}
+
+				_snprintf(classname,127,"%s.%d",type,des.flow_size);
 							
-				object = getObject(uio,dfx, dfy, zzz,"flow", type ,des.flow_size); //more standardized to other objects
-				if(object==NULL){
-					char amount[16];
-					itoa(des.flow_size,amount,10);
-					object = getObject(uio,dfx, dfy, zzz, type, amount); //easier to remember
-				}
+				object = getFlow(uio,dfx, dfy, zzz, classname, type ,des.flow_size); 
 				if(object!=NULL){
 					addObject(mclayers, mcdata, object,  dfx,  dfy, zzz, xoffset, yoffset, zcount, mcxsquares, mcysquares);
 				}
@@ -1757,7 +2164,7 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 				//check for mud
 				bool mud = false;
 				for(int v = 0; v < (int)splatter.size()&&!mud;v++){
-					if(splatter[v].mat1=0xC){//magic number for mud - see cleanmap.cpp
+					if(splatter[v].mat1=0xC){//magic number for mud - see cleanmap.cpp - turns out not really - this is any spatter, mud, blood, vomit, etc.
 						if(splatter[v].intensity[dfoffsetx][dfoffsety]>0){
 							mud=true; //yes, this tile is muddy
 						}
@@ -1776,7 +2183,15 @@ void convertDFBlock(DFHack::Maps *Maps, DFHack::Materials * Mats, vector< vector
 
 					if( (rand()%100)<percent ){
 						//ok, try to add a torch here
-						object = getObject(uio,dfx, dfy, zzz,"building", "torch");
+
+						string toFace = ""; 
+						map<string,string>::iterator it = buildingNeighbors.find("torch");
+						if(it != buildingNeighbors.end()){
+							toFace = it->second;
+						}
+						int dir = getBuildingDir(Maps, Buildings, &Block, uio,dfx,dfy,zzz,dfblockx,dfblocky,"torch","air",NULL,NULL,toFace.c_str());
+
+						object = getBuilding(uio,dfx, dfy, zzz, "torch", dir, "air");
 						if(object!=NULL)
 							addObject(mclayers, mcdata, object,  dfx,  dfy, zzz, xoffset, yoffset, zcount, mcxsquares, mcysquares);
 
@@ -1999,9 +2414,6 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
         return 106; 
     }
 
-	DFHack::Constructions *Cons = DF->getConstructions();
-	uint32_t numConstr;
-    Cons->Start(numConstr);
 
 	printf("\nReading Plants... ");
 	DFHack::Vegetation * v = DF->getVegetation();
@@ -2023,7 +2435,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 	DFHack::Buildings * Bld = DF->getBuildings();
 	map <uint32_t, string> custom_workshop_types;
 	uint32_t numBuildings;
-	DFHack::memory_info * mem = DF->getMemoryInfo();
+	DFHack::VersionInfo * mem = DF->getMemoryInfo();
     //DFHack::Position * Pos = DF->getPosition();
 
 	map<uint32_t,myBuilding> Buildings;
@@ -2067,7 +2479,7 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 					mb->type[255]='\0';
 					mb->material.type = temp.material.type;
 					mb->material.index = temp.material.index;
-
+					
 					if((temp.x1==temp.x2) && (temp.y1==temp.y2)){
 						_snprintf(mb->desc,15,"only");
 					}else if((temp.x1==temp.x2) && (y==temp.y2)){
@@ -2109,6 +2521,30 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 	printf("%d\n",Buildings.size());
 
 
+	
+	//Constructions
+	printf("Reading Constructions... ");
+	DFHack::Constructions *Cons = DF->getConstructions();
+	uint32_t numConstr;
+    Cons->Start(numConstr);
+	map<uint32_t,myConstruction> Constructions;
+	myConstruction *consmats = new myConstruction[numConstr];
+
+	t_construction con;
+	for(uint32_t i = 0; i < numConstr; i++){
+		Cons->Read(i,con);
+
+		consmats[i].mat_type = con.mat_type;
+		consmats[i].mat_idx = con.mat_idx;
+		consmats[i].form = con.form;
+
+		uint32_t index = getMapIndex(con.x,con.y,con.z);
+		Constructions[index] = consmats[i];
+	}
+	printf("%d\n",Constructions.size());
+
+
+
 	//allocate memory for blocks and data
 	uint8_t* mclayers = new uint8_t[mcxsquares*mcysquares*mczsquares];
 	uint8_t* mcdata = new uint8_t[mcxsquares*mcysquares*mczsquares];
@@ -2133,14 +2569,14 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 	for(uint32_t zzz = 0; zzz< z_max;zzz++){
 		if(limitz[zzz]==0)
 			continue;
-		printf("Layer %d/%d\n",zzz,z_max);
+		printf("Layer %d/%d\t(%d/%d)\n",zzz,z_max,zcount,limitlevels);
 		for(uint32_t dfblockx = xoffset; dfblockx< x_max;dfblockx++){
 			for(uint32_t dfblocky = yoffset; dfblocky< y_max;dfblocky++){
 
 				if(Maps->isValidBlock(dfblockx,dfblocky,zzz)){
 					
 					convertDFBlock(Maps, Mats, layerassign, global_features, local_features,
-						Cons, numConstr, Buildings, vegs,
+						Constructions, Buildings, vegs,
 						uio, mclayers,mcdata,
 						dfblockx, dfblocky, zzz, zcount, xoffset, yoffset, mcxsquares, mcysquares);
 				
@@ -2148,7 +2584,19 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 				
 			}
 		}
-		printf(" unknown obj: %d  imperfect obj: %d  perfect obj: %d  new obj: %d\n",unknowncount,imperfectknown,perfectknown,prevunseen);
+
+		//print stats
+		for(int i=0;i<STAT_AREAS;i++){
+			switch(i){
+				case MATERIALS: printf(" MATERIALS:\t"); break;
+				case TERRAIN:	printf(" TERRAIN:  \t"); break;
+				case FLOWS:		printf(" FLOWS:    \t"); break;
+				case PLANTS:	printf(" PLANTS:   \t"); break;
+				case BUILDINGS: printf(" BUILDINGS:\t"); break;
+			}
+			printf("unknown: %d  imperfect: %d  perfect: %d  new: %d\n",stats[i][UNKNOWN],stats[i][IMPERFECT],stats[i][PERFECT],stats[i][UNSEEN]);
+		}
+		
 		zcount++;
 	}
 
@@ -2275,101 +2723,72 @@ int convertMaps(DFHack::Context *DF,DFHack::Materials * Mats){
 
 }
 
+/*
+//this was used to generate the directional walls in the settings file
+void wallDirection(){
 
-int testLevel(){
+	for(int i=0;i<256;i++){
 
-	char *testdata[75];
-	int i=0;
-	testdata[i++]="wall.stone"; testdata[i++]="wall.stone"; testdata[i++]="wall.stone"; testdata[i++]="wall.stone"; testdata[i++]="wall.stone";
-	testdata[i++]="wall.stone"; testdata[i++]="wall.vein"; testdata[i++]="wall.vein"; testdata[i++]="wall.vein"; testdata[i++]="wall.stone";
-	testdata[i++]="wall.stone"; testdata[i++]="wall.vein"; testdata[i++]= "wall.soil"; testdata[i++]= "wall.vein"; testdata[i++]= "wall.stone"; 
-	testdata[i++]="wall.stone"; testdata[i++]= "wall.vein"; testdata[i++]= "wall.vein"; testdata[i++]= "wall.vein"; testdata[i++]= "wall.stone"; 
-	testdata[i++]="wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; 
+		char temp[16];
+		char dir[256];
+		char mat[1024];
+		dir[0]='\0';
+		mat[0]='\0';
 
-	testdata[i++]="wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; 
-	testdata[i++]="wall.stone"; testdata[i++]= "rampnw.featstone"; testdata[i++]= "rampn.featstone"; testdata[i++]= "rampne.featstone"; testdata[i++]= "wall.stone"; 
-	testdata[i++]="wall.stone"; testdata[i++]= "rampw.soil"; testdata[i++]= "floor.soil"; testdata[i++]= "rampe.stone"; testdata[i++]= "wall.stone"; 
-	testdata[i++]="wall.stone"; testdata[i++]= "rampsw.grass"; testdata[i++]= "ramps.constructed"; testdata[i++]= "rampse.vein"; testdata[i++]= "wall.stone";
-	testdata[i++]="wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; testdata[i++]= "wall.stone"; 
-
-	testdata[i++]="wall.stone"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "wall.featstone"; 
-	testdata[i++]="empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; 
-	testdata[i++]="empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; 
-	testdata[i++]="empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; 
-	testdata[i++]="wall.constructed"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "empty.air"; testdata[i++]= "wall.stone";
-
-	uint32_t x_max = 5;
-	uint32_t y_max=5;
-	uint32_t z_max=3;
-	int mcxsquares = x_max * squaresize;
-	int mcysquares = y_max * squaresize;
-	int mczsquares = z_max * squaresize;
-
-	uint8_t* mclayers = new uint8_t[mcxsquares*mcysquares*mczsquares];
-	uint8_t* mcdata = new uint8_t[mcxsquares*mcysquares*mczsquares];
-	if( mclayers==NULL || mcdata == NULL){
-		printf("Unable to allocate memory to store level data, exiting.");
-		return 10;
-	}
-	memset(mclayers,0,sizeof(uint8_t)*(mcxsquares*mcysquares*mczsquares));
-	memset(mcdata,0,sizeof(uint8_t)*(mcxsquares*mcysquares*mczsquares));
-
-	for(uint32_t z = 0; z< z_max;z++){
-		printf("Layer %d/%d ",z,z_max);
-		for(uint32_t dfx = 0; dfx< x_max;dfx++){
-			for(uint32_t dfy = 0; dfy< y_max;dfy++){
-
-				uint8_t *object = NULL;
-
-				char* location = testdata[dfx + (((z*y_max) + dfy)* x_max)];
-				object=objects[location];
-
-
-				//TODO, now copy object in to mclayer array
-				int mcx = dfx * squaresize;
-				int mcy = dfy * squaresize;
-				int mcz = z * squaresize;
-				int pos = 0;
-				int pos2 = squaresize*squaresize*squaresize;
-
-				for(int oz=0;oz<squaresize;oz++){
-					for(int oy=0;oy<squaresize;oy++){
-						for(int ox=0;ox<squaresize;ox++){
-
-							//Index = x + (y * Depth + z) * Width //where y is up down
-							int idx = (mcx+ox) + ((mcz+2-oz) * mcysquares + mcy + oy) * mcxsquares;
-							mclayers[idx]=object[pos];
-							mcdata[idx]=object[pos2];
-							pos++;pos2++;
-
-						}
-					}
-				}
-
+		//get direction string;
+		for(int j=0;j<8;j++){
+			if((i>>j)&1){
+				temp[0] = '1'+((j>3)?j+1:j);
+				temp[1] = '\0';
+				strcat(dir,temp);
 			}
 		}
+
+		//get material string
+		for(int j=0;j<2;j++){//setup wall for top ande middle layer
+			if(!(i&2) && !(i&8) && (i&1)){
+				strcat(mat,"0");
+			}else{
+				strcat(mat,"1");
+			}
+			strcat(mat,",1,");
+			if(!(i&2) && !(i&16) && (i&4)){
+				strcat(mat,"0");
+			}else{
+				strcat(mat,"1");
+			}
+
+			strcat(mat,";1,1,1;");
+
+			if(!(i&64) && !(i&8) && (i&32)){
+				strcat(mat,"0");
+			}else{
+				strcat(mat,"1");
+			}
+			strcat(mat,",1,");
+			if(!(i&64) && !(i&16) && (i&128)){
+				strcat(mat,"0");
+			}else{
+				strcat(mat,"1");
+			}
+
+			strcat(mat,"|");
+		}
+
+		strcat(mat,"1,1,1;1,1,1;1,1,1");
+
+		printf("<wall%s mat=\"%s\" />\n",dir,mat);
 	}
 
-	int cx = mcxsquares/2;
-	int cy = mcysquares/2;
-	int cz = mczsquares;
-	uint8_t val = 0;
-	int pos;
-	while(val == 0 && cz>0){
-		cz--;
-		pos = (cx) + ((cz) * mcysquares + cy) * mcxsquares;
-		val = mclayers[pos];
-	};
-	cz+=2;//move up two so spawn isn't stuck in the ground
-
-	return saveMCLevel(mclayers, mcdata, mcxsquares, mcysquares, mczsquares,0, cx,cy,cz,"out.mclevel");
+	printf("\nPress enter key");
+    cin.ignore();
 
 }
-
+*/
 
 
 int main (int argc, const char* argv[]){
-
+	
 	//load settings xml
 	TiXmlDocument doc("settings.xml");
 	bool loadOkay = doc.LoadFile();
@@ -2440,6 +2859,34 @@ int main (int argc, const char* argv[]){
 	if(tmpseed != 0){
 		seed = tmpseed;
 	}
+
+	if(settings->FirstChildElement("snowy")==NULL){
+		TiXmlElement * ss = new TiXmlElement( "snowy" );
+		settings->LinkEndChild( ss ); 
+	}
+	if(settings->FirstChildElement("snowy")->Attribute("val", &snowy)==NULL){
+		snowy=0;
+		settings->FirstChildElement("snowy")->SetAttribute("val","0");
+	}
+
+	if(settings->FirstChildElement("directionalwalls")==NULL){
+		TiXmlElement * ss = new TiXmlElement( "directionalwalls" );
+		settings->LinkEndChild( ss ); 
+	}
+	if(settings->FirstChildElement("directionalwalls")->Attribute("val", &directionalWalls)==NULL){
+		directionalWalls=0;
+		settings->FirstChildElement("directionalwalls")->SetAttribute("val","0");
+	}
+
+	if(settings->FirstChildElement("safesand")==NULL){
+		TiXmlElement * ss = new TiXmlElement( "safesand" );
+		settings->LinkEndChild( ss ); 
+	}
+	if(settings->FirstChildElement("safesand")->Attribute("val", &safesand)==NULL){
+		safesand=3;
+		settings->FirstChildElement("safesand")->SetAttribute("val","3");
+	}
+	
 	
 	int temp;
 	if(outputtype!=OUTPUT_ALPHA){
@@ -2500,18 +2947,47 @@ int main (int argc, const char* argv[]){
 
 	//load MC material mappings
 	mcMats.clear();
-	dfMat2mcMat.clear();
+//	dfMat2mcMat.clear();
 	loadMcMats(&doc);
 
 	//load objects
-	xmlobjects = doc.FirstChildElement("objects");
-	if(xmlobjects == NULL){
-		xmlobjects = new TiXmlElement( "objects" );
-		doc.LinkEndChild(xmlobjects);
-		TiXmlComment *comment = new TiXmlComment("These are the objects we will convert from Dwarf Fortress and how we will represent them in Minecraft\nEach object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started)\nEach object also has a list of numbers, the same squaresize^3 in size, that represent state or data of the cooresponding material, used to control things like facing direction, etc.");
-		xmlobjects->LinkEndChild(comment);
+	xmlmaterials = doc.FirstChildElement("dwarffortressmaterials");
+	if(xmlmaterials == NULL){
+		xmlmaterials = new TiXmlElement( "dwarffortressmaterials" );
+		doc.LinkEndChild(xmlmaterials);
+		TiXmlComment *comment = new TiXmlComment("This is what a solid block of a particular material in Dwarf Fortress should look like in Minecraft. These blocks will then be carved into the various terrain objects. \nEach object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started)\n These should only be basic blocks, and so no data array is needed.");
+		xmlmaterials->LinkEndChild(comment);
 	}
-	loadObjects();
+	xmlterrain = doc.FirstChildElement("terrain");
+	if(xmlterrain == NULL){
+		xmlterrain = new TiXmlElement( "terrain" );
+		doc.LinkEndChild(xmlterrain);
+		TiXmlComment *comment = new TiXmlComment("These are the terrain types we will convert from Dwarf Fortress and how we will represent them in Minecraft\nEach object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started).\nIf we should use the block type from the material, use -1, for that location should be empty (air), you can pust 0 (or air).\nEach object also has a list of numbers, the same squaresize^3 in size, that represent state or data of the cooresponding material, used to control things like facing direction, etc.");
+		xmlterrain->LinkEndChild(comment);
+	}
+	xmlflows = doc.FirstChildElement("flows");
+	if(xmlflows == NULL){
+		xmlflows = new TiXmlElement( "flows" );
+		doc.LinkEndChild(xmlflows);
+		TiXmlComment *comment = new TiXmlComment("These are the flow types we will convert from Dwarf Fortress and how we will represent them in Minecraft\nEach object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started).\nIf we should use the block type from the material, use -1, for that location should be empty (air), you can pust 0 (or air).\nEach object also has a list of numbers, the same squaresize^3 in size, that represent state or data of the cooresponding material, used to control things like facing direction, etc.");
+		xmlflows->LinkEndChild(comment);
+	}
+	xmlplants = doc.FirstChildElement("plants");
+	if(xmlplants == NULL){
+		xmlplants = new TiXmlElement( "plants" );
+		doc.LinkEndChild(xmlplants);
+		TiXmlComment *comment = new TiXmlComment("These are the plant types we will convert from Dwarf Fortress and how we will represent them in Minecraft\nEach object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started).\nIf we should use the block type from the material, use -1, for that location should be empty (air), you can pust 0 (or air).\nEach object also has a list of numbers, the same squaresize^3 in size, that represent state or data of the cooresponding material, used to control things like facing direction, etc.");
+		xmlplants->LinkEndChild(comment);
+	}
+	xmlbuildings = doc.FirstChildElement("buildings");
+	if(xmlbuildings == NULL){
+		xmlbuildings = new TiXmlElement( "buildings" );
+		doc.LinkEndChild(xmlbuildings);
+		TiXmlComment *comment = new TiXmlComment("These are the building types we will convert from Dwarf Fortress and how we will represent them in Minecraft\nEach object has a list of mats that is squaresize^3 in size (separated by ',',';', or '|') that is ordered left to right, back to front, top to bottom (i.e. the first items listed move across a row, then the next row in that layer comes, and when one layer is finished, the next layer down is started).\nIf we should use the block type from the material, use -1, for that location should be empty (air), you can pust 0 (or air).\nEach object also has a list of numbers, the same squaresize^3 in size, that represent state or data of the cooresponding material, used to control things like facing direction, etc.");
+		xmlbuildings->LinkEndChild(comment);
+	}
+
+	loadDFObjects();
 
 	//test
 	//int result = testLevel();
